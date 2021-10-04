@@ -4,7 +4,9 @@ namespace Quoridor.Controller
 {
     public interface IController
     {
-        void StartGame();
+        void StartNewGame();
+        void Quit();
+        
         void ChooseCell(Vector2Int cellCoordinates);
     }
 }

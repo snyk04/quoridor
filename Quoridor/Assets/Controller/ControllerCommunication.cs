@@ -17,10 +17,15 @@ namespace Quoridor.Controller
             _model = new ModelCommunication(_view);
         }
 
-        public void StartGame()
+        public void StartNewGame()
         {
             _model.StartGame();
         }
+        public void Quit()
+        {
+            Application.Quit();
+        }
+        
         public void ChooseCell(Vector2Int cellCoordinates)
         {
             _model.MoveCurrentPawnToCell(new CellCoordinates(cellCoordinates.x, cellCoordinates.y));
