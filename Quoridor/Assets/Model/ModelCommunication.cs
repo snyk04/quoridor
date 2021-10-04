@@ -9,8 +9,8 @@ namespace Quoridor.Model
     {
         #region Properties
 
-        private const int AmountOfRows = 9;
-        private const int AmountOfColumns = 9;
+        public const int AmountOfRows = 9;
+        public const int AmountOfColumns = 9;
 
         private readonly CellCoordinates _whiteStartCoordinates = new CellCoordinates(8, 4);
         private readonly CellCoordinates _blackStartCoordinates = new CellCoordinates(0, 4);
