@@ -114,9 +114,17 @@ namespace Quoridor.Model
         public void MoveCurrentPawnToCell(CellCoordinates cellCoordinates)
         {
             MovePawnToCell(_currentTurnPawnType, cellCoordinates);
-            
-            ChangeCurrentTurnPawn();
-            ShowAvailableMovesForCurrentPawn();
+
+            if (CheckIfCurrentPawnWon())
+            {
+                _view.UnhighlightAllCells();
+                _view.ShowVictory(_currentTurnPawnType);
+            }
+            else
+            {
+                ChangeCurrentTurnPawn();
+                ShowAvailableMovesForCurrentPawn();
+            }
         }
        
         private void ChangeCurrentTurnPawn()
@@ -136,6 +144,32 @@ namespace Quoridor.Model
                 PawnType.Black => _blackPawn,
                 _ => throw new ArgumentOutOfRangeException(nameof(pawnType), pawnType, null)
             };
+        }
+
+        private bool CheckIfCurrentPawnWon()
+        {
+            // TODO : hardcode?
+            
+            int currentPawnRow = GetPawnByPawnType(_currentTurnPawnType).CurrentCellCoordinates.row;
+            switch (_currentTurnPawnType)
+            {
+                case PawnType.White:
+                    if (currentPawnRow == _blackStartCoordinates.row)
+                    {
+                        return true;
+                    }
+                    break;
+                case PawnType.Black:
+                    if (currentPawnRow == _whiteStartCoordinates.row)
+                    {
+                        return true;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return false;
         }
 
         private bool CheckIfCellIsReal(CellCoordinates cellCoordinates)

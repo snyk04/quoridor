@@ -8,7 +8,11 @@ namespace Quoridor.View
     {
         [SerializeField] private CellHighlighter _cellHighlighter;
         [SerializeField] private PawnMover _pawnMover;
-        
+
+        public void UnhighlightAllCells()
+        {
+            _cellHighlighter.UnhighlightAllCells();
+        }
         public void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
         {
             _cellHighlighter.HighlightCells(cellCoordinatesArray);
@@ -16,6 +20,11 @@ namespace Quoridor.View
         public void MovePawnToCell(PawnType pawnType, CellCoordinates cellCoordinates)
         {
             _pawnMover.MovePawnToCell(pawnType, cellCoordinates);
+        }
+
+        public void ShowVictory(PawnType pawnType)
+        {
+            Debug.Log(pawnType + " won!");
         }
     }
 }
