@@ -1,10 +1,10 @@
-﻿namespace Quoridor.Model
+﻿namespace Quoridor.Model.Players
 {
-    public class Pawn
+    public class Player
     {
         public CellCoordinates CurrentCellCoordinates { get; private set; }
-
-        public Pawn(CellCoordinates startPosition)
+        
+        public Player(CellCoordinates startPosition)
         {
             CurrentCellCoordinates = startPosition;
         }

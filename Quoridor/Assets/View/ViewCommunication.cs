@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quoridor.Model;
+using Quoridor.Model.Players;
 using UnityEngine;
 
 namespace Quoridor.View
@@ -17,14 +18,14 @@ namespace Quoridor.View
         {
             _cellHighlighter.HighlightCells(cellCoordinatesArray);
         }
-        public void MovePawnToCell(PawnType pawnType, CellCoordinates cellCoordinates)
+        public void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates)
         {
-            _pawnMover.MovePawnToCell(pawnType, cellCoordinates);
+            _pawnMover.MovePawnToCell(playerType, cellCoordinates);
         }
 
-        public void ShowVictory(PawnType pawnType)
+        public void ShowVictory(PlayerType playerType)
         {
-            Debug.Log(pawnType + " won!");
+            Debug.Log(playerType + " won!");
         }
     }
 }

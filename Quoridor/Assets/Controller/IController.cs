@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Quoridor.Model;
+using UnityEngine;
 
 namespace Quoridor.Controller
 {

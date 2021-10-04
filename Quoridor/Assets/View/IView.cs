@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quoridor.Model;
+using Quoridor.Model.Players;
 
 namespace Quoridor.View
 {
@@ -7,8 +8,8 @@ namespace Quoridor.View
     {
         void UnhighlightAllCells();
         void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray);
-        void MovePawnToCell(PawnType pawnType, CellCoordinates cellCoordinates);
+        void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates);
 
-        void ShowVictory(PawnType pawnType);
+        void ShowVictory(PlayerType playerType);
     }
 }

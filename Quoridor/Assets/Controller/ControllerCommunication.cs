@@ -8,7 +8,10 @@ namespace Quoridor.Controller
     {
         [SerializeField] private ViewCommunication _viewCommunication;
         
+        [SerializeField] private GameModeController _gameModeController;
+        
         private IView _view;
+        // TODO : no need, because there is not gonna be another model
         private IModel _model;
 
         private void Awake()
@@ -19,7 +22,7 @@ namespace Quoridor.Controller
 
         public void StartNewGame()
         {
-            _model.StartGame();
+            _model.StartNewGame(_gameModeController.GameMode);
         }
         public void Quit()
         {
@@ -28,7 +31,7 @@ namespace Quoridor.Controller
         
         public void ChooseCell(Vector2Int cellCoordinates)
         {
-            _model.MoveCurrentPawnToCell(new CellCoordinates(cellCoordinates.x, cellCoordinates.y));
+            _model.MoveCurrentPlayerToCell(new CellCoordinates(cellCoordinates.x, cellCoordinates.y));
         }
     }
 }

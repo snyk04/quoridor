@@ -2,8 +2,8 @@
 {
     public interface IModel
     {
-        void StartGame();
+        void StartNewGame(GameMode gameMode);
         
-        void MoveCurrentPawnToCell(CellCoordinates cellCoordinates);
+        void MoveCurrentPlayerToCell(CellCoordinates cellCoordinates);
     }
 }

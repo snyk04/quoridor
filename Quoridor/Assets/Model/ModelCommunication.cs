@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Quoridor.Model.Players;
 using Quoridor.View;
 
 namespace Quoridor.Model
@@ -16,11 +17,14 @@ namespace Quoridor.Model
 
         private readonly IView _view;
 
-        private PawnType _currentTurnPawnType;
-        private readonly Pawn _whitePawn;
-        private readonly Pawn _blackPawn;
+        private PlayerType _currentTurnPlayerType;
+        private readonly Player _whitePlayer;
+        private readonly Player _blackPlayer;
 
         private readonly Cell[,] _cells;
+
+        private GameMode _gameMode;
+        private BaseBot _bot;
 
         #endregion
 
@@ -37,31 +41,39 @@ namespace Quoridor.Model
                 }
             }
 
-            _whitePawn = new Pawn(_whiteStartCoordinates);
-            _blackPawn = new Pawn(_blackStartCoordinates);
+            _whitePlayer = new Player(_whiteStartCoordinates);
+            _blackPlayer = new Player(_blackStartCoordinates);
         }
 
-        #region Methods
+        #region Gamecycle logic
 
-        public void StartGame()
+        public void StartNewGame(GameMode gameMode)
         {
-            MovePawnToCell(PawnType.Black, _blackStartCoordinates);
-            MovePawnToCell(PawnType.White, _whiteStartCoordinates);
-            
-            _currentTurnPawnType = PawnType.White;
+            _gameMode = gameMode;
+            // TODO : hardcode?
+            _bot = new RandomBot(_blackStartCoordinates);
+
+            MovePlayerToCell(PlayerType.Black, _blackStartCoordinates);
+            MovePlayerToCell(PlayerType.White, _whiteStartCoordinates);
+
+            _currentTurnPlayerType = PlayerType.White;
             ShowAvailableMovesForCurrentPawn();
         }
 
-        private void TryToAddMoveToArray(CellCoordinates cell, List<CellCoordinates> availableMoves)
+        #endregion
+
+        #region Available moves logic
+
+        private void TryToAddCellToAvailableMoves(CellCoordinates cell, List<CellCoordinates> availableMoves)
         {
             if (!CheckIfCellIsReal(cell))
             {
                 return;
             }
-            
+
             if (CheckIfCellIsBusy(cell))
             {
-                CellCoordinates currentPawnCoordinates = GetPawnByPawnType(_currentTurnPawnType).CurrentCellCoordinates;
+                CellCoordinates currentPawnCoordinates = GetPlayerByPlayerType(_currentTurnPlayerType).CurrentCellCoordinates;
                 if (!currentPawnCoordinates.Equals(cell))
                 {
                     availableMoves.AddRange(GetAvailableMovesFromCell(cell));
@@ -72,7 +84,8 @@ namespace Quoridor.Model
                 availableMoves.Add(cell);
             }
         }
-        private IEnumerable<CellCoordinates> GetAvailableMovesFromCell(CellCoordinates cellCoordinates)
+
+        private List<CellCoordinates> GetAvailableMovesFromCell(CellCoordinates cellCoordinates)
         {
             var cellCoordinatesArray = new List<CellCoordinates>();
 
@@ -80,90 +93,114 @@ namespace Quoridor.Model
             var upperCell = new CellCoordinates(cellCoordinates.row - 1, cellCoordinates.column);
             var righterCell = new CellCoordinates(cellCoordinates.row, cellCoordinates.column + 1);
             var lefterCell = new CellCoordinates(cellCoordinates.row, cellCoordinates.column - 1);
-            
-            TryToAddMoveToArray(lowerCell, cellCoordinatesArray);
-            TryToAddMoveToArray(upperCell, cellCoordinatesArray);
-            TryToAddMoveToArray(righterCell, cellCoordinatesArray);
-            TryToAddMoveToArray(lefterCell, cellCoordinatesArray);
-            
+
+            TryToAddCellToAvailableMoves(lowerCell, cellCoordinatesArray);
+            TryToAddCellToAvailableMoves(upperCell, cellCoordinatesArray);
+            TryToAddCellToAvailableMoves(righterCell, cellCoordinatesArray);
+            TryToAddCellToAvailableMoves(lefterCell, cellCoordinatesArray);
+
             return cellCoordinatesArray;
         }
+
         private void ShowAvailableMovesForCurrentPawn()
         {
-            Pawn currentTurnPawn = GetPawnByPawnType(_currentTurnPawnType);
-            CellCoordinates currentCellPosition = currentTurnPawn.CurrentCellCoordinates;
+            Player currentTurnPlayer = GetPlayerByPlayerType(_currentTurnPlayerType);
+            CellCoordinates currentCellPosition = currentTurnPlayer.CurrentCellCoordinates;
 
             IEnumerable<CellCoordinates> availableMoves = GetAvailableMovesFromCell(currentCellPosition);
             _view.HighlightCells(availableMoves);
         }
-        
-        private void MovePawnToCell(PawnType pawnType, CellCoordinates cellCoordinates)
+
+        #endregion
+
+        #region Pawn logic
+
+        private void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
         {
-            Pawn pawn = GetPawnByPawnType(pawnType);
-            CellCoordinates oldCellCoordinates = pawn.CurrentCellCoordinates;
-            
+            Player player = GetPlayerByPlayerType(playerType);
+            CellCoordinates oldCellCoordinates = player.CurrentCellCoordinates;
+
             Cell oldCell = _cells[oldCellCoordinates.row, oldCellCoordinates.column];
             Cell newCell = _cells[cellCoordinates.row, cellCoordinates.column];
-            
+
             oldCell.MakeFree();
             newCell.MakeBusy();
-            
-            pawn.MoveToCell(cellCoordinates);
-            _view.MovePawnToCell(pawnType, cellCoordinates);
-        }
-        public void MoveCurrentPawnToCell(CellCoordinates cellCoordinates)
-        {
-            MovePawnToCell(_currentTurnPawnType, cellCoordinates);
 
-            if (CheckIfCurrentPawnWon())
+            player.MoveToCell(cellCoordinates);
+            _view.MovePawnToCell(playerType, cellCoordinates);
+        }
+
+        public void MoveCurrentPlayerToCell(CellCoordinates cellCoordinates)
+        {
+            MovePlayerToCell(_currentTurnPlayerType, cellCoordinates);
+
+            if (CheckCurrentPlayerVictory())
             {
                 _view.UnhighlightAllCells();
-                _view.ShowVictory(_currentTurnPawnType);
+                _view.ShowVictory(_currentTurnPlayerType);
             }
             else
             {
-                ChangeCurrentTurnPawn();
+                if (_gameMode.Equals(GameMode.PlayerVsComputer))
+                {
+                    ChangeCurrentTurnPlayer();
+                    switch (_bot.MakeMove(GetAvailableMovesFromCell(_blackPlayer.CurrentCellCoordinates)))
+                    {
+                        case MoveType.MoveToCell:
+                            MovePlayerToCell(_currentTurnPlayerType, _bot.CellToMove);
+                            break;
+                        case MoveType.PlaceWall:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                
+                ChangeCurrentTurnPlayer();
                 ShowAvailableMovesForCurrentPawn();
             }
         }
-       
-        private void ChangeCurrentTurnPawn()
+
+        private void ChangeCurrentTurnPlayer()
         {
-            _currentTurnPawnType = _currentTurnPawnType switch
+            _currentTurnPlayerType = _currentTurnPlayerType switch
             {
-                PawnType.White => PawnType.Black,
-                PawnType.Black => PawnType.White,
+                PlayerType.White => PlayerType.Black,
+                PlayerType.Black => PlayerType.White,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
-        private Pawn GetPawnByPawnType(PawnType pawnType)
+
+        private Player GetPlayerByPlayerType(PlayerType playerType)
         {
-            return pawnType switch
+            return playerType switch
             {
-                PawnType.White => _whitePawn,
-                PawnType.Black => _blackPawn,
-                _ => throw new ArgumentOutOfRangeException(nameof(pawnType), pawnType, null)
+                PlayerType.White => _whitePlayer,
+                PlayerType.Black => _blackPlayer,
+                _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
             };
         }
 
-        private bool CheckIfCurrentPawnWon()
+        private bool CheckCurrentPlayerVictory()
         {
             // TODO : hardcode?
-            
-            int currentPawnRow = GetPawnByPawnType(_currentTurnPawnType).CurrentCellCoordinates.row;
-            switch (_currentTurnPawnType)
+
+            int currentPawnRow = GetPlayerByPlayerType(_currentTurnPlayerType).CurrentCellCoordinates.row;
+            switch (_currentTurnPlayerType)
             {
-                case PawnType.White:
+                case PlayerType.White:
                     if (currentPawnRow == _blackStartCoordinates.row)
                     {
                         return true;
                     }
+
                     break;
-                case PawnType.Black:
+                case PlayerType.Black:
                     if (currentPawnRow == _whiteStartCoordinates.row)
                     {
                         return true;
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -171,6 +208,10 @@ namespace Quoridor.Model
 
             return false;
         }
+
+        #endregion
+
+        #region Cell logic
 
         private bool CheckIfCellIsReal(CellCoordinates cellCoordinates)
         {

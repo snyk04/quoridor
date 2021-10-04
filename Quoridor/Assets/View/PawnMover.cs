@@ -1,5 +1,6 @@
 ﻿using System;
 using Quoridor.Model;
+using Quoridor.Model.Players;
 using UnityEngine;
 
 namespace Quoridor.View
@@ -11,13 +12,13 @@ namespace Quoridor.View
 
         [SerializeField] private CellStorage _cellStorage;
         
-        public void MovePawnToCell(PawnType pawnType, CellCoordinates cellCoordinates)
+        public void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates)
         {
-            Transform pawn = pawnType switch
+            Transform pawn = playerType switch
             {
-                PawnType.Black => _blackPawn,
-                PawnType.White => _whitePawn,
-                _ => throw new ArgumentOutOfRangeException(nameof(pawnType), pawnType, null)
+                PlayerType.Black => _blackPawn,
+                PlayerType.White => _whitePawn,
+                _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
             };
 
             int index = _cellStorage.TwoDimensionalToOneDimensional(cellCoordinates);

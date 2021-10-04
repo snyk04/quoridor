@@ -6,6 +6,7 @@ namespace Quoridor.Controller
     [RequireComponent(typeof(Button))]
     public class CellButton : MonoBehaviour
     {
+        // TODO : maybe controller communication saves buttons, not vice versa?
         [SerializeField] private ControllerCommunication _controller;
         [SerializeField] private Vector2Int _cellCoordinates;
 
