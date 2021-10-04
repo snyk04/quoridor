@@ -49,43 +49,55 @@ namespace Quoridor.Model
             MovePawnToCell(PawnType.White, _whiteStartCoordinates);
             
             _currentTurnPawnType = PawnType.White;
-            ShowAvailableCellsForCurrentPawn();
+            ShowAvailableMovesForCurrentPawn();
         }
-        
-        public void ShowAvailableCellsForCurrentPawn()
+
+        private void TryToAddMoveToArray(CellCoordinates cell, List<CellCoordinates> availableMoves)
+        {
+            if (!CheckIfCellIsReal(cell))
+            {
+                return;
+            }
+            
+            if (CheckIfCellIsBusy(cell))
+            {
+                CellCoordinates currentPawnCoordinates = GetPawnByPawnType(_currentTurnPawnType).CurrentCellCoordinates;
+                if (!currentPawnCoordinates.Equals(cell))
+                {
+                    availableMoves.AddRange(GetAvailableMovesFromCell(cell));
+                }
+            }
+            else
+            {
+                availableMoves.Add(cell);
+            }
+        }
+        private IEnumerable<CellCoordinates> GetAvailableMovesFromCell(CellCoordinates cellCoordinates)
+        {
+            var cellCoordinatesArray = new List<CellCoordinates>();
+
+            var lowerCell = new CellCoordinates(cellCoordinates.row + 1, cellCoordinates.column);
+            var upperCell = new CellCoordinates(cellCoordinates.row - 1, cellCoordinates.column);
+            var righterCell = new CellCoordinates(cellCoordinates.row, cellCoordinates.column + 1);
+            var lefterCell = new CellCoordinates(cellCoordinates.row, cellCoordinates.column - 1);
+            
+            TryToAddMoveToArray(lowerCell, cellCoordinatesArray);
+            TryToAddMoveToArray(upperCell, cellCoordinatesArray);
+            TryToAddMoveToArray(righterCell, cellCoordinatesArray);
+            TryToAddMoveToArray(lefterCell, cellCoordinatesArray);
+            
+            return cellCoordinatesArray;
+        }
+        private void ShowAvailableMovesForCurrentPawn()
         {
             Pawn currentTurnPawn = GetPawnByPawnType(_currentTurnPawnType);
             CellCoordinates currentCellPosition = currentTurnPawn.CurrentCellCoordinates;
 
-            var cellCoordinatesArray = new List<CellCoordinates>();
-
-            var lowerCell = new CellCoordinates(currentCellPosition.row + 1, currentCellPosition.column);
-            if (CheckIfCellRealAndFree(lowerCell))
-            {
-                cellCoordinatesArray.Add(lowerCell);
-            }
-            
-            var upperCell = new CellCoordinates(currentCellPosition.row - 1, currentCellPosition.column);
-            if (CheckIfCellRealAndFree(upperCell))
-            {
-                cellCoordinatesArray.Add(upperCell);
-            }
-
-            var righterCell = new CellCoordinates(currentCellPosition.row, currentCellPosition.column + 1);
-            if (CheckIfCellRealAndFree(righterCell))
-            {
-                cellCoordinatesArray.Add(righterCell);
-            }
-
-            var lefterCell = new CellCoordinates(currentCellPosition.row, currentCellPosition.column - 1);
-            if (CheckIfCellRealAndFree(lefterCell))
-            {
-                cellCoordinatesArray.Add(lefterCell);
-            }
-
-            _view.HighlightCells(cellCoordinatesArray);
+            IEnumerable<CellCoordinates> availableMoves = GetAvailableMovesFromCell(currentCellPosition);
+            _view.HighlightCells(availableMoves);
         }
-        public void MovePawnToCell(PawnType pawnType, CellCoordinates cellCoordinates)
+        
+        private void MovePawnToCell(PawnType pawnType, CellCoordinates cellCoordinates)
         {
             Pawn pawn = GetPawnByPawnType(pawnType);
             CellCoordinates oldCellCoordinates = pawn.CurrentCellCoordinates;
@@ -99,12 +111,12 @@ namespace Quoridor.Model
             pawn.MoveToCell(cellCoordinates);
             _view.MovePawnToCell(pawnType, cellCoordinates);
         }
-
         public void MoveCurrentPawnToCell(CellCoordinates cellCoordinates)
         {
             MovePawnToCell(_currentTurnPawnType, cellCoordinates);
+            
             ChangeCurrentTurnPawn();
-            ShowAvailableCellsForCurrentPawn();
+            ShowAvailableMovesForCurrentPawn();
         }
        
         private void ChangeCurrentTurnPawn()
@@ -125,22 +137,19 @@ namespace Quoridor.Model
                 _ => throw new ArgumentOutOfRangeException(nameof(pawnType), pawnType, null)
             };
         }
-        private bool CheckIfCellRealAndFree(CellCoordinates cellCoordinates)
+
+        private bool CheckIfCellIsReal(CellCoordinates cellCoordinates)
         {
             bool condition1 = cellCoordinates.row < AmountOfRows;
             bool condition2 = cellCoordinates.row >= 0;
             bool condition3 = cellCoordinates.column < AmountOfColumns;
             bool condition4 = cellCoordinates.column >= 0;
 
-            bool isReal = condition1 & condition2 & condition3 & condition4;
-
-            if (!isReal)
-            {
-                return false;
-            }
-
-            bool isFree = !_cells[cellCoordinates.row, cellCoordinates.column].IsBusy;
-            return isFree;
+            return condition1 & condition2 & condition3 & condition4;
+        }
+        private bool CheckIfCellIsBusy(CellCoordinates cellCoordinates)
+        {
+            return _cells[cellCoordinates.row, cellCoordinates.column].IsBusy;
         }
 
         #endregion
