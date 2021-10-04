@@ -5,7 +5,7 @@ using Quoridor.View;
 
 namespace Quoridor.Model
 {
-    public class ModelCommunication : IModel
+    public class ModelCommunication
     {
         #region Properties
 
@@ -50,7 +50,6 @@ namespace Quoridor.Model
         public void StartNewGame(GameMode gameMode)
         {
             _gameMode = gameMode;
-            // TODO : hardcode?
             _bot = new RandomBot(_blackStartCoordinates);
 
             MovePlayerToCell(PlayerType.Black, _blackStartCoordinates);
@@ -183,30 +182,13 @@ namespace Quoridor.Model
 
         private bool CheckCurrentPlayerVictory()
         {
-            // TODO : hardcode?
-
             int currentPawnRow = GetPlayerByPlayerType(_currentTurnPlayerType).CurrentCellCoordinates.row;
-            switch (_currentTurnPlayerType)
+            return _currentTurnPlayerType switch
             {
-                case PlayerType.White:
-                    if (currentPawnRow == _blackStartCoordinates.row)
-                    {
-                        return true;
-                    }
-
-                    break;
-                case PlayerType.Black:
-                    if (currentPawnRow == _whiteStartCoordinates.row)
-                    {
-                        return true;
-                    }
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return false;
+                PlayerType.White => currentPawnRow == _blackStartCoordinates.row,
+                PlayerType.Black => currentPawnRow == _whiteStartCoordinates.row,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         #endregion

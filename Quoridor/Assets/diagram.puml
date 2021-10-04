@@ -9,15 +9,11 @@ Pawn <|-- BaseBot
 BaseBot <|-- RandomBot
 
 '-----Model-----'
-
-interface IModel
     
 class ModelCommunication #brown
 
 class Cell
     
-IModel <|.. ModelCommunication
-
 ModelCommunication o- ViewCommunication
 
 ModelCommunication *-- Cell

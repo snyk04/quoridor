@@ -12,7 +12,7 @@ namespace Quoridor.Controller
         
         private IView _view;
         // TODO : no need, because there is not gonna be another model
-        private IModel _model;
+        private ModelCommunication _model;
 
         private void Awake()
         {
