@@ -1,0 +1,132 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+class Player
+{
+    CellCoordinates CurrentCellCoordinates
+    Player(CellCoordinates startPosition)
+    
+    void MoveToCell(CellCoordinates cellCoordinates)
+}
+abstract class BaseBot
+{
+    CellCoordinates CellToMove
+    MoveType MakeMove(List<CellCoordinates> availableMoves)
+}
+class RandomBot
+    
+Player <|-- BaseBot
+BaseBot <|-- RandomBot
+
+'-----Model-----'
+    
+class ModelCommunication #brown
+{
+    in progress
+}
+
+class Cell
+{
+    bool IsBusy
+    
+    void MakeBusy()
+    void MakeFree()
+}
+    
+ModelCommunication o- ViewCommunication
+
+ModelCommunication *-- Cell
+    
+'-----View-----'
+
+interface IView
+{
+    void UnhighlightAllCells()
+    void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
+    void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+
+    void ShowVictory(PlayerType playerType)
+}
+    
+class ViewCommunication #brown
+{
+    CellHighlighter _cellHighlighter
+    PawnMover _pawnMover
+}
+
+class CellHighlighter
+{
+    CellStorage _cellStorage
+
+    void UnhighlightAllCells()
+    void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
+}
+class CellStorage
+{
+   List<CellVisual> _cells
+   private int _amountOfColumns
+
+   int TwoDimensionalToOneDimensional(CellCoordinates cellCoordinates)
+}
+class CellVisual
+{
+    Button _button
+    
+    Highlight()
+    Unhighlight()
+}
+class PawnMover
+{
+    CellStorage _cellStorage
+    
+    Transform _blackPawn
+    Transform _whitePawn
+            
+    void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+}
+    
+IView <|..  ViewCommunication
+
+ViewCommunication o-- CellHighlighter
+ViewCommunication o-- PawnMover
+CellHighlighter o-- CellStorage
+PawnMover o-- CellStorage
+CellStorage o-- CellVisual
+
+'-----Controller-----'
+
+interface IController
+{
+    void StartNewGame()
+    void Quit()
+    
+    void ChooseCell(Vector2Int cellCoordinates)
+}
+
+class ControllerCommunication #brown
+{
+    ViewCommunication _viewCommunication
+    GameModeController _gameModeController
+    IView _view
+    ModelCommunication _model
+    void Awake()
+}
+
+class GameModeController
+{
+    Dropdown _gameModeDropdown
+    GameMode GameMode
+}
+class CellButton
+{
+    ControllerCommunication _controller
+}
+
+IController <|.. ControllerCommunication
+
+ControllerCommunication *- ModelCommunication
+
+ControllerCommunication o-- GameModeController
+CellButton o-- ControllerCommunication
+
+@enduml

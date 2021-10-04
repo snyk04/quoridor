@@ -7,11 +7,9 @@ namespace Quoridor.Controller
     public class ControllerCommunication : MonoBehaviour, IController
     {
         [SerializeField] private ViewCommunication _viewCommunication;
-        
         [SerializeField] private GameModeController _gameModeController;
         
         private IView _view;
-        // TODO : no need, because there is not gonna be another model
         private ModelCommunication _model;
 
         private void Awake()
