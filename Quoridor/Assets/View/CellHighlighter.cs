@@ -17,6 +17,7 @@ namespace Quoridor.View
         }
         public void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
         {
+            Debug.Log("highlight");
             UnhighlightAllCells();
             
             foreach (CellCoordinates cellCoordinates in cellCoordinatesArray)

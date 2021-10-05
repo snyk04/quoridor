@@ -1,4 +1,5 @@
 ﻿using Quoridor.Model;
+using Quoridor.Model.New;
 using Quoridor.View;
 using UnityEngine;
 
@@ -10,12 +11,12 @@ namespace Quoridor.Controller
         [SerializeField] private GameModeController _gameModeController;
         
         private IView _view;
-        private ModelCommunication _model;
+        private IModel _model;
 
         private void Awake()
         {
             _view = _viewCommunication;
-            _model = new ModelCommunication(_view);
+            _model = new NewModel(_view);
         }
 
         public void StartNewGame()

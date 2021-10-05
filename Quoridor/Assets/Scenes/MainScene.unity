@@ -6687,7 +6687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1142535423}
   m_Layer: 5
-  m_Name: Pawns
+  m_Name: Players
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7034,7 +7034,7 @@ GameObject:
   - component: {fileID: 1218401547}
   - component: {fileID: 1218401548}
   m_Layer: 0
-  m_Name: PawnMover
+  m_Name: PlayerMover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7066,9 +7066,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695d09438f3a48ac829c6f457a9c74a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blackPawn: {fileID: 366830755206447433}
-  _whitePawn: {fileID: 2089794221}
   _cellStorage: {fileID: 1475445947}
+  _firstPlayer: {fileID: 2089794221}
+  _secondPlayer: {fileID: 366830755206447433}
 --- !u!1001 &1243969088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10166,7 +10166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellHighlighter: {fileID: 1475445945}
-  _pawnMover: {fileID: 1218401548}
+  _playerMover: {fileID: 1218401548}
 --- !u!1001 &1666018413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13179,7 +13179,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7956563016639571300, guid: 846e4428ced495147857fbc1844bdf75, type: 3}
       propertyPath: m_Name
-      value: WhitePawn
+      value: WhitePlayer
       objectReference: {fileID: 0}
     - target: {fileID: 8821338957210313717, guid: 846e4428ced495147857fbc1844bdf75, type: 3}
       propertyPath: _pawnType
@@ -13543,7 +13543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7956563016639571300, guid: 846e4428ced495147857fbc1844bdf75, type: 3}
       propertyPath: m_Name
-      value: BlackPawn
+      value: BlackPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 8821338957210313717, guid: 846e4428ced495147857fbc1844bdf75, type: 3}
       propertyPath: _controller

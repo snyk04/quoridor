@@ -32,7 +32,6 @@ namespace Quoridor.Model
         {
             _view = view;
 
-            // TODO : create method InitializeField() or something
             _cells = new Cell[AmountOfRows, AmountOfColumns];
             for (int i = 0; i < AmountOfRows; i++)
             {
@@ -139,7 +138,6 @@ namespace Quoridor.Model
         {
             MovePlayerToCell(_currentTurnPlayerType, cellCoordinates);
 
-            // TODO : better separate this logic to another method
             if (_gameMode.Equals(GameMode.PlayerVsComputer))
             {
                 ChangeCurrentTurnPlayer();
@@ -156,7 +154,6 @@ namespace Quoridor.Model
                 }
             }
                 
-            // TODO : maybe separate method?)
             ChangeCurrentTurnPlayer();
             ShowAvailableMovesForCurrentPlayer();
         }
@@ -181,7 +178,6 @@ namespace Quoridor.Model
             };
         }
 
-        // TODO : there should be method, which takes PlayerType playerType as a parameter and works with it
         private bool CheckPlayerVictory(PlayerType playerType)
         {
             int playerRow = GetPlayerByPlayerType(playerType).CurrentCellCoordinates.row;

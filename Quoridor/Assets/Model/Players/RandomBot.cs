@@ -7,18 +7,14 @@ namespace Quoridor.Model.Players
     {
         public override MoveType MakeMove(List<CellCoordinates> availableMoves)
         {
-            if (Random.value <= 0.5f)
+            if (Random.value > 10) // AmountOfWalls >= 1
             {
-                CellToMove = availableMoves[Random.Range(0, availableMoves.Count)];
-                return MoveType.MoveToCell;
-            }
-            else
-            {
-                // if (walls >= 1)
-                // AmountOfWalls -= 1;
                 Debug.Log("Bot placed a wall!");
                 return MoveType.PlaceWall;
             }
+
+            CellToMove = availableMoves[Random.Range(0, availableMoves.Count)];
+            return MoveType.MoveToCell;
         }
 
         public RandomBot(CellCoordinates startPosition) : base(startPosition)

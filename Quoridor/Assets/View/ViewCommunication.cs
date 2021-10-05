@@ -25,6 +25,7 @@ namespace Quoridor.View
 
         public void ShowVictory(PlayerType playerType)
         {
+            UnhighlightAllCells();
             Debug.Log(playerType + " won!");
         }
     }
