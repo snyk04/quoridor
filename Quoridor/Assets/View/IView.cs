@@ -8,7 +8,7 @@ namespace Quoridor.View
     {
         void UnhighlightAllCells();
         void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray);
-        void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates);
+        void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates);
 
         void ShowVictory(PlayerType playerType);
     }

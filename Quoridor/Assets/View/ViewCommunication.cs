@@ -8,7 +8,7 @@ namespace Quoridor.View
     public class ViewCommunication : MonoBehaviour, IView
     {
         [SerializeField] private CellHighlighter _cellHighlighter;
-        [SerializeField] private PawnMover _pawnMover;
+        [SerializeField] private PlayerMover _playerMover;
 
         public void UnhighlightAllCells()
         {
@@ -18,9 +18,9 @@ namespace Quoridor.View
         {
             _cellHighlighter.HighlightCells(cellCoordinatesArray);
         }
-        public void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+        public void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
         {
-            _pawnMover.MovePawnToCell(playerType, cellCoordinates);
+            _playerMover.MovePlayerToCell(playerType, cellCoordinates);
         }
 
         public void ShowVictory(PlayerType playerType)

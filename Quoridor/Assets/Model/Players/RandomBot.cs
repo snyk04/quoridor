@@ -14,7 +14,6 @@ namespace Quoridor.Model.Players
             }
             else
             {
-                // TODO : check if you have walls and place them!!!
                 // if (walls >= 1)
                 // AmountOfWalls -= 1;
                 Debug.Log("Bot placed a wall!");

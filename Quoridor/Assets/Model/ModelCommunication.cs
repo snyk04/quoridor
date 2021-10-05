@@ -12,14 +12,14 @@ namespace Quoridor.Model
         public const int AmountOfRows = 9;
         public const int AmountOfColumns = 9;
 
-        private readonly CellCoordinates _whiteStartCoordinates = new CellCoordinates(8, 4);
-        private readonly CellCoordinates _blackStartCoordinates = new CellCoordinates(0, 4);
+        private readonly CellCoordinates _firstPlayerStartCoordinates = new CellCoordinates(8, 4);
+        private readonly CellCoordinates _secondPlayerStartCoordinates = new CellCoordinates(0, 4);
 
         private readonly IView _view;
 
         private PlayerType _currentTurnPlayerType;
-        private readonly Player _whitePlayer;
-        private readonly Player _blackPlayer;
+        private readonly Player _firstPlayer;
+        private readonly Player _secondPlayer;
 
         private readonly Cell[,] _cells;
 
@@ -32,6 +32,7 @@ namespace Quoridor.Model
         {
             _view = view;
 
+            // TODO : create method InitializeField() or something
             _cells = new Cell[AmountOfRows, AmountOfColumns];
             for (int i = 0; i < AmountOfRows; i++)
             {
@@ -41,8 +42,8 @@ namespace Quoridor.Model
                 }
             }
 
-            _whitePlayer = new Player(_whiteStartCoordinates);
-            _blackPlayer = new Player(_blackStartCoordinates);
+            _firstPlayer = new Player(_firstPlayerStartCoordinates);
+            _secondPlayer = new Player(_secondPlayerStartCoordinates);
         }
 
         #region Gamecycle logic
@@ -50,13 +51,13 @@ namespace Quoridor.Model
         public void StartNewGame(GameMode gameMode)
         {
             _gameMode = gameMode;
-            _bot = new RandomBot(_blackStartCoordinates);
+            _bot = new RandomBot(_secondPlayerStartCoordinates);
 
-            MovePlayerToCell(PlayerType.Black, _blackStartCoordinates);
-            MovePlayerToCell(PlayerType.White, _whiteStartCoordinates);
+            MovePlayerToCell(PlayerType.First, _firstPlayerStartCoordinates);
+            MovePlayerToCell(PlayerType.Second, _secondPlayerStartCoordinates);
 
-            _currentTurnPlayerType = PlayerType.White;
-            ShowAvailableMovesForCurrentPawn();
+            _currentTurnPlayerType = PlayerType.First;
+            ShowAvailableMovesForCurrentPlayer();
         }
 
         #endregion
@@ -72,8 +73,8 @@ namespace Quoridor.Model
 
             if (CheckIfCellIsBusy(cell))
             {
-                CellCoordinates currentPawnCoordinates = GetPlayerByPlayerType(_currentTurnPlayerType).CurrentCellCoordinates;
-                if (!currentPawnCoordinates.Equals(cell))
+                CellCoordinates currentTurnPlayerCoordinates = GetPlayerByPlayerType(_currentTurnPlayerType).CurrentCellCoordinates;
+                if (!currentTurnPlayerCoordinates.Equals(cell))
                 {
                     availableMoves.AddRange(GetAvailableMovesFromCell(cell));
                 }
@@ -83,36 +84,36 @@ namespace Quoridor.Model
                 availableMoves.Add(cell);
             }
         }
-
         private List<CellCoordinates> GetAvailableMovesFromCell(CellCoordinates cellCoordinates)
         {
-            var cellCoordinatesArray = new List<CellCoordinates>();
+            var availableMoves = new List<CellCoordinates>();
+            var uncheckedMoves = new List<CellCoordinates>()
+            {
+                new CellCoordinates(cellCoordinates.row + 1, cellCoordinates.column),
+                new CellCoordinates(cellCoordinates.row - 1, cellCoordinates.column),
+                new CellCoordinates(cellCoordinates.row, cellCoordinates.column + 1),
+                new CellCoordinates(cellCoordinates.row, cellCoordinates.column - 1)
+            };
 
-            var lowerCell = new CellCoordinates(cellCoordinates.row + 1, cellCoordinates.column);
-            var upperCell = new CellCoordinates(cellCoordinates.row - 1, cellCoordinates.column);
-            var righterCell = new CellCoordinates(cellCoordinates.row, cellCoordinates.column + 1);
-            var lefterCell = new CellCoordinates(cellCoordinates.row, cellCoordinates.column - 1);
+            foreach (CellCoordinates possibleMove in uncheckedMoves)
+            {
+                TryToAddCellToAvailableMoves(possibleMove, availableMoves);
+            }
 
-            TryToAddCellToAvailableMoves(lowerCell, cellCoordinatesArray);
-            TryToAddCellToAvailableMoves(upperCell, cellCoordinatesArray);
-            TryToAddCellToAvailableMoves(righterCell, cellCoordinatesArray);
-            TryToAddCellToAvailableMoves(lefterCell, cellCoordinatesArray);
-
-            return cellCoordinatesArray;
+            return availableMoves;
         }
-
-        private void ShowAvailableMovesForCurrentPawn()
+        private void ShowAvailableMovesForCurrentPlayer()
         {
             Player currentTurnPlayer = GetPlayerByPlayerType(_currentTurnPlayerType);
-            CellCoordinates currentCellPosition = currentTurnPlayer.CurrentCellCoordinates;
+            CellCoordinates currentTurnPlayerCoordinates = currentTurnPlayer.CurrentCellCoordinates;
 
-            IEnumerable<CellCoordinates> availableMoves = GetAvailableMovesFromCell(currentCellPosition);
+            IEnumerable<CellCoordinates> availableMoves = GetAvailableMovesFromCell(currentTurnPlayerCoordinates);
             _view.HighlightCells(availableMoves);
         }
 
         #endregion
 
-        #region Pawn logic
+        #region Player logic
 
         private void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
         {
@@ -122,50 +123,50 @@ namespace Quoridor.Model
             Cell oldCell = _cells[oldCellCoordinates.row, oldCellCoordinates.column];
             Cell newCell = _cells[cellCoordinates.row, cellCoordinates.column];
 
-            oldCell.MakeFree();
-            newCell.MakeBusy();
+            oldCell.IsBusy = false;
+            newCell.IsBusy = true;
 
             player.MoveToCell(cellCoordinates);
-            _view.MovePawnToCell(playerType, cellCoordinates);
-        }
-
-        public void MoveCurrentPlayerToCell(CellCoordinates cellCoordinates)
-        {
-            MovePlayerToCell(_currentTurnPlayerType, cellCoordinates);
-
-            if (CheckCurrentPlayerVictory())
+            _view.MovePlayerToCell(playerType, cellCoordinates);
+            
+            if (CheckPlayerVictory(playerType))
             {
                 _view.UnhighlightAllCells();
                 _view.ShowVictory(_currentTurnPlayerType);
             }
-            else
-            {
-                if (_gameMode.Equals(GameMode.PlayerVsComputer))
-                {
-                    ChangeCurrentTurnPlayer();
-                    switch (_bot.MakeMove(GetAvailableMovesFromCell(_blackPlayer.CurrentCellCoordinates)))
-                    {
-                        case MoveType.MoveToCell:
-                            MovePlayerToCell(_currentTurnPlayerType, _bot.CellToMove);
-                            break;
-                        case MoveType.PlaceWall:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-                
-                ChangeCurrentTurnPlayer();
-                ShowAvailableMovesForCurrentPawn();
-            }
         }
+        public void MoveCurrentPlayerToCell(CellCoordinates cellCoordinates)
+        {
+            MovePlayerToCell(_currentTurnPlayerType, cellCoordinates);
 
+            // TODO : better separate this logic to another method
+            if (_gameMode.Equals(GameMode.PlayerVsComputer))
+            {
+                ChangeCurrentTurnPlayer();
+                switch (_bot.MakeMove(GetAvailableMovesFromCell(_bot.CurrentCellCoordinates)))
+                {
+                    case MoveType.MoveToCell:
+                        MovePlayerToCell(_currentTurnPlayerType, _bot.CellToMove);
+                        break;
+                    case MoveType.PlaceWall:
+                        // PlaceWall(WallCoordinates _bot.WallCoordinates);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+                
+            // TODO : maybe separate method?)
+            ChangeCurrentTurnPlayer();
+            ShowAvailableMovesForCurrentPlayer();
+        }
+        
         private void ChangeCurrentTurnPlayer()
         {
             _currentTurnPlayerType = _currentTurnPlayerType switch
             {
-                PlayerType.White => PlayerType.Black,
-                PlayerType.Black => PlayerType.White,
+                PlayerType.First => PlayerType.Second,
+                PlayerType.Second => PlayerType.First,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -174,19 +175,20 @@ namespace Quoridor.Model
         {
             return playerType switch
             {
-                PlayerType.White => _whitePlayer,
-                PlayerType.Black => _blackPlayer,
+                PlayerType.First => _firstPlayer,
+                PlayerType.Second => _gameMode.Equals(GameMode.PlayerVsComputer) ? _bot : _secondPlayer,
                 _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
             };
         }
 
-        private bool CheckCurrentPlayerVictory()
+        // TODO : there should be method, which takes PlayerType playerType as a parameter and works with it
+        private bool CheckPlayerVictory(PlayerType playerType)
         {
-            int currentPawnRow = GetPlayerByPlayerType(_currentTurnPlayerType).CurrentCellCoordinates.row;
-            return _currentTurnPlayerType switch
+            int playerRow = GetPlayerByPlayerType(playerType).CurrentCellCoordinates.row;
+            return playerType switch
             {
-                PlayerType.White => currentPawnRow == _blackStartCoordinates.row,
-                PlayerType.Black => currentPawnRow == _whiteStartCoordinates.row,
+                PlayerType.First => playerRow == _secondPlayerStartCoordinates.row,
+                PlayerType.Second => playerRow == _firstPlayerStartCoordinates.row,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

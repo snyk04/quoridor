@@ -43,7 +43,7 @@ interface IView
 {
     void UnhighlightAllCells()
     void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
-    void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+    void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
 
     void ShowVictory(PlayerType playerType)
 }
@@ -51,7 +51,7 @@ interface IView
 class ViewCommunication #brown
 {
     CellHighlighter _cellHighlighter
-    PawnMover _pawnMover
+    PlayerMover _playerMover
 }
 
 class CellHighlighter
@@ -67,6 +67,7 @@ class CellStorage
    private int _amountOfColumns
 
    int TwoDimensionalToOneDimensional(CellCoordinates cellCoordinates)
+   CellVisual GetCell(CellCoordinates cellCoordinates)
 }
 class CellVisual
 {
@@ -75,22 +76,22 @@ class CellVisual
     Highlight()
     Unhighlight()
 }
-class PawnMover
+class PlayerMover
 {
     CellStorage _cellStorage
     
-    Transform _blackPawn
-    Transform _whitePawn
+    Transform _firstPlayer
+    Transform _secondPlayer
             
-    void MovePawnToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+    void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
 }
     
 IView <|..  ViewCommunication
 
 ViewCommunication o-- CellHighlighter
-ViewCommunication o-- PawnMover
+ViewCommunication o-- PlayerMover
 CellHighlighter o-- CellStorage
-PawnMover o-- CellStorage
+PlayerMover o-- CellStorage
 CellStorage o-- CellVisual
 
 '-----Controller-----'

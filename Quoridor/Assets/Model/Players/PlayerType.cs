@@ -2,7 +2,7 @@
 {
     public enum PlayerType
     {
-        White,
-        Black
+        First,
+        Second
     }
 }

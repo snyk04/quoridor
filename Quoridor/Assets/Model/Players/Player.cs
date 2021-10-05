@@ -2,10 +2,12 @@
 {
     public class Player
     {
+        // public int AmountOfWalls { get; private set; }
         public CellCoordinates CurrentCellCoordinates { get; private set; }
-        
-        public Player(CellCoordinates startPosition)
+
+        public Player(CellCoordinates startPosition) // int startAmountOfWalls
         {
+            // AmountOfWalls = startAmountOfWalls;
             CurrentCellCoordinates = startPosition;
         }
 

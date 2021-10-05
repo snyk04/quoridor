@@ -21,8 +21,7 @@ namespace Quoridor.View
             
             foreach (CellCoordinates cellCoordinates in cellCoordinatesArray)
             {
-                int index = _cellStorage.TwoDimensionalToOneDimensional(cellCoordinates);
-                _cellStorage.Cells[index].Highlight();
+                _cellStorage.GetCell(cellCoordinates).Highlight();
             }
         }
     }
