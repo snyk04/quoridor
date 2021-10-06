@@ -1,7 +1,8 @@
 ﻿using System;
-using Quoridor.Model.Players;
+using Quoridor.Model.Cells;
+using Quoridor.Model.Game;
 
-namespace Quoridor.Model
+namespace Quoridor.Model.Players
 {
     public class PlayersController
     {

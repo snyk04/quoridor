@@ -1,4 +1,6 @@
-﻿namespace Quoridor.Model.Players
+﻿using Quoridor.Model.Cells;
+
+namespace Quoridor.Model.Players
 {
     public class Player
     {

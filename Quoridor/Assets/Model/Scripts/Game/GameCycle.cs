@@ -1,7 +1,7 @@
 ﻿using System;
 using Quoridor.Model.Players;
 
-namespace Quoridor.Model
+namespace Quoridor.Model.Game
 {
     public class GameCycle
     {

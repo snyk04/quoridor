@@ -1,4 +1,4 @@
-﻿using Quoridor.Model;
+﻿using Quoridor.Model.Game;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,4 +1,5 @@
 ﻿using Quoridor.Model;
+using Quoridor.Model.Cells;
 using Quoridor.View;
 using UnityEngine;
 

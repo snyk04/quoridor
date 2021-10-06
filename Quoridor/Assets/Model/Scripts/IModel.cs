@@ -1,4 +1,7 @@
-﻿namespace Quoridor.Model
+﻿using Quoridor.Model.Cells;
+using Quoridor.Model.Game;
+
+namespace Quoridor.Model
 {
     public interface IModel
     {

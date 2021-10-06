@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using Quoridor.Model;
+using Quoridor.Model.Cells;
 using Quoridor.Model.Players;
+using Quoridor.View.Cells;
 using UnityEngine;
 
 namespace Quoridor.View

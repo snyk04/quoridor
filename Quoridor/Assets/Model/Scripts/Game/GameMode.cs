@@ -1,4 +1,4 @@
-﻿namespace Quoridor.Model
+﻿namespace Quoridor.Model.Game
 {
     public enum GameMode
     {

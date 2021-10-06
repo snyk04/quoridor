@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Quoridor.View
+namespace Quoridor.View.Cells
 {
     [RequireComponent(typeof(Button))]
     public class CellVisual : MonoBehaviour

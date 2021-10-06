@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Quoridor.Model;
+using Quoridor.Model.Cells;
 using UnityEngine;
 
-namespace Quoridor.View
+namespace Quoridor.View.Cells
 {
     public class CellStorage : MonoBehaviour
     {

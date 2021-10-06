@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Quoridor.Model;
+using Quoridor.Model.Cells;
 using UnityEngine;
 
-namespace Quoridor.View
+namespace Quoridor.View.Cells
 {
     public class CellHighlighter : MonoBehaviour
     {
@@ -17,7 +17,6 @@ namespace Quoridor.View
         }
         public void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
         {
-            Debug.Log("highlight");
             UnhighlightAllCells();
             
             foreach (CellCoordinates cellCoordinates in cellCoordinatesArray)

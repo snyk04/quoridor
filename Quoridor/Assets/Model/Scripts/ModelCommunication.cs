@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Quoridor.Model.Cells;
+using Quoridor.Model.Game;
 using Quoridor.Model.Players;
 using Quoridor.View;
 

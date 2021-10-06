@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Quoridor.Model.Cells;
 using UnityEngine;
 
 namespace Quoridor.Model.Players

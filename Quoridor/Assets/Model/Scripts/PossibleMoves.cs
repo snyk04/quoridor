@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Quoridor.Model.Cells;
 
 namespace Quoridor.Model
 {
