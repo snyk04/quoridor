@@ -1,89 +1,181 @@
 ﻿@startuml
 'https://plantuml.com/sequence-diagram
 
-class Player
-{
-    CellCoordinates CurrentCellCoordinates
-    Player(CellCoordinates startPosition)
-    
-    void MoveToCell(CellCoordinates cellCoordinates)
-}
-abstract class BaseBot
-{
-    CellCoordinates CellToMove
-    MoveType MakeMove(List<CellCoordinates> availableMoves)
-}
-class RandomBot
-    
-Player <|-- BaseBot
-BaseBot <|-- RandomBot
-
 '-----Model-----'
     
+interface IController
+interface IView
+interface IModel
+{
+    StartNewGame() : void
+    MoveCurrentPlayerToCell() : void
+}
+
+class ControllerCommunication
+class ViewCommunication
 class ModelCommunication #brown
 {
-    in progress
+    view : IView 
+
+    possibleMoves : PossibleMoves
+    cellsManager : CellsManager
+    gameCycle : GameCycle
+    playersController : PlayersController
+    
+    HighlightAvailableCells() : void
+    EndGame() : void
+    MovePlayerToCell() : void
 }
 
 class Cell
 {
-    bool IsBusy
-    
-    void MakeBusy()
-    void MakeFree()
+    IsBusy : bool
 }
+class CellsManager
+{
+    AmountOfRows : int
+    AmountOfColumns : int
     
+    cells : Cell[,]
+    
+    InitializeCellField() : void
+    
+    CheckIfCellIsReal() : bool
+    CheckIfCellIsBusy() : bool
+}
+class GameCycle
+{
+    model : Model
+
+    gameMode : GameMode
+    
+    OnGameStart : Action
+    OnGameEnd : Action
+    
+    StartNewGame() : void
+    EndGame() : void
+}
+class PlayersController
+{
+    model : ModelCommunication
+    
+    firstPlayerStartPosition : CellCoordinates
+    secondPlayerStartPosition : CellCoordinates
+
+    firstPlayer : Player
+    secondPlayer : Player
+    
+    bot : Bot   
+    
+    currentPlayer : Player
+    currentPlayerType : PlayerType
+    
+    HandleTurnEndEvents() : void
+    NullifyTurnEndEvents() : void
+    
+    PlacePlayersAtStartPositions() : void
+    
+    MovePlayerToCell() : void
+    MoveCurrentPlayerToCell() : void
+    
+    WaitForTheFirstPlayer() : void
+    WaitForTheNextPlayer() : void
+        
+    ComputeBotMove() : void
+    BotTurn() : void
+    
+    ChangeCurrentPlayer() : void
+}
+class PossibleMoves
+{
+    model : ModelCommunication
+    
+    currentTurnPlayerCoordinates : CellCoordinates
+    
+    SetCurrentTurnPlayerCoordinates() : void
+    
+    TryToAddCellToPossibleMoves() : void
+    GetPossibleMovesFromCell() : void
+    ShowPossibleMoves() : void
+}
+
+class Player
+{
+    CurrentCellCoordinates : CellCoordinates
+    
+    MoveToCell() : void
+}
+abstract class Bot
+{
+    CellToMove : CellCoordinates
+    
+    MakeMove() : MoveType
+}
+class RandomBot
+
+IModel <|.. ModelCommunication
+
 ModelCommunication o- ViewCommunication
 
-ModelCommunication *-- Cell
+ModelCommunication *--o PossibleMoves
+ModelCommunication *-- CellsManager
+ModelCommunication *--o GameCycle
+ModelCommunication *--o PlayersController
+
+CellsManager *-- Cell
+
+PlayersController *-- Player
+PlayersController *-- Bot
+Player <|- Bot
+Bot <|-- RandomBot
     
 '-----View-----'
 
 interface IView
 {
-    void UnhighlightAllCells()
-    void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
-    void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+    UnhighlightAllCells() : void
+    HighlightCells() : void
+    MovePlayerToCell() : void
 
-    void ShowVictory(PlayerType playerType)
+    ShowVictory() : void
 }
     
 class ViewCommunication #brown
 {
-    CellHighlighter _cellHighlighter
-    PlayerMover _playerMover
+    cellHighlighter : CellHighlighter
+    playerMover : PlayerMover
 }
 
 class CellHighlighter
 {
-    CellStorage _cellStorage
+    cellStorage : CellStorage
 
-    void UnhighlightAllCells()
-    void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
+    UnhighlightAllCells() : void
+    HighlightCells() : void
 }
 class CellStorage
 {
-   List<CellVisual> _cells
-   private int _amountOfColumns
+   cells : List<CellVisual>
+   amountOfColumns : int
 
-   int TwoDimensionalToOneDimensional(CellCoordinates cellCoordinates)
-   CellVisual GetCell(CellCoordinates cellCoordinates)
+   TwoDimensionalToOneDimensional() : int
+   GetCell() : CellVisual
 }
 class CellVisual
 {
-    Button _button
+    button : Button
     
-    Highlight()
-    Unhighlight()
+    Highlight() : void
+    Unhighlight() : void
 }
 class PlayerMover
 {
-    CellStorage _cellStorage
+    cellStorage : CellStorage
     
-    Transform _firstPlayer
-    Transform _secondPlayer
+    firstPlayer : Transform
+    secondPlayer : Transform
             
-    void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+    MovePlayerToCell() : void
 }
     
 IView <|..  ViewCommunication
@@ -92,35 +184,34 @@ ViewCommunication o-- CellHighlighter
 ViewCommunication o-- PlayerMover
 CellHighlighter o-- CellStorage
 PlayerMover o-- CellStorage
-CellStorage o-- CellVisual
+CellStorage o- CellVisual
 
 '-----Controller-----'
 
 interface IController
 {
-    void StartNewGame()
-    void Quit()
+    StartNewGame() : void
+    Quit() : void
     
-    void ChooseCell(Vector2Int cellCoordinates)
+    ChooseCell() : void
 }
 
 class ControllerCommunication #brown
 {
-    ViewCommunication _viewCommunication
-    GameModeController _gameModeController
-    IView _view
-    ModelCommunication _model
-    void Awake()
+    viewCommunication : ViewCommunication
+    gameModeController : GameModeController
+    view : IView
+    model : ModelCommunication
 }
 
 class GameModeController
 {
-    Dropdown _gameModeDropdown
-    GameMode GameMode
+    gameModeDropdown : Dropdown
+    GameMode : GameMode
 }
 class CellButton
 {
-    ControllerCommunication _controller
+    controller : ControllerCommunication
 }
 
 IController <|.. ControllerCommunication
@@ -128,6 +219,6 @@ IController <|.. ControllerCommunication
 ControllerCommunication *- ModelCommunication
 
 ControllerCommunication o-- GameModeController
-CellButton o-- ControllerCommunication
+CellButton o- ControllerCommunication
 
 @enduml

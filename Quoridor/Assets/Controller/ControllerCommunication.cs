@@ -1,5 +1,4 @@
 ﻿using Quoridor.Model;
-using Quoridor.Model.New;
 using Quoridor.View;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace Quoridor.Controller
         private void Awake()
         {
             _view = _viewCommunication;
-            _model = new NewModel(_view);
+            _model = new ModelCommunication(_view);
         }
 
         public void StartNewGame()

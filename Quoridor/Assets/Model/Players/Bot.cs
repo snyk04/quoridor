@@ -2,11 +2,11 @@
 
 namespace Quoridor.Model.Players
 {
-    public abstract class BaseBot : Player
+    public abstract class Bot : Player
     {
         public CellCoordinates CellToMove { get; protected set; }
 
-        protected BaseBot(CellCoordinates startPosition) : base(startPosition)
+        protected Bot(CellCoordinates startPosition) : base(startPosition)
         {
         }
 

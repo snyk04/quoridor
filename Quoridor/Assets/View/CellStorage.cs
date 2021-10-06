@@ -13,7 +13,7 @@ namespace Quoridor.View
 
         private void Awake()
         {
-            _amountOfColumns = ModelCommunication.AmountOfColumns;
+            _amountOfColumns = CellsManager.AmountOfColumns;
         }
 
         private int TwoDimensionalToOneDimensional(CellCoordinates cellCoordinates)

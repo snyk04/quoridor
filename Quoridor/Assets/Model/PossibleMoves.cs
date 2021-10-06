@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Quoridor.Model.New
+namespace Quoridor.Model
 {
     public class PossibleMoves
     {
-        private readonly NewModel _model;
+        private readonly ModelCommunication _model;
 
         private CellCoordinates _currentTurnPlayerCoordinates;
         
-        public PossibleMoves(NewModel model)
+        public PossibleMoves(ModelCommunication model)
         {
             _model = model;
 

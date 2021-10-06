@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Quoridor.Model.Players
 {
-    public class RandomBot : BaseBot
+    public class RandomBot : Bot
     {
         public override MoveType MakeMove(List<CellCoordinates> availableMoves)
         {

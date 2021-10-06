@@ -1,4 +1,4 @@
-﻿namespace Quoridor.Model.New
+﻿namespace Quoridor.Model
 {
     public class CellsManager
     {

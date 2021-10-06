@@ -1,18 +1,18 @@
 ﻿using System;
 using Quoridor.Model.Players;
 
-namespace Quoridor.Model.New
+namespace Quoridor.Model
 {
     public class GameCycle
     {
-        private readonly NewModel _model;
+        private readonly ModelCommunication _model;
         
         public GameMode GameMode { get; private set; }
         
         public event Action OnGameStart;
         public event Action OnGameEnd;
 
-        public GameCycle(NewModel model)
+        public GameCycle(ModelCommunication model)
         {
             _model = model;
         }
