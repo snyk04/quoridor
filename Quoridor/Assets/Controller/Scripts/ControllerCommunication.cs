@@ -32,5 +32,9 @@ namespace Quoridor.Controller
         {
             _model.MoveCurrentPlayerToCell(new CellCoordinates(cellCoordinates.x, cellCoordinates.y));
         }
+        public void TryToPlaceWall(Vector2Int wallCoordinates)
+        {
+            _model.TryToPlaceWall(new CellCoordinates(wallCoordinates.x, wallCoordinates.y));
+        }
     }
 }

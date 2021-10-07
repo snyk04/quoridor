@@ -19,12 +19,12 @@ namespace Quoridor.Model
         {
             _view = view;
 
-            CellsManager = new CellsManager();
+            CellsManager = new CellsManager(this);
             GameCycle = new GameCycle(this);
             PlayersController = new PlayersController(
                 this,
                 new CellCoordinates(8, 4),
-                new CellCoordinates(7, 4)
+                new CellCoordinates(0, 4)
                 );
             PossibleMoves = new PossibleMoves(this);
         }
@@ -41,6 +41,10 @@ namespace Quoridor.Model
         {
             PlayersController.MoveCurrentPlayerToCell(cellCoordinates);
         }
+        public void TryToPlaceWall(CellCoordinates wallCoordinates)
+        {
+            PlayersController.CurrentPlayerTryToPlaceWall(wallCoordinates);
+        }
 
         internal void HighlightAvailableCells(IEnumerable<CellCoordinates> availableCells)
         {
@@ -49,6 +53,10 @@ namespace Quoridor.Model
         internal void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
         {
             _view.MovePlayerToCell(playerType, cellCoordinates);
+        }
+        internal void PlaceWall(CellCoordinates wallCoordinates)
+        {
+            _view.PlaceWall(wallCoordinates);
         }
     }
 }

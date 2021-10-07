@@ -1,5 +1,6 @@
 ﻿namespace Quoridor.Model.Cells
 {
+    // TODO : rename to Coordinates.cs
     public readonly struct CellCoordinates
     {
         public readonly int row;
@@ -9,6 +10,11 @@
         {
             this.row = row;
             this.column = column;
+        }
+
+        public override string ToString()
+        {
+            return row + " " + column;
         }
     }
 }

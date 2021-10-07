@@ -1,5 +1,4 @@
-﻿using Quoridor.Model;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Quoridor.Controller
 {
@@ -9,5 +8,6 @@ namespace Quoridor.Controller
         void Quit();
         
         void ChooseCell(Vector2Int cellCoordinates);
+        void TryToPlaceWall(Vector2Int wallCoordinates);
     }
 }

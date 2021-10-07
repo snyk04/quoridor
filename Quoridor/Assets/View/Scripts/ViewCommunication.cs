@@ -2,6 +2,7 @@
 using Quoridor.Model.Cells;
 using Quoridor.Model.Players;
 using Quoridor.View.Cells;
+using Quoridor.View.Walls;
 using UnityEngine;
 
 namespace Quoridor.View
@@ -10,8 +11,9 @@ namespace Quoridor.View
     {
         [SerializeField] private CellHighlighter _cellHighlighter;
         [SerializeField] private PlayerMover _playerMover;
+        [SerializeField] private WallPlacer _wallPlacer;
 
-        public void UnhighlightAllCells()
+        private void UnhighlightAllCells()
         {
             _cellHighlighter.UnhighlightAllCells();
         }
@@ -22,6 +24,10 @@ namespace Quoridor.View
         public void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
         {
             _playerMover.MovePlayerToCell(playerType, cellCoordinates);
+        }
+        public void PlaceWall(CellCoordinates wallCoordinates)
+        {
+            _wallPlacer.PlaceWall(wallCoordinates);
         }
 
         public void ShowVictory(PlayerType playerType)

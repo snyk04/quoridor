@@ -3,18 +3,20 @@ using UnityEngine.UI;
 
 namespace Quoridor.Controller.Buttons
 {
+    // TODO : make abstract class ControllerButton.cs or smth.
     [RequireComponent(typeof(Button))]
-    public class CellButton : MonoBehaviour
+    public class WallButton : MonoBehaviour
     {
+        // TODO : maybe controller communication saves buttons, not vice versa?
         [Header("References")]
         [SerializeField] private ControllerCommunication _controller;
         
         [Header("Settings")]
-        [SerializeField] private Vector2Int _cellCoordinates;
+        [SerializeField] public Vector2Int _wallCoordinates;
 
         public void NotifyController()
         {
-            _controller.ChooseCell(_cellCoordinates);
+            _controller.TryToPlaceWall(_wallCoordinates);
         }
     }
 }

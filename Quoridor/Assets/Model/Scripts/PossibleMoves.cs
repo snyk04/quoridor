@@ -29,6 +29,11 @@ namespace Quoridor.Model
                 return;
             }
 
+            if (_model.CellsManager.CheckIfWallIsBetweenCells(_currentTurnPlayerCoordinates, cell))
+            {
+                return;
+            }
+
             if (_model.CellsManager.CheckIfCellIsBusy(cell))
             {
                 if (!_currentTurnPlayerCoordinates.Equals(cell))

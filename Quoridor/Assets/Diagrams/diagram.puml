@@ -3,16 +3,11 @@
 
 '-----Model-----'
     
-interface IController
-interface IView
 interface IModel
 {
     StartNewGame() : void
     MoveCurrentPlayerToCell() : void
 }
-
-class ControllerCommunication
-class ViewCommunication
 class ModelCommunication #brown
 {
     view : IView 
@@ -133,17 +128,18 @@ Bot <|-- RandomBot
 
 interface IView
 {
-    UnhighlightAllCells() : void
     HighlightCells() : void
     MovePlayerToCell() : void
+    PlaceWall() : void
 
     ShowVictory() : void
 }
-    
 class ViewCommunication #brown
 {
     cellHighlighter : CellHighlighter
     playerMover : PlayerMover
+    
+    UnhighlightAllCells() : void
 }
 
 class CellHighlighter
@@ -168,6 +164,29 @@ class CellVisual
     Highlight() : void
     Unhighlight() : void
 }
+
+class WallPlacer
+{
+    wallStorage : WallStorage
+
+    PlaceWall() : void
+}
+class WallStorage
+{
+   walls : List<WallVisual>
+   amountOfColumns : int
+
+   TwoDimensionalToOneDimensional() : int
+   GetWall() : WallVisual
+}
+class WallVisual
+{
+    Place() : void
+    
+    Highlight() : void
+    Unhighlight() : void
+}
+
 class PlayerMover
 {
     cellStorage : CellStorage
@@ -182,9 +201,14 @@ IView <|..  ViewCommunication
 
 ViewCommunication o-- CellHighlighter
 ViewCommunication o-- PlayerMover
+ViewCommunication o-- WallPlacer
+
 CellHighlighter o-- CellStorage
 PlayerMover o-- CellStorage
 CellStorage o- CellVisual
+
+WallPlacer o-- WallStorage
+WallStorage o-- WallVisual
 
 '-----Controller-----'
 
