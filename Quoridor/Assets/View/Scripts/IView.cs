@@ -10,6 +10,6 @@ namespace Quoridor.View
         void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates);
         void PlaceWall(CellCoordinates wallCoordinates);
 
-        void ShowVictory(PlayerType playerType);
+        void EndGame(PlayerType winner);
     }
 }

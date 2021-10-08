@@ -12,7 +12,7 @@ namespace Quoridor.View.Cells
         {
             foreach (CellVisual cell in _cellStorage.Cells)
             {
-                cell.UnHighlight();
+                cell.Unhighlight();
             }
         }
         public void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
@@ -21,7 +21,8 @@ namespace Quoridor.View.Cells
             
             foreach (CellCoordinates cellCoordinates in cellCoordinatesArray)
             {
-                _cellStorage.GetCell(cellCoordinates).Highlight();
+                CellVisual cell = _cellStorage.GetCell(cellCoordinates);
+                cell.Highlight();
             }
         }
     }

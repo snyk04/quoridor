@@ -9,14 +9,11 @@ namespace Quoridor.View
 {
     public class ViewCommunication : MonoBehaviour, IView
     {
+        [Header("Components")]
         [SerializeField] private CellHighlighter _cellHighlighter;
         [SerializeField] private PlayerMover _playerMover;
         [SerializeField] private WallPlacer _wallPlacer;
-
-        private void UnhighlightAllCells()
-        {
-            _cellHighlighter.UnhighlightAllCells();
-        }
+        
         public void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
         {
             _cellHighlighter.HighlightCells(cellCoordinatesArray);
@@ -30,10 +27,10 @@ namespace Quoridor.View
             _wallPlacer.PlaceWall(wallCoordinates);
         }
 
-        public void ShowVictory(PlayerType playerType)
+        public void EndGame(PlayerType winner)
         {
-            UnhighlightAllCells();
-            Debug.Log(playerType + " won!");
+            _cellHighlighter.UnhighlightAllCells();
+            Debug.Log(winner + " won!");
         }
     }
 }

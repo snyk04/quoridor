@@ -12,6 +12,9 @@ namespace Quoridor.Model.Cells
         public const int AmountOfRows = 9;
         public const int AmountOfColumns = 9;
 
+        public const int WallsAmountOfRows = 16;
+        public const int WallsAmountOfColumns = 16;
+
         public Cell[,] Cells { get; }
         
         public Wall[,] Walls { get; }

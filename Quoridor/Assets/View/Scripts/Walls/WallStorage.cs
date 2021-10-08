@@ -15,10 +15,9 @@ namespace Quoridor.View.Walls
         
         private void Awake()
         {
-            // TODO : take from CellsManager
-            _amountOfColumns = 8;
+            _amountOfColumns = CellsManager.WallsAmountOfColumns;
         }
-
+        // TODO : temporary method, delete after you assign every wall's coordinates
         private void OnRenderObject()
         {
             for (int i = 0; i < 16; i++)
@@ -30,13 +29,13 @@ namespace Quoridor.View.Walls
             }
         }
 
-        private int TwoDimensionalToOneDimensional(CellCoordinates cellCoordinates)
+        private int TwoDimensionalToOneDimensional(CellCoordinates wallCoordinates)
         {
-            return cellCoordinates.row * _amountOfColumns + cellCoordinates.column;
+            return wallCoordinates.row * _amountOfColumns + wallCoordinates.column;
         }
-        public WallVisual GetWall(CellCoordinates cellCoordinates)
+        public WallVisual GetWall(CellCoordinates wallCoordinates)
         {
-            int wallIndex = TwoDimensionalToOneDimensional(cellCoordinates);
+            int wallIndex = TwoDimensionalToOneDimensional(wallCoordinates);
             return _walls[wallIndex];
         }
     }

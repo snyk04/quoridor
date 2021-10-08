@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 namespace Quoridor.View
 {
-    [RequireComponent(typeof(Button))]
     [RequireComponent(typeof(Image))]
     [RequireComponent(typeof(EventTrigger))]
     public class WallVisual : MonoBehaviour
@@ -18,18 +17,26 @@ namespace Quoridor.View
             _image = GetComponent<Image>();
         }
 
-        public void Place()
+        private void ChangeAlpha(float alpha)
         {
-            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 1);
+            if (alpha < 0 || alpha > 1)
+            {
+                _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, alpha);
+            }
+        }
+        
+        public void HandlePlace()
+        {
+            ChangeAlpha(1);
             _eventTrigger.enabled = false;
         }
         public void Highlight()
         {
-            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 0.75f);
+            ChangeAlpha(0.75f);
         }
         public void Unhighlight()
         {
-            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 0f);
+            ChangeAlpha(0);
         }
     }
 }

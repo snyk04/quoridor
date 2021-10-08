@@ -35,7 +35,7 @@ namespace Quoridor.Model
         }
         internal void EndGame(PlayerType winner)
         {
-            _view.ShowVictory(winner);
+            _view.EndGame(winner);
         }
         public void MoveCurrentPlayerToCell(CellCoordinates cellCoordinates)
         {

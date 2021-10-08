@@ -8,6 +8,7 @@ namespace Quoridor.View
 {
     public class PlayerMover : MonoBehaviour
     {
+        // TODO : maybe _cellStorage should be stored in ViewCommunication.cs to reduce redundant dependencies
         [Header("References")]
         [SerializeField] private CellStorage _cellStorage;
         
@@ -15,17 +16,22 @@ namespace Quoridor.View
         [SerializeField] private Transform _firstPlayer;
         [SerializeField] private Transform _secondPlayer;
 
-        public void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+        private Transform GetPlayer(PlayerType playerType)
         {
-            Transform player = playerType switch
+            return playerType switch
             {
                 PlayerType.First => _firstPlayer,
                 PlayerType.Second => _secondPlayer,
                 _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
             };
+        }
+        public void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+        {
+            Transform player = GetPlayer(playerType);
 
-            Vector3 playerNewPosition = _cellStorage.GetCell(cellCoordinates).transform.position;
-            player.position = playerNewPosition;
+            CellVisual cell = _cellStorage.GetCell(cellCoordinates);
+            Vector3 newPosition = cell.transform.position;
+            player.position = newPosition;
         }
     }
 }

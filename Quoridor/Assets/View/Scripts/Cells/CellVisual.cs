@@ -6,32 +6,25 @@ namespace Quoridor.View.Cells
     [RequireComponent(typeof(Button))]
     public class CellVisual : MonoBehaviour
     {
-        #region Components
-
         private Button _button;
-
-        #endregion
-
-        #region MonoBehaviour methods
-
+        
         private void Awake()
         {
             _button = GetComponent<Button>();
         }
 
-        #endregion
+        private void ChangeInteractivity(bool isInteractable)
+        {
+            _button.interactable = isInteractable;
+        }
         
-        #region Methods
-
         public void Highlight()
         {
-            _button.interactable = true;
+            ChangeInteractivity(true);
         }
-        public void UnHighlight()
+        public void Unhighlight()
         {
-            _button.interactable = false;
+            ChangeInteractivity(false);
         }
-
-        #endregion
     }
 }
