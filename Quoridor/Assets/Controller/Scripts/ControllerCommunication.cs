@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Quoridor.Controller
 {
-    public class ControllerCommunication : MonoBehaviour, IController
+    public sealed class ControllerCommunication : MonoBehaviour, IController
     {
         [SerializeField] private ViewCommunication _viewCommunication;
         [SerializeField] private GameModeController _gameModeController;
@@ -30,11 +30,18 @@ namespace Quoridor.Controller
         
         public void ChooseCell(Vector2Int cellCoordinates)
         {
-            _model.MoveCurrentPlayerToCell(new CellCoordinates(cellCoordinates.x, cellCoordinates.y));
+            CellCoordinates convertedCoordinates = ConvertCoordinates(cellCoordinates);
+            _model.MoveCurrentPlayerToCell(convertedCoordinates);
         }
         public void TryToPlaceWall(Vector2Int wallCoordinates)
         {
-            _model.TryToPlaceWall(new CellCoordinates(wallCoordinates.x, wallCoordinates.y));
+            CellCoordinates convertedCoordinates = ConvertCoordinates(wallCoordinates);
+            _model.TryToPlaceWall(convertedCoordinates);
+        }
+        
+        private CellCoordinates ConvertCoordinates(Vector2Int coordinates)
+        {
+            return new CellCoordinates(coordinates.x, coordinates.y);
         }
     }
 }

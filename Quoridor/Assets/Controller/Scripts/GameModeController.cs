@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Quoridor.Controller
 {
-    public class GameModeController : MonoBehaviour
+    public sealed class GameModeController : MonoBehaviour
     {
         [SerializeField] private Dropdown _gameModeDropdown;
 

@@ -197,31 +197,32 @@ interface IController
     Quit() : void
     
     ChooseCell() : void
+    TryToPlaceWall() : void
 }
 
 class ControllerCommunication #brown
-{
-    viewCommunication : ViewCommunication
-    gameModeController : GameModeController
-    view : IView
-    model : ModelCommunication
-}
 
 class GameModeController
 {
-    gameModeDropdown : Dropdown
     GameMode : GameMode
 }
-class CellButton
+
+abstract class Button
 {
-    controller : ControllerCommunication
+    NotifyController() : void
 }
+class CellButton
+class WallButton
 
 IController <|.. ControllerCommunication
 
 ControllerCommunication *- ModelCommunication
 
 ControllerCommunication o-- GameModeController
-CellButton o- ControllerCommunication
+
+Button <|-- CellButton
+Button <|-- WallButton
+CellButton o-- ControllerCommunication
+WallButton o-- ControllerCommunication
 
 @enduml
