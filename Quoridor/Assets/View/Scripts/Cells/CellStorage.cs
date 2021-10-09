@@ -1,29 +1,9 @@
-﻿using System.Collections.Generic;
-using Quoridor.Model.Cells;
-using UnityEngine;
+﻿using Quoridor.Model.Cells;
 
 namespace Quoridor.View.Cells
 {
-    public class CellStorage : MonoBehaviour
+    public class CellStorage : Storage<CellVisual>
     {
-        [SerializeField] private List<CellVisual> _cells;
-        public IEnumerable<CellVisual> Cells => _cells;
-        
-        private int _amountOfColumns;
-
-        private void Awake()
-        {
-            _amountOfColumns = CellsManager.AmountOfColumns;
-        }
-
-        private int TwoDimensionalToOneDimensional(CellCoordinates cellCoordinates)
-        {
-            return cellCoordinates.row * _amountOfColumns + cellCoordinates.column;
-        }
-        public CellVisual GetCell(CellCoordinates cellCoordinates)
-        {
-            int cellIndex = TwoDimensionalToOneDimensional(cellCoordinates);
-            return _cells[cellIndex];
-        }
+        protected override int AmountOfColumns => CellsManager.AmountOfColumns;
     }
 }

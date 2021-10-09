@@ -9,7 +9,7 @@ namespace Quoridor.View.Walls
         
         public void PlaceWall(CellCoordinates wallCoordinates)
         {
-            WallVisual wall = _wallStorage.GetWall(wallCoordinates);
+            WallVisual wall = _wallStorage[wallCoordinates];
             wall.HandlePlace();
         }
     }

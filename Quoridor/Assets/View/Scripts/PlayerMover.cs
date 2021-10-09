@@ -8,7 +8,6 @@ namespace Quoridor.View
 {
     public class PlayerMover : MonoBehaviour
     {
-        // TODO : maybe _cellStorage should be stored in ViewCommunication.cs to reduce redundant dependencies
         [Header("References")]
         [SerializeField] private CellStorage _cellStorage;
         
@@ -29,7 +28,7 @@ namespace Quoridor.View
         {
             Transform player = GetPlayer(playerType);
 
-            CellVisual cell = _cellStorage.GetCell(cellCoordinates);
+            CellVisual cell = _cellStorage[cellCoordinates];
             Vector3 newPosition = cell.transform.position;
             player.position = newPosition;
         }

@@ -132,56 +132,36 @@ interface IView
     MovePlayerToCell() : void
     PlaceWall() : void
 
-    ShowVictory() : void
+    EndGame() : void
 }
 class ViewCommunication #brown
+
+interface IEnumerable<T>
 {
-    cellHighlighter : CellHighlighter
-    playerMover : PlayerMover
-    
-    UnhighlightAllCells() : void
+    GetEnumerator() : IEnumerator<T>
 }
+class Storage<T>
 
 class CellHighlighter
 {
-    cellStorage : CellStorage
-
     UnhighlightAllCells() : void
     HighlightCells() : void
 }
 class CellStorage
-{
-   cells : List<CellVisual>
-   amountOfColumns : int
-
-   TwoDimensionalToOneDimensional() : int
-   GetCell() : CellVisual
-}
 class CellVisual
 {
-    button : Button
-    
     Highlight() : void
     Unhighlight() : void
 }
 
 class WallPlacer
 {
-    wallStorage : WallStorage
-
     PlaceWall() : void
 }
 class WallStorage
-{
-   walls : List<WallVisual>
-   amountOfColumns : int
-
-   TwoDimensionalToOneDimensional() : int
-   GetWall() : WallVisual
-}
 class WallVisual
 {
-    Place() : void
+    HandlePlace() : void
     
     Highlight() : void
     Unhighlight() : void
@@ -189,15 +169,14 @@ class WallVisual
 
 class PlayerMover
 {
-    cellStorage : CellStorage
-    
-    firstPlayer : Transform
-    secondPlayer : Transform
-            
     MovePlayerToCell() : void
 }
     
 IView <|..  ViewCommunication
+
+Storage .|> IEnumerable
+CellStorage -|> Storage
+WallStorage -|> Storage
 
 ViewCommunication o-- CellHighlighter
 ViewCommunication o-- PlayerMover
@@ -205,7 +184,7 @@ ViewCommunication o-- WallPlacer
 
 CellHighlighter o-- CellStorage
 PlayerMover o-- CellStorage
-CellStorage o- CellVisual
+CellStorage o-- CellVisual
 
 WallPlacer o-- WallStorage
 WallStorage o-- WallVisual
