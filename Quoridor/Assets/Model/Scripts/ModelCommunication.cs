@@ -53,9 +53,9 @@ namespace Quoridor.Model
         {
             _view.EndGame(winner);
         }
-        internal void HighlightAvailableCells(IEnumerable<Coordinates> availableCells)
+        internal void HighlightCells(IEnumerable<Coordinates> cells)
         {
-            _view.HighlightCells(availableCells);
+            _view.HighlightCells(cells);
         }
         internal void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates)
         {

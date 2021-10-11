@@ -11,8 +11,8 @@ interface IModel
 }
 class ModelCommunication #brown
 {
-    HighlightAvailableCells() : void
     EndGame() : void
+    HighlightAvailableCells() : void
     MovePlayerToCell() : void
     PlaceWall() : void
 }
@@ -29,30 +29,6 @@ class Wall
     BlockedCellPairs : List<CellPair>
     OverlappedWalls : List<Coordinates>
 }
-class CellsManager
-{
-    AmountOfRows : int
-    AmountOfColumns : int
-    
-    Cells : Cell[,]
-       
-    CellIsReal() : bool
-    CellIsBusy() : bool
-    WallIsBetweenCells() : bool
-}
-class WallsManager
-{
-    AmountOfRows : int
-    AmountOfColumns : int
-    
-    Walls : Wall[,]
-    BlockedCellPairs : List<CellPair>
-    WallsThatCanBePlaced : List<Coordinates>
-    
-    CheckIfWallCanBePlaced() : bool
-    PlaceWall() : void
-    DestroyWall() : void
-}
 class GameCycle
 {
     GameMode : GameMode
@@ -62,6 +38,17 @@ class GameCycle
     
     StartNewGame() : void
     EndGame() : void
+}
+class CellsManager
+{
+    AmountOfRows : int
+    AmountOfColumns : int
+    
+    Cells : Cell[,]
+       
+    CellIsBusy() : bool
+    CellIsReal() : bool
+    WallIsBetweenCells() : bool
 }
 class PlayersController
 {
@@ -78,6 +65,19 @@ class PossibleMoves
     SetCurrentTurnPlayerCoordinates() : void
     
     GetPossibleMovesFromCell() : void
+}
+class WallsManager
+{
+    AmountOfRows : int
+    AmountOfColumns : int
+    
+    Walls : Wall[,]
+    BlockedCellPairs : List<CellPair>
+    WallsThatCanBePlaced : List<Coordinates>
+    
+    CheckIfWallCanBePlaced() : bool
+    PlaceWall() : void
+    DestroyWall() : void
 }
 
 class Player
@@ -103,11 +103,11 @@ IModel <|.. ModelCommunication
 
 ModelCommunication o- ViewCommunication
 
-ModelCommunication *--o PossibleMoves
-ModelCommunication *--o CellsManager
-ModelCommunication *-- WallsManager
 ModelCommunication *--o GameCycle
+ModelCommunication *--o CellsManager
 ModelCommunication *--o PlayersController
+ModelCommunication *--o PossibleMoves
+ModelCommunication *-- WallsManager
 
 CellsManager *-- Cell
 WallsManager *-- Wall

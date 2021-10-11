@@ -2,10 +2,10 @@
 {
     public class CellsManager
     {
-        private readonly ModelCommunication _model;
-        
         public const int AmountOfRows = 9;
         public const int AmountOfColumns = 9;
+        
+        private readonly ModelCommunication _model;
 
         public Cell[,] Cells { get; }
 
@@ -23,17 +23,16 @@
             return Cells[cellCoordinates.row, cellCoordinates.column];
         }
         
+        public bool CellIsBusy(Coordinates cell)
+        {
+            return Cells[cell.row, cell.column].IsBusy;
+        }
         public bool CellIsReal(Coordinates cell)
         {
             return cell.row < AmountOfRows
                    & cell.row >= 0
                    & cell.column < AmountOfColumns
-                   & cell.column >= 0;
-        }
-        public bool CellIsBusy(Coordinates cell)
-        {
-            return Cells[cell.row, cell.column].IsBusy;
-        }
+                   & cell.column >= 0; }
         public bool WallIsBetweenCells(Coordinates firstCell, Coordinates secondCell)
         {
             bool wallExists = false;

@@ -67,7 +67,7 @@ namespace Quoridor.Model
         private void ShowPossibleMoves(Coordinates cellCoordinates)
         {
             IEnumerable<Coordinates> availableMoves = GetPossibleMovesFromCell(cellCoordinates);
-            _model.HighlightAvailableCells(availableMoves);
+            _model.HighlightCells(availableMoves);
         }
     }
 }
