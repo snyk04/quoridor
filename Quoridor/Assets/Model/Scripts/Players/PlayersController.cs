@@ -115,13 +115,14 @@ namespace Quoridor.Model.Players
             }
             
             _model.WallsManager.PlaceWall(wallCoordinates, out List<Coordinates> overlappedWalls);
-            // TODO : pathfinding logic
-            if (false)
+
+            if (!_model.PossibleMoves.IsAbilityToWin(_firstPlayer.CurrentCell, _secondPlayerStartPosition.row)
+                || !_model.PossibleMoves.IsAbilityToWin(_secondPlayer.CurrentCell, _firstPlayerStartPosition.row))
             {
                 _model.WallsManager.DestroyWall(wallCoordinates);
                 return;
             }
-            
+
             player.PlaceWall();
             _model.PlaceWall(wallCoordinates, overlappedWalls);
 

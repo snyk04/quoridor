@@ -10,7 +10,7 @@ namespace Quoridor.Model
     public class ModelCommunication : IModel
     {
         private readonly Coordinates _firstPlayerStartPosition = new Coordinates(8, 4);
-        private readonly Coordinates _secondPlayerStartPosition = new Coordinates(8, 4);
+        private readonly Coordinates _secondPlayerStartPosition = new Coordinates(0, 4);
         
         private readonly IView _view;
 

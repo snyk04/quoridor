@@ -92,8 +92,6 @@ namespace Quoridor.Model.Walls
             {
                 WallsThatCanBePlaced.Remove(overlappedWallCoordinates);
             }
-            
-            // TODO : send to view "disable that walls!"
         }
         public void DestroyWall(Coordinates wallCoordinates)
         {
