@@ -1,6 +1,7 @@
 ﻿using System;
 using Quoridor.Model.Cells;
 using Quoridor.Model.Players;
+using Quoridor.View.Audio;
 using Quoridor.View.Cells;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Quoridor.View
     {
         [Header("References")]
         [SerializeField] private CellStorage _cellStorage;
+        [SerializeField] private RandomSoundPlayer _playerSoundPlayer;
         
         [Header("Objects")]
         [SerializeField] private Transform _firstPlayer;
@@ -31,6 +33,8 @@ namespace Quoridor.View
             CellVisual cell = _cellStorage[cellCoordinates];
             Vector3 newPosition = cell.transform.position;
             player.position = newPosition;
+            
+            _playerSoundPlayer.PlayNext();
         }
     }
 }

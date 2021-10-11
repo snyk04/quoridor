@@ -129,11 +129,10 @@ interface IView
 }
 class ViewCommunication #brown
 
-interface IEnumerable<T>
-{
-    GetEnumerator() : IEnumerator<T>
-}
 class Storage<T>
+{
+    [coordinates]() : T
+}
 
 class CellHighlighter
 {
@@ -164,12 +163,16 @@ class PlayerMover
 {
     MovePlayerToCell() : void
 }
+
+class RandomSoundPlayer
+{
+    PlayNext() : void
+}
     
 IView <|..  ViewCommunication
 
-Storage .|> IEnumerable
-CellStorage -|> Storage
-WallStorage -|> Storage
+Storage <|- CellStorage
+Storage <|- WallStorage
 
 ViewCommunication o-- CellHighlighter
 ViewCommunication o-- PlayerMover
@@ -181,6 +184,10 @@ CellStorage o-- CellVisual
 
 WallPlacer o-- WallStorage
 WallStorage o-- WallVisual
+
+PlayerMover o-- RandomSoundPlayer
+WallPlacer o-- RandomSoundPlayer
+
 
 '-----Controller-----'
 
