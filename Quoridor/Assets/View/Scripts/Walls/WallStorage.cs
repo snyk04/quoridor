@@ -1,9 +1,9 @@
-﻿using Quoridor.Model.Cells;
+﻿using Quoridor.Model.Walls;
 
 namespace Quoridor.View.Walls
 {
     public class WallStorage : Storage<WallVisual>
     {
-        protected override int AmountOfColumns => CellsManager.WallsAmountOfColumns;
+        protected override int AmountOfColumns => WallsManager.AmountOfColumns;
     }
 }

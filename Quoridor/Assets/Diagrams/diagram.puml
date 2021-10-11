@@ -5,43 +5,57 @@
 interface IModel
 {
     StartNewGame() : void
+    
     MoveCurrentPlayerToCell() : void
+    TryToPlaceWall() : void
 }
 class ModelCommunication #brown
 {
-    view : IView 
-
-    possibleMoves : PossibleMoves
-    cellsManager : CellsManager
-    gameCycle : GameCycle
-    playersController : PlayersController
-    
     HighlightAvailableCells() : void
     EndGame() : void
     MovePlayerToCell() : void
+    PlaceWall() : void
 }
 
 class Cell
 {
     IsBusy : bool
+    
+    BecomeBusy() : void
+    BecomeFree() : void
+}
+class Wall
+{
+    BlockedCellPairs : List<CellPair>
+    OverlappedWalls : List<Coordinates>
 }
 class CellsManager
 {
     AmountOfRows : int
     AmountOfColumns : int
     
-    cells : Cell[,]
+    Cells : Cell[,]
+       
+    CellIsReal() : bool
+    CellIsBusy() : bool
+    WallIsBetweenCells() : bool
+}
+class WallsManager
+{
+    AmountOfRows : int
+    AmountOfColumns : int
     
-    InitializeCellField() : void
+    Walls : Wall[,]
+    BlockedCellPairs : List<CellPair>
+    WallsThatCanBePlaced : List<Coordinates>
     
-    CheckIfCellIsReal() : bool
-    CheckIfCellIsBusy() : bool
+    CheckIfWallCanBePlaced() : bool
+    PlaceWall() : void
+    DestroyWall() : void
 }
 class GameCycle
 {
-    model : Model
-
-    gameMode : GameMode
+    GameMode : GameMode
     
     OnGameStart : Action
     OnGameEnd : Action
@@ -51,57 +65,35 @@ class GameCycle
 }
 class PlayersController
 {
-    model : ModelCommunication
+    OnPlayerChange : Action<Coordinates>
+    OnPlayerTurnEnd : Action
+    OnBotTurnEnd : Action
+    OnWallPlaced : Action
     
-    firstPlayerStartPosition : CellCoordinates
-    secondPlayerStartPosition : CellCoordinates
-
-    firstPlayer : Player
-    secondPlayer : Player
-    
-    bot : Bot   
-    
-    currentPlayer : Player
-    currentPlayerType : PlayerType
-    
-    HandleTurnEndEvents() : void
-    NullifyTurnEndEvents() : void
-    
-    PlacePlayersAtStartPositions() : void
-    
-    MovePlayerToCell() : void
     MoveCurrentPlayerToCell() : void
-    
-    WaitForTheFirstPlayer() : void
-    WaitForTheNextPlayer() : void
-        
-    ComputeBotMove() : void
-    BotTurn() : void
-    
-    ChangeCurrentPlayer() : void
+    CurrentPlayerTryToPlaceWall() : void
 }
 class PossibleMoves
 {
-    model : ModelCommunication
-    
-    currentTurnPlayerCoordinates : CellCoordinates
-    
     SetCurrentTurnPlayerCoordinates() : void
     
-    TryToAddCellToPossibleMoves() : void
     GetPossibleMovesFromCell() : void
-    ShowPossibleMoves() : void
 }
 
 class Player
 {
-    CurrentCellCoordinates : CellCoordinates
+    AmountOfWalls : int
+    CurrentCell : Coordinates
     
     MoveToCell() : void
+    
+    PlaceWall() : void
+    ResetAmountOfWalls() : void
 }
 abstract class Bot
 {
-    CellToMove : CellCoordinates
+    CellToMove : Coordinates
+    WallToPlace : Coordinates
     
     MakeMove() : MoveType
 }
@@ -112,11 +104,13 @@ IModel <|.. ModelCommunication
 ModelCommunication o- ViewCommunication
 
 ModelCommunication *--o PossibleMoves
-ModelCommunication *-- CellsManager
+ModelCommunication *--o CellsManager
+ModelCommunication *-- WallsManager
 ModelCommunication *--o GameCycle
 ModelCommunication *--o PlayersController
 
 CellsManager *-- Cell
+WallsManager *-- Wall
 
 PlayersController *-- Player
 PlayersController *-- Bot

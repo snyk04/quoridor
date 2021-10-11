@@ -7,7 +7,7 @@ namespace Quoridor.Model
     {
         void StartNewGame(GameMode gameMode);
 
-        void MoveCurrentPlayerToCell(CellCoordinates cellCoordinates);
-        void TryToPlaceWall(CellCoordinates wallCoordinates);
+        void MoveCurrentPlayerToCell(Coordinates cellCoordinates);
+        void TryToPlaceWall(Coordinates wallCoordinates);
     }
 }

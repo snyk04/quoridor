@@ -14,17 +14,17 @@ namespace Quoridor.View
         [SerializeField] private PlayerMover _playerMover;
         [SerializeField] private WallPlacer _wallPlacer;
         
-        public void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
+        public void HighlightCells(IEnumerable<Coordinates> cellCoordinatesArray)
         {
             _cellHighlighter.HighlightCells(cellCoordinatesArray);
         }
-        public void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+        public void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates)
         {
             _playerMover.MovePlayerToCell(playerType, cellCoordinates);
         }
-        public void PlaceWall(CellCoordinates wallCoordinates)
+        public void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls)
         {
-            _wallPlacer.PlaceWall(wallCoordinates);
+            _wallPlacer.PlaceWall(wallCoordinates, overlappedWalls);
         }
 
         public void EndGame(PlayerType winner)

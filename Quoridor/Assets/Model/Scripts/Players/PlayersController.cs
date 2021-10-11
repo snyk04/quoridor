@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using Quoridor.Model.Cells;
 using Quoridor.Model.Game;
+using UnityEngine;
 
 namespace Quoridor.Model.Players
 {
     public class PlayersController
     {
+        private const int StartAmountOfWalls = 10;
+        
         private readonly ModelCommunication _model;
 
-        private readonly CellCoordinates _firstPlayerStartPosition;
-        private readonly CellCoordinates _secondPlayerStartPosition;
+        private readonly Coordinates _firstPlayerStartPosition;
+        private readonly Coordinates _secondPlayerStartPosition;
 
         private readonly Player _firstPlayer;
         private readonly Player _secondPlayer;
@@ -20,29 +23,39 @@ namespace Quoridor.Model.Players
         private Player _currentPlayer;
         private PlayerType _currentPlayerType;
         
-        public event Action<CellCoordinates> OnPlayerChange;
+        // TODO : move it to GameCycle.cs!!!
+        public event Action<Coordinates> OnPlayerChange;
         public event Action OnPlayerTurnEnd;
         public event Action OnBotTurnEnd;
-        public event Action OnWallPlaced;
         
-        public PlayersController(ModelCommunication model, CellCoordinates firstPlayerStartPosition,
-            CellCoordinates secondPlayerStartPosition)
+        public PlayersController(ModelCommunication model, Coordinates firstPlayerStartPosition, Coordinates secondPlayerStartPosition)
         {
             _model = model;
 
             _firstPlayerStartPosition = firstPlayerStartPosition;
             _secondPlayerStartPosition = secondPlayerStartPosition;
 
-            _firstPlayer = new Player(10, _firstPlayerStartPosition);
-            _secondPlayer = new Player(10, _secondPlayerStartPosition);
-            _bot = new RandomBot(10, _secondPlayerStartPosition);
+            _firstPlayer = new Player(StartAmountOfWalls, _firstPlayerStartPosition);
+            _secondPlayer = new Player(StartAmountOfWalls, _secondPlayerStartPosition);
+            _bot = new RandomBot(StartAmountOfWalls, _secondPlayerStartPosition);
 
-            _model.GameCycle.OnGameStart += PlacePlayersAtStartPositions;
+            _model.GameCycle.OnGameStart += HandleTurnEndEvents;
+            _model.GameCycle.OnGameStart += ResetPlayersPositions;
             _model.GameCycle.OnGameStart += ResetPlayersAmountOfWalls;
             _model.GameCycle.OnGameStart += WaitForTheFirstPlayer;
-            _model.GameCycle.OnGameStart += HandleTurnEndEvents;
             
             _model.GameCycle.OnGameEnd += NullifyTurnEndEvents;
+        }
+        
+        public void MoveCurrentPlayerToCell(Coordinates cellCoordinates)
+        {
+            MovePlayerToCell(_currentPlayerType, _currentPlayer, cellCoordinates);
+            
+            OnPlayerTurnEnd?.Invoke();
+        }
+        public void CurrentPlayerTryToPlaceWall(Coordinates wallCoordinates)
+        {
+            TryToPlaceWall(_currentPlayer, wallCoordinates);
         }
 
         private void HandleTurnEndEvents()
@@ -64,115 +77,102 @@ namespace Quoridor.Model.Players
             OnBotTurnEnd = null;
         }
         
-        private void PlacePlayersAtStartPositions()
+        private void ResetPlayersPositions()
         {
             MovePlayerToCell(PlayerType.First, _firstPlayer, _firstPlayerStartPosition);
             MovePlayerToCell(PlayerType.Second, _secondPlayer, _secondPlayerStartPosition);
+            
             _bot.MoveToCell(_secondPlayerStartPosition);
         }
         private void ResetPlayersAmountOfWalls()
         {
-            _firstPlayer.ResetAmountOfWallsToDefault();
-            _secondPlayer.ResetAmountOfWallsToDefault();
-            _bot.ResetAmountOfWallsToDefault();
+            _firstPlayer.ResetAmountOfWalls();
+            _secondPlayer.ResetAmountOfWalls();
+            
+            _bot.ResetAmountOfWalls();
         }
 
-        private void MovePlayerToCell(PlayerType playerType, Player player, CellCoordinates cellCoordinates)
+        private void MovePlayerToCell(PlayerType playerType, Player player, Coordinates cellCoordinates)
         {
-            CellCoordinates oldCellCoordinates = player.CurrentCellCoordinates;
+            Coordinates oldCellCoordinates = player.CurrentCell;
 
-            Cell oldCell = _model.CellsManager.Cells[oldCellCoordinates.row, oldCellCoordinates.column];
-            Cell newCell = _model.CellsManager.Cells[cellCoordinates.row, cellCoordinates.column];
+            Cell oldCell = _model.CellsManager.GetCell(oldCellCoordinates);
+            Cell newCell = _model.CellsManager.GetCell(cellCoordinates);
 
-            oldCell.IsBusy = false;
-            newCell.IsBusy = true;
+            oldCell.BecomeFree();
+            newCell.BecomeBusy();
 
             player.MoveToCell(cellCoordinates);
             _model.MovePlayerToCell(playerType, cellCoordinates);
-
-            // TODO : hardcode
-            switch (playerType)
-            {
-                case PlayerType.First:
-                    if (cellCoordinates.row == _secondPlayerStartPosition.row)
-                    {
-                        _model.GameCycle.EndGame(playerType);
-                    }
-                    break;
-                case PlayerType.Second:
-                    if (cellCoordinates.row == _firstPlayerStartPosition.row)
-                    {
-                        _model.GameCycle.EndGame(playerType);
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null);
-            }
-        }
-        public void MoveCurrentPlayerToCell(CellCoordinates cellCoordinates)
-        {
-            MovePlayerToCell(_currentPlayerType, _currentPlayer, cellCoordinates);
             
-            OnPlayerTurnEnd?.Invoke();
+            CheckPlayerVictory(playerType, player);
         }
-
-        private void TryToPlaceWall(Player player, CellCoordinates wallCoordinates)
+        private void TryToPlaceWall(Player player, Coordinates wallCoordinates)
         {
-            if (player.AmountOfWalls < 1)
-            {
-                return;
-            }
-            if (_model.CellsManager.CheckIfWallCanBePlaced(wallCoordinates))
+            if (player.AmountOfWalls < 1 || !_model.WallsManager.WallCanBePlaced(wallCoordinates))
             {
                 return;
             }
             
-            _model.CellsManager.PlaceWall(wallCoordinates);
+            _model.WallsManager.PlaceWall(wallCoordinates, out List<Coordinates> overlappedWalls);
             // TODO : pathfinding logic
             if (false)
             {
-                _model.CellsManager.DestroyWall(wallCoordinates);
+                _model.WallsManager.DestroyWall(wallCoordinates);
                 return;
             }
             
             player.PlaceWall();
-            _model.PlaceWall(wallCoordinates);
-            
-            OnPlayerTurnEnd?.Invoke();
+            _model.PlaceWall(wallCoordinates, overlappedWalls);
+
+            if (!player.Equals(_bot))
+            {
+                OnPlayerTurnEnd?.Invoke();
+            }
         }
 
-        public void CurrentPlayerTryToPlaceWall(CellCoordinates wallCoordinates)
+        private void CheckPlayerVictory(PlayerType playerType, Player player)
         {
-            TryToPlaceWall(_currentPlayer, wallCoordinates);
+            var rowToWin = playerType switch
+            {
+                PlayerType.First => _secondPlayerStartPosition.row,
+                PlayerType.Second => _firstPlayerStartPosition.row,
+                _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
+            };
+            if (player.CurrentCell.row == rowToWin)
+            {
+                _model.GameCycle.EndGame(playerType);
+            }
         }
-
+        
         private void WaitForTheFirstPlayer()
         {
             _currentPlayer = _firstPlayer;
             _currentPlayerType = PlayerType.First;
 
-            OnPlayerChange?.Invoke(_firstPlayer.CurrentCellCoordinates);
+            OnPlayerChange?.Invoke(_firstPlayer.CurrentCell);
         }
         private void WaitForTheNextPlayer()
         {
             ChangeCurrentPlayer();
-            OnPlayerChange?.Invoke(_currentPlayer.CurrentCellCoordinates);
+            OnPlayerChange?.Invoke(_currentPlayer.CurrentCell);
         }
 
         private void ComputeBotMove()
         {
-            // TODO : maybe shitcode?
-            _model.PossibleMoves.SetCurrentTurnPlayerCoordinates(_bot.CurrentCellCoordinates);
+            _model.PossibleMoves.SetCurrentTurnPlayerCoordinates(_bot.CurrentCell);
             
             switch (_bot.MakeMove(
-                _model.PossibleMoves.GetPossibleMovesFromCell(_bot.CurrentCellCoordinates),
-                _model.CellsManager.WallsThatCanBePlaced))
+                _model.PossibleMoves.GetPossibleMovesFromCell(_bot.CurrentCell),
+                _model.WallsManager.WallsThatCanBePlaced))
             {
                 case MoveType.MoveToCell:
                     MovePlayerToCell(PlayerType.Second, _bot, _bot.CellToMove);
+                    Debug.Log("move");
                     break;
                 case MoveType.PlaceWall:
                     TryToPlaceWall(_bot, _bot.WallToPlace);
+                    Debug.Log("wall");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -189,6 +189,12 @@ namespace Quoridor.Model.Players
         
         private void ChangeCurrentPlayer()
         {
+            if (_model.GameCycle.GameMode == GameMode.PlayerVsComputer && _currentPlayerType == PlayerType.First)
+            {
+                _currentPlayerType = PlayerType.Second;
+                _currentPlayer = _bot;
+            }
+            
             _currentPlayerType = _currentPlayerType switch
             {
                 PlayerType.First => PlayerType.Second,

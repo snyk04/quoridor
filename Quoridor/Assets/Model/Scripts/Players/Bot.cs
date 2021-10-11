@@ -5,13 +5,11 @@ namespace Quoridor.Model.Players
 {
     public abstract class Bot : Player
     {
-        public CellCoordinates CellToMove { get; protected set; }
-        public CellCoordinates WallToPlace { get; protected set; }
+        public Coordinates CellToMove { get; protected set; }
+        public Coordinates WallToPlace { get; protected set; }
 
-        protected Bot(int startAmountOfWalls, CellCoordinates startPosition) : base(startAmountOfWalls, startPosition)
-        {
-        }
+        protected Bot(int startAmountOfWalls, Coordinates startPosition) : base(startAmountOfWalls, startPosition) { }
 
-        public abstract MoveType MakeMove(List<CellCoordinates> availableMoves, List<CellCoordinates> wallsThatCanBePlaced);
+        public abstract MoveType MakeMove(List<Coordinates> availableMoves, List<Coordinates> wallsThatCanBePlaced);
     }
 }

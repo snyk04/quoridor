@@ -15,11 +15,11 @@ namespace Quoridor.View.Cells
                 cell.Unhighlight();
             }
         }
-        public void HighlightCells(IEnumerable<CellCoordinates> cellCoordinatesArray)
+        public void HighlightCells(IEnumerable<Coordinates> cellCoordinatesArray)
         {
             UnhighlightAllCells();
             
-            foreach (CellCoordinates cellCoordinates in cellCoordinatesArray)
+            foreach (Coordinates cellCoordinates in cellCoordinatesArray)
             {
                 CellVisual cell = _cellStorage[cellCoordinates];
                 cell.Highlight();

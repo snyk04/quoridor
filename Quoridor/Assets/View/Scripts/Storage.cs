@@ -11,11 +11,11 @@ namespace Quoridor.View
 
         protected abstract int AmountOfColumns { get; }
 
-        private int ToIndex(CellCoordinates elementCoordinates)
+        private int ToIndex(Coordinates elementCoordinates)
         {
             return elementCoordinates.row * AmountOfColumns + elementCoordinates.column;
         }
-        public T this[CellCoordinates elementCoordinates]
+        public T this[Coordinates elementCoordinates]
         {
             get
             {
@@ -28,7 +28,6 @@ namespace Quoridor.View
         {
             return _elements.GetEnumerator();
         }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

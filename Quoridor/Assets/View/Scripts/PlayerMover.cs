@@ -24,7 +24,7 @@ namespace Quoridor.View
                 _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
             };
         }
-        public void MovePlayerToCell(PlayerType playerType, CellCoordinates cellCoordinates)
+        public void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates)
         {
             Transform player = GetPlayer(playerType);
 

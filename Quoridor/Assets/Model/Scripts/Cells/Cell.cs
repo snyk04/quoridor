@@ -1,12 +1,26 @@
 ﻿namespace Quoridor.Model.Cells
 {
-    public class Cell
+    public sealed class Cell
     {
-        public bool IsBusy { get; set; }
+        public bool IsBusy { get; private set; }
 
         public Cell()
         {
-            IsBusy = false;
+            BecomeFree();
+        }
+
+        public void BecomeBusy()
+        {
+            ChangeBusyness(true);
+        }
+        public void BecomeFree()
+        {
+            ChangeBusyness(false);
+        }
+
+        private void ChangeBusyness(bool isBusy)
+        {
+            IsBusy = isBusy;
         }
     }
 }

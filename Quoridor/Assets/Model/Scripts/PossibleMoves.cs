@@ -7,7 +7,7 @@ namespace Quoridor.Model
     {
         private readonly ModelCommunication _model;
 
-        private CellCoordinates _currentTurnPlayerCoordinates;
+        private Coordinates _currentTurnPlayerCoordinates;
         
         public PossibleMoves(ModelCommunication model)
         {
@@ -17,24 +17,24 @@ namespace Quoridor.Model
             _model.PlayersController.OnPlayerChange += ShowPossibleMoves;
         }
 
-        public void SetCurrentTurnPlayerCoordinates(CellCoordinates cellCoordinates)
+        public void SetCurrentTurnPlayerCoordinates(Coordinates cellCoordinates)
         {
             _currentTurnPlayerCoordinates = cellCoordinates;
         }
         
-        private void TryToAddCellToPossibleMoves(CellCoordinates cell, List<CellCoordinates> possibleMoves)
+        private void TryToAddCellToPossibleMoves(Coordinates cell, List<Coordinates> possibleMoves)
         {
-            if (!_model.CellsManager.CheckIfCellIsReal(cell))
+            if (!_model.CellsManager.CellIsReal(cell))
             {
                 return;
             }
 
-            if (_model.CellsManager.CheckIfWallIsBetweenCells(_currentTurnPlayerCoordinates, cell))
+            if (_model.CellsManager.WallIsBetweenCells(_currentTurnPlayerCoordinates, cell))
             {
                 return;
             }
 
-            if (_model.CellsManager.CheckIfCellIsBusy(cell))
+            if (_model.CellsManager.CellIsBusy(cell))
             {
                 if (!_currentTurnPlayerCoordinates.Equals(cell))
                 {
@@ -46,27 +46,27 @@ namespace Quoridor.Model
                 possibleMoves.Add(cell);
             }
         }
-        public List<CellCoordinates> GetPossibleMovesFromCell(CellCoordinates cellCoordinates)
+        public List<Coordinates> GetPossibleMovesFromCell(Coordinates cellCoordinates)
         {
-            var uncheckedCells = new List<CellCoordinates>()
+            var uncheckedCells = new List<Coordinates>()
             {
-                new CellCoordinates(cellCoordinates.row + 1, cellCoordinates.column),
-                new CellCoordinates(cellCoordinates.row - 1, cellCoordinates.column),
-                new CellCoordinates(cellCoordinates.row, cellCoordinates.column + 1),
-                new CellCoordinates(cellCoordinates.row, cellCoordinates.column - 1)
+                new Coordinates(cellCoordinates.row + 1, cellCoordinates.column),
+                new Coordinates(cellCoordinates.row - 1, cellCoordinates.column),
+                new Coordinates(cellCoordinates.row, cellCoordinates.column + 1),
+                new Coordinates(cellCoordinates.row, cellCoordinates.column - 1)
             };
             
-            var possibleMoves = new List<CellCoordinates>();
-            foreach (CellCoordinates uncheckedCell in uncheckedCells)
+            var possibleMoves = new List<Coordinates>();
+            foreach (Coordinates uncheckedCell in uncheckedCells)
             {
                 TryToAddCellToPossibleMoves(uncheckedCell, possibleMoves);
             }
 
             return possibleMoves;
         }
-        private void ShowPossibleMoves(CellCoordinates cellCoordinates)
+        private void ShowPossibleMoves(Coordinates cellCoordinates)
         {
-            IEnumerable<CellCoordinates> availableMoves = GetPossibleMovesFromCell(cellCoordinates);
+            IEnumerable<Coordinates> availableMoves = GetPossibleMovesFromCell(cellCoordinates);
             _model.HighlightAvailableCells(availableMoves);
         }
     }

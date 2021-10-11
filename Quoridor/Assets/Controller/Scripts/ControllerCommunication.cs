@@ -30,18 +30,18 @@ namespace Quoridor.Controller
         
         public void ChooseCell(Vector2Int cellCoordinates)
         {
-            CellCoordinates convertedCoordinates = ConvertCoordinates(cellCoordinates);
+            Coordinates convertedCoordinates = ConvertCoordinates(cellCoordinates);
             _model.MoveCurrentPlayerToCell(convertedCoordinates);
         }
         public void TryToPlaceWall(Vector2Int wallCoordinates)
         {
-            CellCoordinates convertedCoordinates = ConvertCoordinates(wallCoordinates);
+            Coordinates convertedCoordinates = ConvertCoordinates(wallCoordinates);
             _model.TryToPlaceWall(convertedCoordinates);
         }
         
-        private CellCoordinates ConvertCoordinates(Vector2Int coordinates)
+        private Coordinates ConvertCoordinates(Vector2Int coordinates)
         {
-            return new CellCoordinates(coordinates.x, coordinates.y);
+            return new Coordinates(coordinates.x, coordinates.y);
         }
     }
 }

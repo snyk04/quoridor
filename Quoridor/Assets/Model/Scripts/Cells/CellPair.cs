@@ -1,35 +1,35 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Quoridor.Model.Cells
 {
     public readonly struct CellPair
     {
-        public readonly CellCoordinates _firstCellCoordinates;
-        public readonly CellCoordinates _secondCellCoordinates;
+        public readonly Coordinates firstCell;
+        public readonly Coordinates secondCell;
 
-        public CellPair(CellCoordinates firstCellCoordinates, CellCoordinates secondCellCoordinates)
+        public CellPair(Coordinates firstCell, Coordinates secondCell)
         {
-            _firstCellCoordinates = firstCellCoordinates;
-            _secondCellCoordinates = secondCellCoordinates;
+            this.firstCell = firstCell;
+            this.secondCell = secondCell;
         }
         
-        public CellCoordinates this[int index]
+        public Coordinates this[int index]
         {
             get
             {
                 return index switch
                 {
-                    0 => _firstCellCoordinates,
-                    1 => _secondCellCoordinates,
+                    0 => firstCell,
+                    1 => secondCell,
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
         }
 
-        public bool Contains(CellCoordinates cellCoordinates)
+        public bool Equals(CellPair cellPair)
         {
-            return cellCoordinates.Equals(_firstCellCoordinates) | cellCoordinates.Equals(_secondCellCoordinates);
+            return firstCell.Equals(cellPair.firstCell) && secondCell.Equals(cellPair.secondCell)
+                || firstCell.Equals(cellPair.secondCell) && secondCell.Equals(cellPair.firstCell);
         }
     }
 }

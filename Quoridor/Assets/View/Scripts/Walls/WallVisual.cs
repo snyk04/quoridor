@@ -41,5 +41,10 @@ namespace Quoridor.View
         {
             ChangeAlpha(0);
         }
+
+        public void Disable()
+        {
+            _eventTrigger.enabled = false;
+        }
     }
 }
