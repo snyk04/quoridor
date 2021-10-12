@@ -1,12 +1,18 @@
-﻿using Quoridor.Model;
+﻿using System;
+using Quoridor.Model;
 using Quoridor.Model.Cells;
 using Quoridor.View;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using View.Scripts.UserInterface;
 
 namespace Quoridor.Controller
 {
     public sealed class ControllerCommunication : MonoBehaviour, IController
     {
+        private const int MainMenuSceneId = 0;
+        private const int MainSceneId = 1;
+        
         [SerializeField] private ViewCommunication _viewCommunication;
         [SerializeField] private GameModeController _gameModeController;
         
@@ -18,14 +24,18 @@ namespace Quoridor.Controller
             _view = _viewCommunication;
             _model = new ModelCommunication(_view);
         }
-
-        public void StartNewGame()
+        private void Start()
         {
-            _model.StartNewGame(_gameModeController.GameMode);
+            _model.StartNewGame(GameModeTransmitter.GameMode);
+        }
+
+        public void Restart()
+        {
+            SceneManager.LoadScene(MainSceneId);
         }
         public void Quit()
         {
-            Application.Quit();
+            SceneManager.LoadScene(MainMenuSceneId);
         }
         
         public void ChooseCell(Vector2Int cellCoordinates)

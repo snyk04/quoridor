@@ -169,11 +169,9 @@ namespace Quoridor.Model.Players
             {
                 case MoveType.MoveToCell:
                     MovePlayerToCell(PlayerType.Second, _bot, _bot.CellToMove);
-                    Debug.Log("move");
                     break;
                 case MoveType.PlaceWall:
                     TryToPlaceWall(_bot, _bot.WallToPlace);
-                    Debug.Log("wall");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
