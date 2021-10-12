@@ -61,9 +61,9 @@ namespace Quoridor.Model
         {
             _view.MovePlayerToCell(playerType, cellCoordinates);
         }
-        internal void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls)
+        internal void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls, PlayerType playerType, int playerAmountOfWalls)
         {
-            _view.PlaceWall(wallCoordinates, overlappedWalls);
+            _view.PlaceWall(wallCoordinates, overlappedWalls, playerType, playerAmountOfWalls);
         }
     }
 }

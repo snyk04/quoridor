@@ -124,7 +124,7 @@ namespace Quoridor.Model.Players
             }
 
             player.PlaceWall();
-            _model.PlaceWall(wallCoordinates, overlappedWalls);
+            _model.PlaceWall(wallCoordinates, overlappedWalls, _currentPlayerType, player.AmountOfWalls);
 
             if (!player.Equals(_bot))
             {
