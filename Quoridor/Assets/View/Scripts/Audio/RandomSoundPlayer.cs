@@ -7,7 +7,7 @@ namespace Quoridor.View.Audio
     public class RandomSoundPlayer : MonoBehaviour
     {
         [SerializeField] private AudioClip[] _sounds;
-
+        
         private AudioSource _audioSource;
 
         private void Awake()

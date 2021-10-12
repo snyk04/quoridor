@@ -168,6 +168,15 @@ class RandomSoundPlayer
 {
     PlayNext() : void
 }
+class SoundPlayer
+{
+    Play() : void
+    Stop() : void
+}
+class VictoryManager
+{
+    ShowVictory() : void
+}
     
 IView <|..  ViewCommunication
 
@@ -176,6 +185,7 @@ Storage <|- WallStorage
 
 ViewCommunication o-- CellHighlighter
 ViewCommunication o-- PlayerMover
+ViewCommunication o-- VictoryManager
 ViewCommunication o-- WallPlacer
 
 CellHighlighter o-- CellStorage
@@ -188,6 +198,8 @@ WallStorage o-- WallVisual
 PlayerMover o-- RandomSoundPlayer
 WallPlacer o-- RandomSoundPlayer
 
+VictoryManager o- CellHighlighter
+VictoryManager o-- SoundPlayer
 
 '-----Controller-----'
 
