@@ -10,10 +10,17 @@ namespace Quoridor.View
     public class ViewCommunication : MonoBehaviour, IView
     {
         [Header("Components")]
+        [SerializeField] private SoundPlayer _backgroundMusicPlayer;
         [SerializeField] private CellHighlighter _cellHighlighter;
         [SerializeField] private PlayerMover _playerMover;
+        [SerializeField] private VictoryManager _victoryManager;
         [SerializeField] private WallPlacer _wallPlacer;
-        
+
+        private void Start()
+        {
+            _backgroundMusicPlayer.Play();
+        }
+
         public void HighlightCells(IEnumerable<Coordinates> cellCoordinatesArray)
         {
             _cellHighlighter.HighlightCells(cellCoordinatesArray);
@@ -29,8 +36,7 @@ namespace Quoridor.View
 
         public void EndGame(PlayerType winner)
         {
-            _cellHighlighter.UnhighlightAllCells();
-            Debug.Log(winner + " won!");
+            _victoryManager.ShowVictory(winner);
         }
     }
 }
