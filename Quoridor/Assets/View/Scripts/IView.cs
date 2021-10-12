@@ -8,7 +8,7 @@ namespace Quoridor.View
     {
         void HighlightCells(IEnumerable<Coordinates> cellCoordinatesArray);
         void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates);
-        void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls);
+        void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls, PlayerType playerType, int playerAmountOfWalls);
 
         void EndGame(PlayerType winner);
     }

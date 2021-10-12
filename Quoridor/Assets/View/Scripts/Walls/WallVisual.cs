@@ -5,15 +5,18 @@ using UnityEngine.UI;
 
 namespace Quoridor.View
 {
-    [RequireComponent(typeof(Image))]
+    [RequireComponent(typeof(Button))]
     [RequireComponent(typeof(EventTrigger))]
+    [RequireComponent(typeof(Image))]
     public class WallVisual : MonoBehaviour
     {
+        private Button _button;
         private EventTrigger _eventTrigger;
         private Image _image;
 
         private void Awake()
         {
+            _button = GetComponent<Button>();
             _eventTrigger = GetComponent<EventTrigger>();
             _image = GetComponent<Image>();
         }
@@ -45,6 +48,7 @@ namespace Quoridor.View
         public void Disable()
         {
             _eventTrigger.enabled = false;
+            _button.interactable = false;
         }
     }
 }

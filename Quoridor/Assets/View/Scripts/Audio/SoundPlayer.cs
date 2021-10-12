@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -21,8 +23,27 @@ public class SoundPlayer : MonoBehaviour
     {
         _audioSource.Play();
     }
+    public void ExecuteAfterSound(Action method)
+    {
+        StartCoroutine(ExecuteAfterSoundRoutine(method));
+    }
+
     public void Stop()
     {
         _audioSource.Stop();
+    }
+
+    private IEnumerator ExecuteAfterSoundRoutine(Action method)
+    {
+        Play();
+
+        //yield return new WaitForSeconds(_sound.length);
+
+        while (_audioSource.isPlaying)
+        {
+            yield return null;
+        }
+        
+        method();
     }
 }
