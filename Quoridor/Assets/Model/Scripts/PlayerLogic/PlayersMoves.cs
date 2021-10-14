@@ -36,6 +36,7 @@ namespace Quoridor.Model.PlayerLogic
             _model = model;
             
             _model.GameCycle.GameStarted += StartGame;
+            _model.GameCycle.GameStopped += NullifyMoveEndEvents;
         }
 
         public void MoveCurrentPlayerToCell(Coordinates cellCoordinates)
@@ -58,8 +59,8 @@ namespace Quoridor.Model.PlayerLogic
         }
         private void SetCurrentPlayerAvailableMoves()
         {
-            Coordinates[] cells = _model.CellField.AvailableMoves(_currentPlayer.Position);
-            Coordinates[] walls = _model.WallField.AvailableWalls();
+            Coordinates[] cells = _model.PossibleMoves.AvailableCells(_currentPlayer.Position);
+            Coordinates[] walls = _model.PossibleMoves.AvailableWalls();
             _currentPlayer.SetAvailableMoves(cells, walls);
         }
 
@@ -67,16 +68,16 @@ namespace Quoridor.Model.PlayerLogic
         {
             _firstPlayer = gameMode switch
             {
-                GameMode.PlayerVsPlayer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls),
-                GameMode.PlayerVsComputer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls),
-                GameMode.ComputerVsComputer => new RandomBot(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls),
+                GameMode.PlayerVsPlayer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
+                GameMode.PlayerVsComputer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
+                GameMode.ComputerVsComputer => new RandomBot(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
                 _ => throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null)
             };
             _secondPlayer = gameMode switch
             {
-                GameMode.PlayerVsPlayer => new Player(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls),
-                GameMode.PlayerVsComputer => new RandomBot(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls),
-                GameMode.ComputerVsComputer => new RandomBot(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls),
+                GameMode.PlayerVsPlayer => new Player(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
+                GameMode.PlayerVsComputer => new RandomBot(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
+                GameMode.ComputerVsComputer => new RandomBot(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
                 _ => throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null)
             };
         }
@@ -86,6 +87,13 @@ namespace Quoridor.Model.PlayerLogic
             _firstPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
             _secondPlayer.MovePerformed += ChangeCurrentPlayer;
             _secondPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
+        }
+        private void NullifyMoveEndEvents()
+        {
+            _firstPlayer.MovePerformed -= ChangeCurrentPlayer;
+            _firstPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
+            _secondPlayer.MovePerformed -= ChangeCurrentPlayer;
+            _secondPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
         }
 
         private void StartGame(GameMode gameMode)

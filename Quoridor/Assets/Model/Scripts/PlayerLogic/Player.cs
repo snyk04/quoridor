@@ -1,6 +1,5 @@
 ﻿using System;
 using Quoridor.Model.Common;
-using UnityEngine;
 
 namespace Quoridor.Model.PlayerLogic
 {
@@ -9,16 +8,20 @@ namespace Quoridor.Model.PlayerLogic
         private readonly ModelCommunication _model;
         
         public PlayerType Type { get; }
+        public int VictoryRow { get; }
         
         public int AmountOfWalls { get; private set; }
         public Coordinates Position { get; private set; }
 
         public event Action MovePerformed;
         
-        public Player(ModelCommunication model, PlayerType type, Coordinates startPosition, int startAmountOfWalls)
+        public Player(ModelCommunication model, PlayerType type, Coordinates startPosition, int startAmountOfWalls, int victoryRow)
         {
             _model = model;
+            
             Type = type;
+            VictoryRow = victoryRow;
+            
             AmountOfWalls = startAmountOfWalls;
             MoveTo(startPosition);
         }
@@ -28,7 +31,6 @@ namespace Quoridor.Model.PlayerLogic
             _model.ShowAvailableMoves(cells);
             if (AmountOfWalls >= 1)
             {
-                Debug.Log(AmountOfWalls);
                 _model.ShowAvailableWalls(walls);
             }
         }
@@ -36,11 +38,12 @@ namespace Quoridor.Model.PlayerLogic
         {
             switch (moveType)
             {
+                // TODO
                 case MoveType.Move:
-                    MoveTo(coordinates);
+                    _model.MovePlayer(this, coordinates);
                     break;
                 case MoveType.PlaceWall:
-                    PlaceWall(coordinates);
+                    _model.PlaceWall(this, coordinates);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(moveType), moveType, null);
@@ -49,15 +52,13 @@ namespace Quoridor.Model.PlayerLogic
             OnMovePerformed();
         }
 
-        private void MoveTo(Coordinates coordinates)
+        public void MoveTo(Coordinates coordinates)
         {
             Position = coordinates;
-            _model.MovePlayer(Type, coordinates);
         }
-        private void PlaceWall(Coordinates coordinates)
+        public void PlaceWall()
         {
             AmountOfWalls -= 1;
-            _model.PlaceWall(this, coordinates);
         }
 
         protected void OnMovePerformed()

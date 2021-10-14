@@ -1,4 +1,5 @@
-﻿using Quoridor.Model;
+﻿using System;
+using Quoridor.Model;
 using Quoridor.Model.Common;
 using Quoridor.View;
 using UnityEngine;
@@ -34,6 +35,7 @@ namespace Quoridor.Controller
         }
         public void Quit()
         {
+            GC.Collect();
             SceneManager.LoadScene(MainMenuSceneId);
         }
         

@@ -37,7 +37,7 @@ namespace Quoridor.View.UserInterface {
         }
         public void ChooseGameMode(int gameMode)
         {
-            GameModeTransmitter.GameMode = (GameMode)gameMode;
+            GameModeTransmitter.GameMode = (GameMode) gameMode;
 
             StartCoroutine(ObjectMover.Move(_toBeContinuedImage, _startPosition, _finishPosition, _time));
             LoadSceneAsync();

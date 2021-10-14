@@ -31,7 +31,7 @@ namespace Quoridor.View
             Transform player = GetPlayer(playerType);
 
             CellVisual cell = _cellStorage[cellCoordinates];
-            Vector3 newPosition = cell.transform.position;
+            Vector3 newPosition = cell.Position;
             player.position = newPosition;
             
             _playerSoundPlayer.PlayNext();

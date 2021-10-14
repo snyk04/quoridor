@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Quoridor.Model.Cells;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
 using Quoridor.View;
@@ -12,18 +13,23 @@ namespace Quoridor.Model
         
         public GameCycle GameCycle { get; }
         public PlayersMoves PlayersMoves { get; }
+        public PossibleMoves PossibleMoves { get; }
         
-        public CellField CellField { get; }
-        public WallField WallField { get; }
+        public CellsManager CellsManager { get; }
+        
+        public PlayerMover PlayerMover { get; }
         
         public ModelCommunication(IView view)
         {
             _view = view;
             
-            GameCycle = new GameCycle();
+            GameCycle = new GameCycle(this);
             PlayersMoves = new PlayersMoves(this);
-            CellField = new CellField();
-            WallField = new WallField();
+            PossibleMoves = new PossibleMoves(this);
+
+            CellsManager = new CellsManager(this);
+
+            PlayerMover = new PlayerMover(this);
         }
 
         public void StartNewGame(GameMode gameMode)
@@ -51,9 +57,10 @@ namespace Quoridor.Model
             PlayersMoves.PlaceCurrentPlayerWall(wall);
         }
 
-        internal void MovePlayer(PlayerType playerType, Coordinates coordinates)
+        internal void MovePlayer(Player player, Coordinates coordinates)
         {
-            _view.MovePlayerToCell(playerType, coordinates);
+            PlayerMover.Move(player, coordinates);
+            _view.MovePlayerToCell(player.Type, coordinates);
         }
         internal void PlaceWall(Player player, Coordinates coordinates)
         {

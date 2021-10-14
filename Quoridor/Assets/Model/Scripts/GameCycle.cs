@@ -5,6 +5,13 @@ namespace Quoridor.Model
 {
     public class GameCycle
     {
+        private readonly ModelCommunication _model;
+
+        public GameCycle(ModelCommunication model)
+        {
+            _model = model;
+        }
+
         public event Action<GameMode> GameStarted;
         public event Action GameStopped;
 
@@ -14,6 +21,7 @@ namespace Quoridor.Model
         }
         public void StopGame()
         {
+            _model.StopGame(GameStopType.Victory);
             GameStopped?.Invoke();
         }
     }

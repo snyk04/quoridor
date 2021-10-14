@@ -1,12 +1,11 @@
-﻿using System.Threading;
-using Quoridor.Model.Common;
+﻿using Quoridor.Model.Common;
 
 namespace Quoridor.Model.PlayerLogic
 {
     public sealed class RandomBot : Bot
     {
-        public RandomBot(ModelCommunication model, PlayerType playerType, Coordinates startPosition, int startAmountOfWalls)
-            : base(model, playerType, startPosition, startAmountOfWalls)
+        public RandomBot(ModelCommunication model, PlayerType playerType, Coordinates startPosition, int startAmountOfWalls, int victoryRow)
+            : base(model, playerType, startPosition, startAmountOfWalls, victoryRow)
         {
         }
 
