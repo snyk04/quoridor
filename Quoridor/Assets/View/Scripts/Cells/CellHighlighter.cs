@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Quoridor.Model.Cells;
+using Quoridor.NewModel.Common;
 using UnityEngine;
 
 namespace Quoridor.View.Cells

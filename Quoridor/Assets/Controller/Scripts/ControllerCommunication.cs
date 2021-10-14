@@ -1,6 +1,5 @@
-﻿using System;
-using Quoridor.Model;
-using Quoridor.Model.Cells;
+﻿using Quoridor.NewModel;
+using Quoridor.NewModel.Common;
 using Quoridor.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -46,7 +45,7 @@ namespace Quoridor.Controller
         public void TryToPlaceWall(Vector2Int wallCoordinates)
         {
             Coordinates convertedCoordinates = ConvertCoordinates(wallCoordinates);
-            _model.TryToPlaceWall(convertedCoordinates);
+            _model.PlaceCurrentPlayerWall(convertedCoordinates);
         }
         
         private Coordinates ConvertCoordinates(Vector2Int coordinates)

@@ -1,6 +1,6 @@
 ﻿using System;
-using Quoridor.Model.Cells;
-using Quoridor.Model.Players;
+using Quoridor.NewModel.Common;
+using Quoridor.NewModel.PlayerLogic;
 using Quoridor.View.Audio;
 using Quoridor.View.Cells;
 using UnityEngine;

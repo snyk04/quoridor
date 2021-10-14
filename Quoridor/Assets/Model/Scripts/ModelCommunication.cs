@@ -51,19 +51,19 @@ namespace Quoridor.Model
 
         internal void EndGame(PlayerType winner)
         {
-            _view.EndGame(winner);
+            // _view.EndGame(winner);
         }
         internal void HighlightCells(IEnumerable<Coordinates> cells)
         {
-            _view.HighlightCells(cells);
+            // _view.HighlightCells(cells);
         }
         internal void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates)
         {
-            _view.MovePlayerToCell(playerType, cellCoordinates);
+            // _view.MovePlayerToCell(playerType, cellCoordinates);
         }
         internal void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls, PlayerType playerType, int playerAmountOfWalls)
         {
-            _view.PlaceWall(wallCoordinates, overlappedWalls, playerType, playerAmountOfWalls);
+            // _view.PlaceWall(wallCoordinates, overlappedWalls, playerType, playerAmountOfWalls);
         }
     }
 }

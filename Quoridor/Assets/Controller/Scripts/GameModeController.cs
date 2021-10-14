@@ -1,6 +1,5 @@
-﻿using Quoridor.Model.Game;
+﻿using Quoridor.NewModel.PlayerLogic;
 using UnityEngine;
-using UnityEngine.UI;
 using View.Scripts.UserInterface;
 
 namespace Quoridor.Controller

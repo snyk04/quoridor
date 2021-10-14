@@ -1,0 +1,74 @@
+﻿@startuml
+
+interface IModel
+{
+    StartNewGame(g : GameMode)
+    StopGame(t : GameStopType)
+    
+    MoveCurrentPlayerToCell(c : Coordinates)
+    PlaceCurrentPlayerWall(w : Coordinates)
+}
+class ModelCommunication
+{    
+    GameCycle : GameCycle
+    PlayersMoves : PlayersMoves
+    
+    MovePlayer(p : PlayerType, c : Coordinates) : void
+    PlaceWall(p : Player, c : Coordinates) : void
+
+    ShowAvailableMoves(c : Coordinates[]) : void
+    ShowAvailableWalls(w : Coordinates[]) : void
+}
+
+class Player
+{
+    Type : PlayerType
+
+    AmountOfWalls : int
+    Position : Coordinates
+    
+    MovePerformed : Action
+    
+    SetAvailableMoves(c : Coordinates[], w : Coordinates[])
+    MakeMove(m : MoveType, c : Coordinates)
+}
+abstract class Bot
+class RandomBot
+
+class PlayersMoves
+{
+    MoveCurrentPlayerToCell(c : Coordinates) : void
+    PlaceCurrentPlayerWall(w : Coordinates) : void
+}
+
+class GameCycle
+{
+    Action<GameMode> GameStarted
+    Action GameStopped
+
+    StartNewGame(g : GameMode) : void
+    StopGame() : void
+}
+
+class CellField
+{
+    AvailableMoves(c : Coordinates) : void
+}
+class WallField
+{
+    AvailableWalls() : void
+}
+
+IModel <|.. ModelCommunication
+
+ModelCommunication *-- PlayersMoves
+ModelCommunication *-- GameCycle
+ModelCommunication *-- CellField
+ModelCommunication *-- WallField
+
+PlayersMoves *-- Player
+
+Player <|-- Bot
+Bot <|-- RandomBot
+
+@enduml

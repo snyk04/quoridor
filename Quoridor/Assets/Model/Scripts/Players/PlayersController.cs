@@ -23,7 +23,6 @@ namespace Quoridor.Model.Players
         private Player _currentPlayer;
         private PlayerType _currentPlayerType;
         
-        // TODO : move it to GameCycle.cs!!!
         public event Action<Coordinates> OnPlayerChange;
         public event Action OnPlayerTurnEnd;
         public event Action OnBotTurnEnd;
