@@ -1,4 +1,4 @@
-﻿using Quoridor.Model.Cells;
+﻿using Quoridor.OldModel.Cells;
 
 namespace Quoridor.View.Cells
 {

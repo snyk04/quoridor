@@ -1,4 +1,4 @@
-﻿using Quoridor.NewModel.PlayerLogic;
+﻿using Quoridor.Model.PlayerLogic;
 using Quoridor.View.Cells;
 using UnityEngine;
 using UnityEngine.UI;

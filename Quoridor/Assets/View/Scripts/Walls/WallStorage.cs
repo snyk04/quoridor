@@ -1,4 +1,4 @@
-﻿using Quoridor.Model.Walls;
+﻿using Quoridor.OldModel.Walls;
 
 namespace Quoridor.View.Walls
 {

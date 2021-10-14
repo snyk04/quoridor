@@ -1,5 +1,5 @@
-﻿using Quoridor.NewModel;
-using Quoridor.NewModel.Common;
+﻿using Quoridor.Model;
+using Quoridor.Model.Common;
 using Quoridor.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;

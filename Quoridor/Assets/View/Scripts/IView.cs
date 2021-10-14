@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Quoridor.NewModel.Common;
-using Quoridor.NewModel.PlayerLogic;
+using Quoridor.Model.Common;
+using Quoridor.Model.PlayerLogic;
 
 namespace Quoridor.View
 {

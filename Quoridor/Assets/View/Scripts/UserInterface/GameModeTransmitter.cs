@@ -1,4 +1,4 @@
-﻿using Quoridor.NewModel.PlayerLogic;
+﻿using Quoridor.Model.PlayerLogic;
 
 namespace View.Scripts.UserInterface
 {

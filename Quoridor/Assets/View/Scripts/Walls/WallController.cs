@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Quoridor.NewModel.Common;
+using Quoridor.Model.Common;
 using Quoridor.View.Audio;
 using UnityEngine;
 
