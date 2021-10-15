@@ -1,4 +1,6 @@
-﻿namespace Quoridor.Model.Cells
+﻿using Quoridor.Model.Common;
+
+namespace Quoridor.Model.Cells
 {
     public class CellsManager
     {
@@ -18,11 +20,8 @@
             InitializeCellField();
         }
 
-        public Cell GetCell(Coordinates cellCoordinates)
-        {
-            return Cells[cellCoordinates.row, cellCoordinates.column];
-        }
-        
+        public Cell this[Coordinates cellCoordinates] => Cells[cellCoordinates.row, cellCoordinates.column];
+
         public bool CellIsBusy(Coordinates cell)
         {
             return Cells[cell.row, cell.column].IsBusy;
@@ -35,14 +34,17 @@
                    & cell.column >= 0; }
         public bool WallIsBetweenCells(Coordinates firstCell, Coordinates secondCell)
         {
-            bool wallExists = false;
             CellPair cellPair = new CellPair(firstCell, secondCell);
+            
             foreach (CellPair blockedCellPair in _model.WallsManager.BlockedCellPairs)
             {
-                wallExists |= blockedCellPair.Equals(cellPair);
+                if (blockedCellPair.Equals(cellPair))
+                {
+                    return true;
+                }
             }
 
-            return wallExists;
+            return false;
         }
         
         private void InitializeCellField()

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using Quoridor.Model.Cells;
-using Quoridor.Model.Players;
+using Quoridor.Model.Common;
+using Quoridor.Model.PlayerLogic;
 
 namespace Quoridor.View
 {
     public interface IView
     {
-        void HighlightCells(IEnumerable<Coordinates> cellCoordinatesArray);
-        void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates);
-        void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls, PlayerType playerType, int playerAmountOfWalls);
+        void ShowAvailableMoves(IEnumerable<Coordinates> cells);
+        void ShowAvailableWalls(IEnumerable<Coordinates> walls);
+        void MovePlayerToCell(PlayerType playerType, Coordinates cell);
+        void PlaceWall(Player player, Coordinates wall);
 
         void EndGame(PlayerType winner);
     }

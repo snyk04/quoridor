@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using Quoridor.Model.Cells;
+﻿using Quoridor.Model.Cells;
+using Quoridor.Model.Common;
 
 namespace Quoridor.Model.Walls
 {
     public class Wall
     {
-        public List<CellPair> BlockedCellPairs { get; }
-        public List<Coordinates> OverlappedWalls { get; }
+        public CellPair[] BlockedCellPairs { get; }
+        public Coordinates[] OverlappedWalls { get; }
 
-        public Wall(List<CellPair> blockedCellPairs, List<Coordinates> overlappedWalls)
+        public Wall(CellPair[] blockedCellPairs, Coordinates[] overlappedWalls)
         {
             BlockedCellPairs = blockedCellPairs;
             OverlappedWalls = overlappedWalls;

@@ -4,7 +4,7 @@
     {
         public override void NotifyController()
         {
-            _controller.ChooseCell(_coordinates);
+            _controller.MoveToCell(_coordinates);
         }
     }
 }

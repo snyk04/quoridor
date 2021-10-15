@@ -1,4 +1,5 @@
-﻿using Quoridor.Model.Players;
+﻿using Quoridor.Model.PlayerLogic;
+using Quoridor.View.Audio;
 using Quoridor.View.Cells;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,9 +9,9 @@ namespace Quoridor.View
     public class VictoryManager : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private CellHighlighter _cellHighlighter;
-        [SerializeField] private SoundPlayer _backgroundMusicPlayer;
-        [SerializeField] private SoundPlayer _victoryMusicPlayer;
+        [SerializeField] private ViewCommunication _view;
+        [SerializeField] private CertainSoundPlayer _backgroundMusicPlayer;
+        [SerializeField] private CertainSoundPlayer _victoryMusicPlayer;
 
         [Header("Objects")] 
         [SerializeField] private GameObject _background;
@@ -24,7 +25,7 @@ namespace Quoridor.View
         
         public void ShowVictory(PlayerType winner)
         {
-            _cellHighlighter.UnhighlightAllCells();
+            _view.CellHighlighter.UnhighlightAllCells();
             
             HandleMusic();
             HandleUiElements();
@@ -37,7 +38,6 @@ namespace Quoridor.View
             _backgroundMusicPlayer.Stop();
             _victoryMusicPlayer.Play();
         }
-
         private void HandleUiElements()
         {
             _background.SetActive(true);

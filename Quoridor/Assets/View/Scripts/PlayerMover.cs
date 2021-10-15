@@ -1,6 +1,6 @@
 ﻿using System;
-using Quoridor.Model.Cells;
-using Quoridor.Model.Players;
+using Quoridor.Model.Common;
+using Quoridor.Model.PlayerLogic;
 using Quoridor.View.Audio;
 using Quoridor.View.Cells;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace Quoridor.View
     public class PlayerMover : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private CellStorage _cellStorage;
+        [SerializeField] private ViewCommunication _view;
         [SerializeField] private RandomSoundPlayer _playerSoundPlayer;
         
         [Header("Objects")]
@@ -30,8 +30,8 @@ namespace Quoridor.View
         {
             Transform player = GetPlayer(playerType);
 
-            CellVisual cell = _cellStorage[cellCoordinates];
-            Vector3 newPosition = cell.transform.position;
+            CellVisual cell = _view.CellStorage[cellCoordinates];
+            Vector3 newPosition = cell.Position;
             player.position = newPosition;
             
             _playerSoundPlayer.PlayNext();

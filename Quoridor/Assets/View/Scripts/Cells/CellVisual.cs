@@ -8,9 +8,13 @@ namespace Quoridor.View.Cells
     {
         private Button _button;
         
+        public Vector3 Position { get; private set; }
+
         private void Awake()
         {
             _button = GetComponent<Button>();
+
+            Position = transform.position;
         }
 
         private void ChangeInteractivity(bool isInteractable)

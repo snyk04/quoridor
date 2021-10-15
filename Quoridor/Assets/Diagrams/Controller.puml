@@ -1,0 +1,37 @@
+﻿@startuml
+
+interface IController
+{
+    Restart() : void
+    Quit() : void
+    
+    MoveToCell() : void
+    PlaceWall() : void
+}
+class ControllerCommunication #brown
+class ModelCommunication #brown
+class GameModeTransmitter
+{
+    GameMode : GameMode
+}
+
+abstract class Button
+{
+    NotifyController() : void
+}
+class CellButton
+class WallButton
+
+IController <|.. ControllerCommunication
+
+ControllerCommunication *- ModelCommunication
+
+ControllerCommunication o-- GameModeTransmitter
+
+CellButton --|> Button
+WallButton --|> Button
+
+ControllerCommunication --o CellButton
+ControllerCommunication --o WallButton 
+
+@enduml

@@ -1,5 +1,5 @@
 using System;
-using Quoridor.Model.Players;
+using Quoridor.Model.PlayerLogic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,16 +10,16 @@ namespace Quoridor.View.UserInterface
         [SerializeField] private Text _firstPlayerAmountOfWallsCounter;
         [SerializeField] private Text _secondPlayerAmountOfWallsCounter;
 
-        public void UpdateCounter(PlayerType playerType, int amountOfWalls)
+        public void UpdateCounter(Player player)
         {
-            Text counter = playerType switch
+            Text counter = player.Type switch
             {
                 PlayerType.First => _firstPlayerAmountOfWallsCounter,
                 PlayerType.Second => _secondPlayerAmountOfWallsCounter,
-                _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(player.Type), player.Type, null)
             };
 
-            counter.text = amountOfWalls.ToString();
+            counter.text = player.AmountOfWalls.ToString();
         }
     }
 }

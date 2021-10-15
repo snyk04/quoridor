@@ -1,0 +1,151 @@
+﻿@startuml
+
+interface IModel
+{
+    StartNewGame(g : GameMode)
+    StopGame(t : GameStopType)
+    
+    MoveCurrentPlayerToCell(c : Coordinates)
+    PlaceCurrentPlayerWall(w : Coordinates)
+}
+class ModelCommunication
+{    
+    GameCycle : GameCycle
+    PlayersMoves : PlayersMoves
+    
+    CellsManager : CellsManager
+    WallsManager : WallsManager
+    
+    PlayerMover : PlayerMover
+    
+    PossibleMoves : PossibleMoves
+    
+    MovePlayer(p : PlayerType, c : Coordinates) : void
+    PlaceWall(p : Player, c : Coordinates) : void
+
+    ShowAvailableMoves(c : Coordinates[]) : void
+    ShowAvailableWalls(w : Coordinates[]) : void
+}
+
+class GameCycle
+{
+    Action<GameMode> GameStarted
+    Action GameStopped
+
+    StartNewGame(g : GameMode) : void
+    StopGame() : void
+}
+
+class PlayersMoves
+{
+    FirstPlayer : Player
+    SecondPlayer : Player
+   
+   CurrentPlayerType : PlayerType
+   CurrentPlayerOpponent Type : PlayerType
+
+    MoveCurrentPlayerToCell(c : Coordinates) : void
+    PlaceCurrentPlayerWall(w : Coordinates) : void
+}
+class Player
+{
+    Type : PlayerType
+    VictoryRow : int
+
+    AmountOfWalls : int
+    Position : Coordinates
+    
+    MovePerformed : Action
+    
+    SetPossibleMoves(c : Coordinates[], w : Coordinates[]) : void
+    MakeMove(m : MoveType, c : Coordinates) : void
+    
+    MoveTo(c : Coordinates)) : void
+    PlaceWall() : void
+}
+abstract class Bot
+class RandomBot
+
+class CellsManager
+{
+    AmountOfRows : int
+    AmountOfColumns : int
+
+    Cells : Cell[,]
+
+    CellIsBusy(c : Coordinates) : bool
+    CellIsReal(c : Coordinates) : bool
+    WallIsBetweenCells(c : Coordinates) : bool
+}
+class Cell
+{
+    IsBusy : bool
+    
+    BecomeBusy() : void
+    BecomeFree() : void
+}
+
+class WallsManager
+{
+    AmountOfRows : int
+    AmountOfColumns : int
+
+    Walls : Wall[,]
+    
+    BlockedCellPairs : List<CellPair>
+    WallsThatCanBePlaced : List<Coordinates>
+    
+    WallPlaced : Action
+    
+    PathfindingPlaceWall(w : Coordinates) : void
+    PathfindingDestroyWall(w : Coordinates) : void
+    
+    PlaceWall(p : Player, w : Coordinates) : void
+}
+class Wall
+{
+    BlockedCellPairs : CellPair[]
+    OverlappedWalls : Coordinates[]
+}
+class CellPair
+{
+    firstCell : Coordinates
+    secondCell : Coordinates
+    
+    Equals(c : CellPair) : bool
+}
+
+class PlayerMover
+{
+    Move(p : Player, c : Coordinates) : void
+}
+
+class PossibleMoves
+{
+    AvailableCells(c : Coordinates) : Coordinates[]
+    AvailableWalls() : Coordinates[]
+}
+
+
+IModel <|.. ModelCommunication
+
+ModelCommunication *--o GameCycle
+
+ModelCommunication *--o PlayersMoves
+PlayersMoves *-- Player
+Player <|-- Bot
+Bot <|-- RandomBot
+
+ModelCommunication *--o CellsManager
+CellsManager *-- Cell
+
+ModelCommunication *-- WallsManager
+WallsManager *-- Wall
+WallsManager o-- CellPair
+Wall *-- CellPair
+
+ModelCommunication *--o PlayerMover
+
+ModelCommunication *--o PossibleMoves
+
+@enduml

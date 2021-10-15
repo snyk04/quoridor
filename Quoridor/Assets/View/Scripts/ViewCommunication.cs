@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using Quoridor.Model.Cells;
-using Quoridor.Model.Players;
+using Quoridor.Model.Common;
+using Quoridor.Model.PlayerLogic;
+using Quoridor.View.Audio;
 using Quoridor.View.Cells;
 using Quoridor.View.UserInterface;
 using Quoridor.View.Walls;
@@ -12,29 +13,41 @@ namespace Quoridor.View
     {
         [Header("Components")] 
         [SerializeField] private AmountOfWallsUpdater _amountOfWallsUpdater;
-        [SerializeField] private SoundPlayer _backgroundMusicPlayer;
-        [SerializeField] private CellHighlighter _cellHighlighter;
+        [SerializeField] private CertainSoundPlayer _backgroundMusicPlayer;
         [SerializeField] private PlayerMover _playerMover;
         [SerializeField] private VictoryManager _victoryManager;
-        [SerializeField] private WallPlacer _wallPlacer;
+        [SerializeField] private WallController _wallController;
+
+        [SerializeField] private CellHighlighter _cellHighlighter;
+        [SerializeField] private CellStorage _cellStorage;
+        [SerializeField] private WallStorage _wallStorage;
+
+        public CellHighlighter CellHighlighter => _cellHighlighter;
+        public CellStorage CellStorage => _cellStorage;
+        public WallStorage WallStorage => _wallStorage;
 
         private void Start()
         {
             _backgroundMusicPlayer.Play();
         }
 
-        public void HighlightCells(IEnumerable<Coordinates> cellCoordinatesArray)
+        public void ShowAvailableMoves(IEnumerable<Coordinates> cells)
         {
-            _cellHighlighter.HighlightCells(cellCoordinatesArray);
+            _cellHighlighter.HighlightCells(cells);
         }
-        public void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates)
+        public void ShowAvailableWalls(IEnumerable<Coordinates> walls)
         {
-            _playerMover.MovePlayerToCell(playerType, cellCoordinates);
+            _wallController.EnableWalls(walls);
         }
-        public void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls, PlayerType playerType, int playerAmountOfWalls)
+
+        public void MovePlayerToCell(PlayerType playerType, Coordinates cell)
         {
-            _wallPlacer.PlaceWall(wallCoordinates, overlappedWalls);
-            _amountOfWallsUpdater.UpdateCounter(playerType, playerAmountOfWalls);
+            _playerMover.MovePlayerToCell(playerType, cell);
+        }
+        public void PlaceWall(Player player, Coordinates wall)
+        {
+            _wallController.PlaceWall(wall);
+            _amountOfWallsUpdater.UpdateCounter(player);
         }
 
         public void EndGame(PlayerType winner)

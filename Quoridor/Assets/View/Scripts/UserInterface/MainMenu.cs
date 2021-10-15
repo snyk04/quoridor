@@ -1,4 +1,6 @@
-﻿using Quoridor.Model.Game;
+﻿using Quoridor.Controller;
+using Quoridor.Model.PlayerLogic;
+using Quoridor.View.Audio;
 using UnityEngine;
 using View.Scripts.UserInterface;
 
@@ -12,8 +14,8 @@ namespace Quoridor.View.UserInterface {
         [SerializeField] private ButtonContainer _secondButtonContainer;
 
         [Header("Sound players")]
-        [SerializeField] private SoundPlayer _menuMusicPlayer;
-        [SerializeField] private SoundPlayer _roundaboutPlayer;
+        [SerializeField] private CertainSoundPlayer _menuMusicPlayer;
+        [SerializeField] private CertainSoundPlayer _roundaboutPlayer;
 
         [Header("Objects")] 
         [SerializeField] private Transform _toBeContinuedImage;
@@ -37,7 +39,7 @@ namespace Quoridor.View.UserInterface {
         }
         public void ChooseGameMode(int gameMode)
         {
-            GameModeTransmitter.GameMode = (GameMode)gameMode;
+            GameModeTransmitter.GameMode = (GameMode) gameMode;
 
             StartCoroutine(ObjectMover.Move(_toBeContinuedImage, _startPosition, _finishPosition, _time));
             LoadSceneAsync();

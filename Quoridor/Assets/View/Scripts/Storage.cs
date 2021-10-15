@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Quoridor.Model.Cells;
+using Quoridor.Model.Common;
 using UnityEngine;
 
 namespace Quoridor.View

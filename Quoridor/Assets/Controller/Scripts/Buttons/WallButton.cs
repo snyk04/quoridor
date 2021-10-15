@@ -4,7 +4,7 @@
     {
         public override void NotifyController()
         {
-            _controller.TryToPlaceWall(_coordinates);
+            _controller.PlaceWall(_coordinates);
         }
     }
 }

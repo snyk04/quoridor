@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using Quoridor.Model.Cells;
+using Quoridor.Model.Common;
 using UnityEngine;
 
 namespace Quoridor.View.Cells
 {
     public class CellHighlighter : MonoBehaviour
     {
-        [SerializeField] private CellStorage _cellStorage;
+        [SerializeField] private ViewCommunication _view;
 
         public void UnhighlightAllCells()
         {
-            foreach (CellVisual cell in _cellStorage)
+            foreach (CellVisual cell in _view.CellStorage)
             {
                 cell.Unhighlight();
             }
@@ -21,7 +21,7 @@ namespace Quoridor.View.Cells
             
             foreach (Coordinates cellCoordinates in cellCoordinatesArray)
             {
-                CellVisual cell = _cellStorage[cellCoordinates];
+                CellVisual cell = _view.CellStorage[cellCoordinates];
                 cell.Highlight();
             }
         }

@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Quoridor.Model.Cells;
-using Quoridor.Model.Game;
-using Quoridor.Model.Players;
+using Quoridor.Model.Common;
+using Quoridor.Model.PlayerLogic;
 using Quoridor.Model.Walls;
 using Quoridor.View;
 
@@ -9,61 +10,76 @@ namespace Quoridor.Model
 {
     public class ModelCommunication : IModel
     {
-        private readonly Coordinates _firstPlayerStartPosition = new Coordinates(8, 4);
-        private readonly Coordinates _secondPlayerStartPosition = new Coordinates(0, 4);
-        
         private readonly IView _view;
-
-        internal CellsManager CellsManager { get; }
-        internal GameCycle GameCycle { get; }
-        internal PlayersController PlayersController { get; }
-        internal PossibleMoves PossibleMoves { get; }
-        internal WallsManager WallsManager { get; }
         
+        public GameCycle GameCycle { get; }
+        public PlayersMoves PlayersMoves { get; }
+        
+        public CellsManager CellsManager { get; }
+        public WallsManager WallsManager { get; }
+        
+        public PlayerMover PlayerMover { get; }
+        
+        public PossibleMoves PossibleMoves { get; }
+
         public ModelCommunication(IView view)
         {
             _view = view;
+            
+            GameCycle = new GameCycle(this);
+            PlayersMoves = new PlayersMoves(this);
 
             CellsManager = new CellsManager(this);
-            GameCycle = new GameCycle(this);
-            PlayersController = new PlayersController(
-                this,
-                _firstPlayerStartPosition,
-                _secondPlayerStartPosition
-                );
-            PossibleMoves = new PossibleMoves(this);
             WallsManager = new WallsManager();
+
+            PlayerMover = new PlayerMover(this);
+            
+            PossibleMoves = new PossibleMoves(this);
         }
-        
+
         public void StartNewGame(GameMode gameMode)
         {
             GameCycle.StartNewGame(gameMode);
         }
-        
-        public void MoveCurrentPlayerToCell(Coordinates cellCoordinates)
+        public void StopGame(GameStopType gameStopType)
         {
-            PlayersController.MoveCurrentPlayerToCell(cellCoordinates);
-        }
-        public void TryToPlaceWall(Coordinates wallCoordinates)
-        {
-            PlayersController.CurrentPlayerTryToPlaceWall(wallCoordinates);
-        }
-
-        internal void EndGame(PlayerType winner)
-        {
+            PlayerType winner = gameStopType switch
+            {
+                GameStopType.Surrender => PlayersMoves.CurrentPlayerOpponentType,
+                GameStopType.Victory => PlayersMoves.CurrentPlayerType,
+                _ => throw new ArgumentOutOfRangeException(nameof(gameStopType), gameStopType, null)
+            };
+            
             _view.EndGame(winner);
         }
-        internal void HighlightCells(IEnumerable<Coordinates> cells)
+
+        public void MoveCurrentPlayerToCell(Coordinates cell)
         {
-            _view.HighlightCells(cells);
+            PlayersMoves.MoveCurrentPlayerToCell(cell);
         }
-        internal void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates)
+        public void PlaceCurrentPlayerWall(Coordinates wall)
         {
-            _view.MovePlayerToCell(playerType, cellCoordinates);
+            PlayersMoves.PlaceCurrentPlayerWall(wall);
         }
-        internal void PlaceWall(Coordinates wallCoordinates, IEnumerable<Coordinates> overlappedWalls, PlayerType playerType, int playerAmountOfWalls)
+
+        internal void MovePlayer(Player player, Coordinates coordinates)
         {
-            _view.PlaceWall(wallCoordinates, overlappedWalls, playerType, playerAmountOfWalls);
+            PlayerMover.Move(player, coordinates);
+            _view.MovePlayerToCell(player.Type, coordinates);
+        }
+        internal void PlaceWall(Player player, Coordinates coordinates)
+        {
+            WallsManager.PlaceWall(player, coordinates);
+            _view.PlaceWall(player, coordinates);
+        }
+
+        internal void ShowAvailableMoves(IEnumerable<Coordinates> cells)
+        {
+            _view.ShowAvailableMoves(cells);
+        }
+        internal void ShowAvailableWalls(IEnumerable<Coordinates> walls)
+        {
+            _view.ShowAvailableWalls(walls);
         }
     }
 }
