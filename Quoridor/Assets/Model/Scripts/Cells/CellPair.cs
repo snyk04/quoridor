@@ -29,6 +29,7 @@ namespace Quoridor.Model.Cells
 
         public bool Equals(CellPair cellPair)
         {
+            // TODO : caused stackOverflow when BotVsBot
             return firstCell.Equals(cellPair.firstCell) && secondCell.Equals(cellPair.secondCell)
                 || firstCell.Equals(cellPair.secondCell) && secondCell.Equals(cellPair.firstCell);
         }
