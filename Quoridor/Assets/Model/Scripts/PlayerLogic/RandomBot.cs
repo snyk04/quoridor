@@ -1,4 +1,5 @@
-﻿using Quoridor.Model.Common;
+﻿using System.Collections.Generic;
+using Quoridor.Model.Common;
 
 namespace Quoridor.Model.PlayerLogic
 {
@@ -9,24 +10,26 @@ namespace Quoridor.Model.PlayerLogic
         {
         }
 
-        public override void SetAvailableMoves(Coordinates[] cells, Coordinates[] walls)
+        public override void SetPossibleMoves(Coordinates[] cells, Coordinates[] walls)
         {
-            MoveType moveType;
-            Coordinates coordinates;
-            
+            CalculateMove(cells, walls, out MoveType moveType, out Coordinates coordinates);
+            MakeMove(moveType, coordinates);
+        }
+
+        private void CalculateMove(IReadOnlyList<Coordinates> cells, IReadOnlyList<Coordinates> walls,
+            out MoveType moveType, out Coordinates coordinates)
+        {
             Random random = new Random();
             if (AmountOfWalls >= 1 && random.Value >= 0.5)
             {
                 moveType = MoveType.PlaceWall;
-                coordinates = walls[random.Next(walls.Length)];
+                coordinates = walls[random.Next(walls.Count)];
             }
             else
             {
-                moveType = MoveType.Move;
-                coordinates = cells[random.Next(cells.Length)];
+                moveType = MoveType.MoveToCell;
+                coordinates = cells[random.Next(cells.Count)];
             }
-            
-            MakeMove(moveType, coordinates);
         }
     }
 }

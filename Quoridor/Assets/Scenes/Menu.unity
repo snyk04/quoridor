@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 382835880}
   - component: {fileID: 382835882}
   m_Layer: 5
-  m_Name: EvE
+  m_Name: CvC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2145,7 +2145,7 @@ GameObject:
   - component: {fileID: 1619441381}
   - component: {fileID: 1619441380}
   m_Layer: 5
-  m_Name: PvE
+  m_Name: PvC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

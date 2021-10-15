@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Model;
 using Quoridor.Model.Cells;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
@@ -20,7 +19,6 @@ namespace Quoridor.Model
         public WallsManager WallsManager { get; }
         
         public PlayerMover PlayerMover { get; }
-        public WallPlacer WallPlacer { get; }
         
         public PossibleMoves PossibleMoves { get; }
 
@@ -32,10 +30,9 @@ namespace Quoridor.Model
             PlayersMoves = new PlayersMoves(this);
 
             CellsManager = new CellsManager(this);
-            WallsManager = new WallsManager(this);
+            WallsManager = new WallsManager();
 
             PlayerMover = new PlayerMover(this);
-            WallPlacer = new WallPlacer(this);
             
             PossibleMoves = new PossibleMoves(this);
         }

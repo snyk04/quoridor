@@ -5,18 +5,19 @@ namespace Quoridor.Model.PlayerLogic
 {
     public sealed class PlayersMoves
     {
-        private readonly ModelCommunication _model;
-        
         private const int DefaultAmountOfWalls = 10;
 
         private readonly Coordinates _firstPlayerStartPosition = new Coordinates(8, 4);
         private readonly Coordinates _secondPlayerStartPosition = new Coordinates(0, 4);
         
+        private readonly ModelCommunication _model;
+
         public Player FirstPlayer { get; set; }
         public Player SecondPlayer { get; set; }
 
-        public Player _currentPlayer;
+        private Player _currentPlayer;
 
+        // TODO : maybe delete?
         public PlayerType CurrentPlayerType => _currentPlayer.Type;
         public PlayerType CurrentPlayerOpponentType
         {
@@ -36,16 +37,16 @@ namespace Quoridor.Model.PlayerLogic
             _model = model;
             
             _model.GameCycle.GameStarted += StartGame;
-            _model.GameCycle.GameStopped += NullifyMoveEndEvents;
+            _model.GameCycle.GameStopped += StopGame;
         }
 
-        public void MoveCurrentPlayerToCell(Coordinates cellCoordinates)
+        public void MoveCurrentPlayerToCell(Coordinates cell)
         {
-            _currentPlayer.MakeMove(MoveType.Move, cellCoordinates);
+            _currentPlayer.MakeMove(MoveType.MoveToCell, cell);
         }
-        public void PlaceCurrentPlayerWall(Coordinates wallCoordinates)
+        public void PlaceCurrentPlayerWall(Coordinates wall)
         {
-            _currentPlayer.MakeMove(MoveType.PlaceWall, wallCoordinates);
+            _currentPlayer.MakeMove(MoveType.PlaceWall, wall);
         }
 
         private void ChangeCurrentPlayer()
@@ -61,9 +62,10 @@ namespace Quoridor.Model.PlayerLogic
         {
             Coordinates[] cells = _model.PossibleMoves.AvailableCells(_currentPlayer.Position);
             Coordinates[] walls = _model.PossibleMoves.AvailableWalls();
-            _currentPlayer.SetAvailableMoves(cells, walls);
+            _currentPlayer.SetPossibleMoves(cells, walls);
         }
 
+        // TODO : maybe some refactor?
         private void InitializePlayers(GameMode gameMode)
         {
             FirstPlayer = gameMode switch
@@ -81,6 +83,7 @@ namespace Quoridor.Model.PlayerLogic
                 _ => throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null)
             };
         }
+        
         private void HandleMoveEndEvents()
         {
             FirstPlayer.MovePerformed += ChangeCurrentPlayer;
@@ -103,6 +106,10 @@ namespace Quoridor.Model.PlayerLogic
             
             _currentPlayer = FirstPlayer;
             SetCurrentPlayerAvailableMoves();
+        }
+        private void StopGame()
+        {
+            NullifyMoveEndEvents();
         }
     }
 }

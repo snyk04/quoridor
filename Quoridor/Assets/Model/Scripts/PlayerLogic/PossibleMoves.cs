@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using Quoridor.Model.Common;
-using Quoridor.Model.PlayerLogic;
 
-namespace Quoridor.Model
+namespace Quoridor.Model.PlayerLogic
 {
     public class PossibleMoves
     {
@@ -24,46 +23,41 @@ namespace Quoridor.Model
             _currentTurnPlayerCoordinates = playerCoordinates;
             return GetAvailableCellsFromCell(playerCoordinates);
         }
-        public Coordinates[] GetAvailableCellsFromCell(Coordinates cellCoordinates)
+        private Coordinates[] GetAvailableCellsFromCell(Coordinates cell)
         {
             Coordinates[] uncheckedCells =
             {
-                new Coordinates(cellCoordinates.row + 1, cellCoordinates.column),
-                new Coordinates(cellCoordinates.row - 1, cellCoordinates.column),
-                new Coordinates(cellCoordinates.row, cellCoordinates.column + 1),
-                new Coordinates(cellCoordinates.row, cellCoordinates.column - 1)
+                new Coordinates(cell.row + 1, cell.column),
+                new Coordinates(cell.row - 1, cell.column),
+                new Coordinates(cell.row, cell.column + 1),
+                new Coordinates(cell.row, cell.column - 1)
             };
             
-            var possibleMoves = new List<Coordinates>();
+            var availableCells = new List<Coordinates>();
             foreach (Coordinates uncheckedCell in uncheckedCells)
             {
-                TryToAddCellToAvailableCells(cellCoordinates, uncheckedCell, possibleMoves);
+                TryToAddCell(cell, uncheckedCell, availableCells);
             }
 
-            return possibleMoves.ToArray();
+            return availableCells.ToArray();
         }
-        private void TryToAddCellToAvailableCells(Coordinates moveFrom, Coordinates moveTo, List<Coordinates> possibleMoves)
+        private void TryToAddCell(Coordinates moveFrom, Coordinates moveTo, List<Coordinates> availableCells)
         {
-            if (!_model.CellsManager.CellIsReal(moveTo))
+            if (!_model.CellsManager.CellIsReal(moveTo) || _model.CellsManager.WallIsBetweenCells(moveFrom, moveTo))
             {
                 return;
             }
 
-            if (_model.CellsManager.WallIsBetweenCells(moveFrom, moveTo))
-            {
-                return;
-            }
-            
             if (_model.CellsManager.CellIsBusy(moveTo))
             {
                 if (!_currentTurnPlayerCoordinates.Equals(moveTo))
                 {
-                    possibleMoves.AddRange(GetAvailableCellsFromCell(moveTo));
+                    availableCells.AddRange(GetAvailableCellsFromCell(moveTo));
                 }
             }
             else
             {
-                possibleMoves.Add(moveTo);
+                availableCells.Add(moveTo);
             }
         }
 
@@ -80,41 +74,38 @@ namespace Quoridor.Model
             foreach (Coordinates wall in uncheckedWalls)
             {
                 _model.WallsManager.PathfindingPlaceWall(wall);
-                if (IsAbilityToWin(_model.PlayersMoves.FirstPlayer) && IsAbilityToWin(_model.PlayersMoves.SecondPlayer))
+                if (PlayerCanWin(_model.PlayersMoves.FirstPlayer) && PlayerCanWin(_model.PlayersMoves.SecondPlayer))
                 {
                     _availableWalls.Add(wall);
                 }
+
                 _model.WallsManager.PathfindingDestroyWall(wall);
             }
         }
         
-        public bool IsAbilityToWin(Player player)
+        private bool PlayerCanWin(Player player)
         {
             List<Coordinates> visitedCells = new List<Coordinates>();
             _currentTurnPlayerCoordinates = player.Position;
 
-            return Func(player.Position, player.VictoryRow, visitedCells);
+            return TryToFindWay(player.Position, player.VictoryRow, visitedCells);
         }
-        private bool Func(Coordinates cell, int rowToWin, ICollection<Coordinates> visitedCells)
+        private bool TryToFindWay(Coordinates cell, int victoryRow, ICollection<Coordinates> visitedCells)
         {
             visitedCells.Add(cell);
-            var result = false;
             foreach (Coordinates cellToCheck in GetAvailableCellsFromCell(cell))
             {
                 if (visitedCells.Contains(cellToCheck))
                 {
                     continue;
                 }
-                if (cellToCheck.row == rowToWin)
+                if (cellToCheck.row == victoryRow || TryToFindWay(cellToCheck, victoryRow, visitedCells))
                 {
                     return true;
                 }
-                    
-                visitedCells.Add(cellToCheck);
-                result |= Func(cellToCheck, rowToWin, visitedCells);
             }
 
-            return result;
+            return false;
         }
     }
 }

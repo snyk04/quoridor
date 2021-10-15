@@ -2,7 +2,7 @@
 {
     public enum MoveType
     {
-        Move,
+        MoveToCell,
         PlaceWall
     }
 }

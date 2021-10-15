@@ -26,7 +26,7 @@ namespace Quoridor.Model.PlayerLogic
             MoveTo(startPosition);
         }
 
-        public virtual void SetAvailableMoves(Coordinates[] cells, Coordinates[] walls)
+        public virtual void SetPossibleMoves(Coordinates[] cells, Coordinates[] walls)
         {
             _model.ShowAvailableMoves(cells);
             if (AmountOfWalls >= 1)
@@ -39,7 +39,7 @@ namespace Quoridor.Model.PlayerLogic
             switch (moveType)
             {
                 // TODO
-                case MoveType.Move:
+                case MoveType.MoveToCell:
                     _model.MovePlayer(this, coordinates);
                     break;
                 case MoveType.PlaceWall:

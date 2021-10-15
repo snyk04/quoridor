@@ -10,30 +10,26 @@ namespace Quoridor.Model.Walls
     { 
         public const int AmountOfRows = 16;
         public const int AmountOfColumns = 8;
-
-        private ModelCommunication _model;
         
         public Wall[,] Walls { get; }
         
         public List<CellPair> BlockedCellPairs { get; }
-        private List<Coordinates> PlacedWalls { get; }
+        // TODO : maybe rename?
         public List<Coordinates> WallsThatCanBePlaced { get; }
-
+        
         public event Action WallPlaced;
 
-        public WallsManager(ModelCommunication model)
+        public WallsManager()
         {
-            _model = model;
-            
             Walls = new Wall[AmountOfRows, AmountOfColumns];
             
             BlockedCellPairs = new List<CellPair>();
-            PlacedWalls = new List<Coordinates>();
             WallsThatCanBePlaced = new List<Coordinates>();
 
             InitializeWallField();
         }
         
+        // TODO : maybe rename?
         public void PathfindingPlaceWall(Coordinates wallCoordinates)
         {
             Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
@@ -48,10 +44,10 @@ namespace Quoridor.Model.Walls
             }
         }
         
+        // TODO : maybe move it to WallPlacer.cs?
         public void PlaceWall(Player player, Coordinates wallCoordinates)
         {
             Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
-            PlacedWalls.Add(wallCoordinates);
             
             BlockedCellPairs.AddRange(wall.BlockedCellPairs);
 
@@ -65,30 +61,7 @@ namespace Quoridor.Model.Walls
             
             WallPlaced?.Invoke();
         }
-        public void DestroyWall(Coordinates wallCoordinates)
-        {
-            Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
-            PlacedWalls.Remove(wallCoordinates);
-            
-            foreach (CellPair cellPair in wall.BlockedCellPairs)
-            {
-                BlockedCellPairs.Remove(cellPair);
-            }
 
-            WallsThatCanBePlaced.Add(wallCoordinates);
-            foreach (Coordinates overlappedWallCoordinates in wall.OverlappedWalls)
-            {
-                WallsThatCanBePlaced.Add(overlappedWallCoordinates);
-            }
-        }
-        public void DestroyAllWalls()
-        {
-            foreach (Coordinates placedWall in PlacedWalls)
-            {
-                DestroyWall(placedWall);
-            }
-        }
-        
         private void InitializeWallField()
         {
             for (int i = 0; i < Walls.GetLength(0); i++)

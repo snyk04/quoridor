@@ -34,15 +34,17 @@ namespace Quoridor.Model.Cells
                    & cell.column >= 0; }
         public bool WallIsBetweenCells(Coordinates firstCell, Coordinates secondCell)
         {
-            bool wallExists = false;
             CellPair cellPair = new CellPair(firstCell, secondCell);
             
             foreach (CellPair blockedCellPair in _model.WallsManager.BlockedCellPairs)
             {
-                wallExists |= blockedCellPair.Equals(cellPair);
+                if (blockedCellPair.Equals(cellPair))
+                {
+                    return true;
+                }
             }
-        
-            return wallExists;
+
+            return false;
         }
         
         private void InitializeCellField()
