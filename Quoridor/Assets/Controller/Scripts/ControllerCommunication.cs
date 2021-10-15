@@ -1,6 +1,7 @@
 ﻿using System;
 using Quoridor.Model;
 using Quoridor.Model.Common;
+using Quoridor.Model.PlayerLogic;
 using Quoridor.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,6 +36,11 @@ namespace Quoridor.Controller
         {
             GC.Collect();
             SceneManager.LoadScene(MainMenuSceneId);
+        }
+
+        public void Surrender()
+        {
+            _model.StopGame(GameStopType.Surrender);
         }
         
         public void MoveToCell(Vector2Int cellCoordinates)
