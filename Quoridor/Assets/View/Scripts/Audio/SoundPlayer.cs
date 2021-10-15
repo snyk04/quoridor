@@ -1,49 +1,42 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class SoundPlayer : MonoBehaviour
+namespace Quoridor.View.Audio
 {
-    [SerializeField] private AudioClip _sound;
-
-    private AudioSource _audioSource;
-
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class SoundPlayer : MonoBehaviour
     {
-        _audioSource = GetComponent<AudioSource>();
-        if (_sound == null)
+        protected AudioSource _audioSource;
+
+        protected virtual void Awake()
         {
-            Debug.LogError("No sound", this);
+            _audioSource = GetComponent<AudioSource>();
         }
-        _audioSource.clip = _sound;
-    }
 
-    public void Play()
-    {
-        _audioSource.Play();
-    }
-    public void ExecuteAfterSound(Action method)
-    {
-        StartCoroutine(ExecuteAfterSoundRoutine(method));
-    }
-
-    public void Stop()
-    {
-        _audioSource.Stop();
-    }
-
-    private IEnumerator ExecuteAfterSoundRoutine(Action method)
-    {
-        Play();
-
-        //yield return new WaitForSeconds(_sound.length);
-
-        while (_audioSource.isPlaying)
+        public void Play()
         {
-            yield return null;
+            _audioSource.Play();
+        }
+        public void Stop()
+        {
+            _audioSource.Stop();
         }
         
-        method();
+        public void ExecuteAfterSound(Action method)
+        {
+            StartCoroutine(ExecuteAfterSoundRoutine(method));
+        }
+        private IEnumerator ExecuteAfterSoundRoutine(Action method)
+        {
+            Play();
+            
+            while (_audioSource.isPlaying)
+            {
+                yield return null;
+            }
+        
+            method();
+        }
     }
 }

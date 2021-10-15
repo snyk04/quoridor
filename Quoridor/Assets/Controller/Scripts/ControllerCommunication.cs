@@ -4,7 +4,6 @@ using Quoridor.Model.Common;
 using Quoridor.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using View.Scripts.UserInterface;
 
 namespace Quoridor.Controller
 {
@@ -14,7 +13,6 @@ namespace Quoridor.Controller
         private const int MainSceneId = 1;
         
         [SerializeField] private ViewCommunication _viewCommunication;
-        [SerializeField] private GameModeController _gameModeController;
         
         private IView _view;
         private IModel _model;
@@ -39,12 +37,12 @@ namespace Quoridor.Controller
             SceneManager.LoadScene(MainMenuSceneId);
         }
         
-        public void ChooseCell(Vector2Int cellCoordinates)
+        public void MoveToCell(Vector2Int cellCoordinates)
         {
             Coordinates convertedCoordinates = ConvertCoordinates(cellCoordinates);
             _model.MoveCurrentPlayerToCell(convertedCoordinates);
         }
-        public void TryToPlaceWall(Vector2Int wallCoordinates)
+        public void PlaceWall(Vector2Int wallCoordinates)
         {
             Coordinates convertedCoordinates = ConvertCoordinates(wallCoordinates);
             _model.PlaceCurrentPlayerWall(convertedCoordinates);

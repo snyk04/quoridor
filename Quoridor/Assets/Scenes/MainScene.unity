@@ -3776,8 +3776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f91528ad296482988c866e35f2b01af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _view: {fileID: 1663296233}
   _wallSoundPlayer: {fileID: 2067029244}
-  _wallStorage: {fileID: 162252187}
 --- !u!1001 &246879895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19342,7 +19342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695d09438f3a48ac829c6f457a9c74a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cellStorage: {fileID: 1475445947}
+  _view: {fileID: 1663296233}
   _playerSoundPlayer: {fileID: 2050567899}
   _firstPlayer: {fileID: 2089794221}
   _secondPlayer: {fileID: 366830755206447433}
@@ -25239,7 +25239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32f181c6b264e2fa3641f6f53c0ae56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cellStorage: {fileID: 1475445947}
+  _view: {fileID: 1663296233}
 --- !u!1001 &1541458122
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26882,10 +26882,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _amountOfWallsUpdater: {fileID: 564074553}
   _backgroundMusicPlayer: {fileID: 1511402379}
-  _cellHighlighter: {fileID: 1540767015}
   _playerMover: {fileID: 1218401548}
   _victoryManager: {fileID: 1699732121}
   _wallController: {fileID: 245152673}
+  _cellHighlighter: {fileID: 1540767015}
+  _cellStorage: {fileID: 1475445947}
+  _wallStorage: {fileID: 162252187}
 --- !u!1001 &1666018413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27568,7 +27570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3b088d1a8974e4e97eecf2246c8eb05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cellHighlighter: {fileID: 1540767015}
+  _view: {fileID: 1663296233}
   _backgroundMusicPlayer: {fileID: 1511402379}
   _victoryMusicPlayer: {fileID: 1732293990}
   _background: {fileID: 270908083}
@@ -31357,7 +31359,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _viewCommunication: {fileID: 1663296233}
-  _gameModeController: {fileID: 73373615}
 --- !u!4 &1928304916
 Transform:
   m_ObjectHideFlags: 0

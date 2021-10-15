@@ -7,7 +7,7 @@ namespace Quoridor.Controller
         void Restart();
         void Quit();
         
-        void ChooseCell(Vector2Int cellCoordinates);
-        void TryToPlaceWall(Vector2Int wallCoordinates);
+        void MoveToCell(Vector2Int cellCoordinates);
+        void PlaceWall(Vector2Int wallCoordinates);
     }
 }

@@ -8,8 +8,8 @@ namespace Quoridor.View.Walls
 {
     public class WallController : MonoBehaviour
     {
+        [SerializeField] private ViewCommunication _view;
         [SerializeField] private RandomSoundPlayer _wallSoundPlayer;
-        [SerializeField] private WallStorage _wallStorage;
 
         private List<WallVisual> _placedWalls;
 
@@ -20,7 +20,7 @@ namespace Quoridor.View.Walls
 
         public void PlaceWall(Coordinates wallCoordinates)
         {
-            WallVisual wall = _wallStorage[wallCoordinates];
+            WallVisual wall = _view.WallStorage[wallCoordinates];
             
             wall.HandlePlace();
             _placedWalls.Add(wall);
@@ -33,14 +33,14 @@ namespace Quoridor.View.Walls
         {
             foreach (Coordinates wallCoordinate in wallCoordinates)
             {
-                WallVisual wall = _wallStorage[wallCoordinate];
+                WallVisual wall = _view.WallStorage[wallCoordinate];
                 wall.Enable();
             }
         }
 
         private void DisableAllWalls()
         {
-            foreach (WallVisual wall in _wallStorage.Except(_placedWalls))
+            foreach (WallVisual wall in _view.WallStorage.Except(_placedWalls))
             {
                 wall.Disable();
             }

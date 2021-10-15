@@ -1,4 +1,6 @@
-﻿using Quoridor.Model.PlayerLogic;
+﻿using Quoridor.Controller;
+using Quoridor.Model.PlayerLogic;
+using Quoridor.View.Audio;
 using UnityEngine;
 using View.Scripts.UserInterface;
 
@@ -12,8 +14,8 @@ namespace Quoridor.View.UserInterface {
         [SerializeField] private ButtonContainer _secondButtonContainer;
 
         [Header("Sound players")]
-        [SerializeField] private SoundPlayer _menuMusicPlayer;
-        [SerializeField] private SoundPlayer _roundaboutPlayer;
+        [SerializeField] private CertainSoundPlayer _menuMusicPlayer;
+        [SerializeField] private CertainSoundPlayer _roundaboutPlayer;
 
         [Header("Objects")] 
         [SerializeField] private Transform _toBeContinuedImage;

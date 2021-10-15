@@ -1,6 +1,6 @@
 ﻿using Quoridor.Model.PlayerLogic;
 
-namespace View.Scripts.UserInterface
+namespace Quoridor.Controller
 {
     public static class GameModeTransmitter
     {

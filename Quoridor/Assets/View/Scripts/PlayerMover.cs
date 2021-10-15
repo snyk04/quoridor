@@ -10,7 +10,7 @@ namespace Quoridor.View
     public class PlayerMover : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private CellStorage _cellStorage;
+        [SerializeField] private ViewCommunication _view;
         [SerializeField] private RandomSoundPlayer _playerSoundPlayer;
         
         [Header("Objects")]
@@ -30,7 +30,7 @@ namespace Quoridor.View
         {
             Transform player = GetPlayer(playerType);
 
-            CellVisual cell = _cellStorage[cellCoordinates];
+            CellVisual cell = _view.CellStorage[cellCoordinates];
             Vector3 newPosition = cell.Position;
             player.position = newPosition;
             
