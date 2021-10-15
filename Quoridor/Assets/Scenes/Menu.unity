@@ -324,7 +324,7 @@ MonoBehaviour:
   _greenFiler: {fileID: 1397394461}
   _startPosition: {x: 1200, y: -420, z: 0}
   _finishPosition: {x: -650, y: -420, z: 0}
-  _time: 0.2
+  _time: 0.1
 --- !u!1 &330246208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2169,7 +2169,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1200, y: -420}
-  m_SizeDelta: {x: 460.8, y: 288}
+  m_SizeDelta: {x: 480, y: 270.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1578958438
 MonoBehaviour:
@@ -2191,7 +2191,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 99459158be420414b88720206d5f532d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2df9767754b7c8a4ba5403c592f51c6e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
