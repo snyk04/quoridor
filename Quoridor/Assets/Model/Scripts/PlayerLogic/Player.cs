@@ -38,7 +38,6 @@ namespace Quoridor.Model.PlayerLogic
         {
             switch (moveType)
             {
-                // TODO
                 case MoveType.MoveToCell:
                     _model.MovePlayer(this, coordinates);
                     break;

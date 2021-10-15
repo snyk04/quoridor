@@ -19,6 +19,7 @@ namespace Quoridor.View.UserInterface {
 
         [Header("Objects")] 
         [SerializeField] private Transform _toBeContinuedImage;
+        [SerializeField] private GameObject _greenFiler;
         [SerializeField] private Vector3 _startPosition;
         [SerializeField] private Vector3 _finishPosition;
         [SerializeField] private float _time;
@@ -45,6 +46,8 @@ namespace Quoridor.View.UserInterface {
             LoadSceneAsync();
             
             _menuMusicPlayer.Stop();
+            
+            _greenFiler.SetActive(true);
         }
         public void BackButton()
         {
