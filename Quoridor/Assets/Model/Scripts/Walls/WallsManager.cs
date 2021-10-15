@@ -19,6 +19,8 @@ namespace Quoridor.Model.Walls
         private List<Coordinates> PlacedWalls { get; }
         public List<Coordinates> WallsThatCanBePlaced { get; }
 
+        public event Action WallPlaced;
+
         public WallsManager(ModelCommunication model)
         {
             _model = model;
@@ -35,13 +37,11 @@ namespace Quoridor.Model.Walls
         public void PathfindingPlaceWall(Coordinates wallCoordinates)
         {
             Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
-            
             BlockedCellPairs.AddRange(wall.BlockedCellPairs);
         }
         public void PathfindingDestroyWall(Coordinates wallCoordinates)
         {
             Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
-            
             foreach (CellPair cellPair in wall.BlockedCellPairs)
             {
                 BlockedCellPairs.Remove(cellPair);
@@ -62,6 +62,8 @@ namespace Quoridor.Model.Walls
             }
             
             player.PlaceWall();
+            
+            WallPlaced?.Invoke();
         }
         public void DestroyWall(Coordinates wallCoordinates)
         {

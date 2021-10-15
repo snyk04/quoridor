@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
-using UnityEngine;
 
 namespace Quoridor.Model
 {
@@ -10,10 +9,14 @@ namespace Quoridor.Model
         private readonly ModelCommunication _model;
         
         private Coordinates _currentTurnPlayerCoordinates;
+        private List<Coordinates> _availableWalls;
 
         public PossibleMoves(ModelCommunication model)
         {
             _model = model;
+
+            _availableWalls = _model.WallsManager.WallsThatCanBePlaced;
+            _model.WallsManager.WallPlaced += RecalculateAvailableWalls;
         }
 
         public Coordinates[] AvailableCells(Coordinates playerCoordinates)
@@ -66,21 +69,23 @@ namespace Quoridor.Model
 
         public Coordinates[] AvailableWalls()
         {
+            return _availableWalls.ToArray();
+        }
+
+        private void RecalculateAvailableWalls()
+        {
             List<Coordinates> uncheckedWalls = new List<Coordinates>(_model.WallsManager.WallsThatCanBePlaced);
-            var checkedWalls = new List<Coordinates>();
+            _availableWalls = new List<Coordinates>();
             
             foreach (Coordinates wall in uncheckedWalls)
             {
-                Debug.Log(wall.ToString());
                 _model.WallsManager.PathfindingPlaceWall(wall);
                 if (IsAbilityToWin(_model.PlayersMoves.FirstPlayer) && IsAbilityToWin(_model.PlayersMoves.SecondPlayer))
                 {
-                    checkedWalls.Add(wall);
+                    _availableWalls.Add(wall);
                 }
                 _model.WallsManager.PathfindingDestroyWall(wall);
             }
-            
-            return checkedWalls.ToArray();
         }
         
         public bool IsAbilityToWin(Player player)

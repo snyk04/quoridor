@@ -15,7 +15,6 @@ namespace Quoridor.Model
         
         public GameCycle GameCycle { get; }
         public PlayersMoves PlayersMoves { get; }
-        public PossibleMoves PossibleMoves { get; }
         
         public CellsManager CellsManager { get; }
         public WallsManager WallsManager { get; }
@@ -23,19 +22,22 @@ namespace Quoridor.Model
         public PlayerMover PlayerMover { get; }
         public WallPlacer WallPlacer { get; }
         
+        public PossibleMoves PossibleMoves { get; }
+
         public ModelCommunication(IView view)
         {
             _view = view;
             
             GameCycle = new GameCycle(this);
             PlayersMoves = new PlayersMoves(this);
-            PossibleMoves = new PossibleMoves(this);
 
             CellsManager = new CellsManager(this);
             WallsManager = new WallsManager(this);
 
             PlayerMover = new PlayerMover(this);
             WallPlacer = new WallPlacer(this);
+            
+            PossibleMoves = new PossibleMoves(this);
         }
 
         public void StartNewGame(GameMode gameMode)
