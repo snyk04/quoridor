@@ -10,5 +10,10 @@
             this.row = row;
             this.column = column;
         }
+
+        public override string ToString()
+        {
+            return row + " " + column;
+        }
     }
 }

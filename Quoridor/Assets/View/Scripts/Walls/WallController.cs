@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Quoridor.Model.Common;
 using Quoridor.View.Audio;
@@ -41,6 +40,10 @@ namespace Quoridor.View.Walls
 
         private void DisableAllWalls()
         {
+            foreach (WallVisual wall in _placedWalls)
+            {
+                Debug.Log(wall.transform.position);
+            }
             foreach (WallVisual wall in _wallStorage.Except(_placedWalls))
             {
                 wall.Disable();

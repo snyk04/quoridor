@@ -12,8 +12,8 @@ namespace Quoridor.Model.PlayerLogic
         private readonly Coordinates _firstPlayerStartPosition = new Coordinates(8, 4);
         private readonly Coordinates _secondPlayerStartPosition = new Coordinates(0, 4);
         
-        private Player _firstPlayer;
-        private Player _secondPlayer;
+        public Player FirstPlayer { get; set; }
+        public Player SecondPlayer { get; set; }
 
         public Player _currentPlayer;
 
@@ -52,8 +52,8 @@ namespace Quoridor.Model.PlayerLogic
         {
             _currentPlayer = _currentPlayer.Type switch
             {
-                PlayerType.First => _secondPlayer,
-                PlayerType.Second => _firstPlayer,
+                PlayerType.First => SecondPlayer,
+                PlayerType.Second => FirstPlayer,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -66,14 +66,14 @@ namespace Quoridor.Model.PlayerLogic
 
         private void InitializePlayers(GameMode gameMode)
         {
-            _firstPlayer = gameMode switch
+            FirstPlayer = gameMode switch
             {
                 GameMode.PlayerVsPlayer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
                 GameMode.PlayerVsComputer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
                 GameMode.ComputerVsComputer => new RandomBot(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
                 _ => throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null)
             };
-            _secondPlayer = gameMode switch
+            SecondPlayer = gameMode switch
             {
                 GameMode.PlayerVsPlayer => new Player(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
                 GameMode.PlayerVsComputer => new RandomBot(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
@@ -83,17 +83,17 @@ namespace Quoridor.Model.PlayerLogic
         }
         private void HandleMoveEndEvents()
         {
-            _firstPlayer.MovePerformed += ChangeCurrentPlayer;
-            _firstPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
-            _secondPlayer.MovePerformed += ChangeCurrentPlayer;
-            _secondPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
+            FirstPlayer.MovePerformed += ChangeCurrentPlayer;
+            FirstPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
+            SecondPlayer.MovePerformed += ChangeCurrentPlayer;
+            SecondPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
         }
         private void NullifyMoveEndEvents()
         {
-            _firstPlayer.MovePerformed -= ChangeCurrentPlayer;
-            _firstPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
-            _secondPlayer.MovePerformed -= ChangeCurrentPlayer;
-            _secondPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
+            FirstPlayer.MovePerformed -= ChangeCurrentPlayer;
+            FirstPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
+            SecondPlayer.MovePerformed -= ChangeCurrentPlayer;
+            SecondPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
         }
 
         private void StartGame(GameMode gameMode)
@@ -101,7 +101,7 @@ namespace Quoridor.Model.PlayerLogic
             InitializePlayers(gameMode);
             HandleMoveEndEvents();
             
-            _currentPlayer = _firstPlayer;
+            _currentPlayer = FirstPlayer;
             SetCurrentPlayerAvailableMoves();
         }
     }

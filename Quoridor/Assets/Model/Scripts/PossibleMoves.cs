@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Quoridor.Model.Common;
+using Quoridor.Model.PlayerLogic;
+using UnityEngine;
 
 namespace Quoridor.Model
 {
@@ -16,13 +18,12 @@ namespace Quoridor.Model
 
         public Coordinates[] AvailableCells(Coordinates playerCoordinates)
         {
-            // TODO
             _currentTurnPlayerCoordinates = playerCoordinates;
             return GetAvailableCellsFromCell(playerCoordinates);
         }
         public Coordinates[] GetAvailableCellsFromCell(Coordinates cellCoordinates)
         {
-            var uncheckedCells = new Coordinates[]
+            Coordinates[] uncheckedCells =
             {
                 new Coordinates(cellCoordinates.row + 1, cellCoordinates.column),
                 new Coordinates(cellCoordinates.row - 1, cellCoordinates.column),
@@ -45,10 +46,10 @@ namespace Quoridor.Model
                 return;
             }
 
-            // if (_model.CellsManager.WallIsBetweenCells(moveFrom, moveTo))
-            // {
-            //     return;
-            // }
+            if (_model.CellsManager.WallIsBetweenCells(moveFrom, moveTo))
+            {
+                return;
+            }
             
             if (_model.CellsManager.CellIsBusy(moveTo))
             {
@@ -62,14 +63,53 @@ namespace Quoridor.Model
                 possibleMoves.Add(moveTo);
             }
         }
-        
-        
+
         public Coordinates[] AvailableWalls()
         {
-            // TODO
-            Coordinates[] array = new Coordinates[] {new Coordinates(0, 1)};
+            List<Coordinates> uncheckedWalls = new List<Coordinates>(_model.WallsManager.WallsThatCanBePlaced);
+            var checkedWalls = new List<Coordinates>();
+            
+            foreach (Coordinates wall in uncheckedWalls)
+            {
+                Debug.Log(wall.ToString());
+                _model.WallsManager.PathfindingPlaceWall(wall);
+                if (IsAbilityToWin(_model.PlayersMoves.FirstPlayer) && IsAbilityToWin(_model.PlayersMoves.SecondPlayer))
+                {
+                    checkedWalls.Add(wall);
+                }
+                _model.WallsManager.PathfindingDestroyWall(wall);
+            }
+            
+            return checkedWalls.ToArray();
+        }
+        
+        public bool IsAbilityToWin(Player player)
+        {
+            List<Coordinates> visitedCells = new List<Coordinates>();
+            _currentTurnPlayerCoordinates = player.Position;
 
-            return array;
+            return Func(player.Position, player.VictoryRow, visitedCells);
+        }
+        private bool Func(Coordinates cell, int rowToWin, ICollection<Coordinates> visitedCells)
+        {
+            visitedCells.Add(cell);
+            var result = false;
+            foreach (Coordinates cellToCheck in GetAvailableCellsFromCell(cell))
+            {
+                if (visitedCells.Contains(cellToCheck))
+                {
+                    continue;
+                }
+                if (cellToCheck.row == rowToWin)
+                {
+                    return true;
+                }
+                    
+                visitedCells.Add(cellToCheck);
+                result |= Func(cellToCheck, rowToWin, visitedCells);
+            }
+
+            return result;
         }
     }
 }
