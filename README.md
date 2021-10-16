@@ -32,6 +32,8 @@ The first player who reaches any of the squares opposite his base line is the wi
 
 ## Screenshots
 ![](https://github.com/snyk04/quoridor/blob/master/Images/Screenshots/Screenshot%201.png)
+
 ![](https://github.com/snyk04/quoridor/blob/master/Images/Screenshots/Screenshot%202.png)
+
 ![](https://github.com/snyk04/quoridor/blob/master/Images/Screenshots/Screenshot%203.png)
 
