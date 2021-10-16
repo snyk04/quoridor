@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Quoridor.Model.Cells;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
