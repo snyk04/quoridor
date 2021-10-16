@@ -1,5 +1,5 @@
 # Quoridor
-Awesome tactical board game.
+Awesome tactical board game for 2 players.
 
 ![Я в коридоре](https://github.com/snyk04/quoridor/blob/master/Images/QuoridorImage.png)
 
