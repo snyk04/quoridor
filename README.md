@@ -1,5 +1,5 @@
 # Quoridor
-Awesome tactical board game
+Awesome tactical board game with ability to play against another player on the same screen and against AI.
 
 ![](https://github.com/snyk04/quoridor/blob/readme/Images/QuoridorImage.png)
 
