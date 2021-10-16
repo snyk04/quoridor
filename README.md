@@ -31,4 +31,4 @@ Walls are flat two-space-wide pieces which can be placed between 2 sets of 2 squ
 The first player who reaches any of the squares opposite his base line is the winner.
 
 ## Screenshots
-![](https://github.com/snyk04/quoridor/blob/master/Images/ScreenShots/ScreenShot%201.png)
+![](https://github.com/snyk04/quoridor/blob/master/Images/Screenshots/Screenshot%201.png)
