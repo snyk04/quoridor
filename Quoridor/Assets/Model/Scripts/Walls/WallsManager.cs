@@ -14,8 +14,7 @@ namespace Quoridor.Model.Walls
         public Wall[,] Walls { get; }
         
         public List<CellPair> BlockedCellPairs { get; }
-        // TODO : maybe rename?
-        public List<Coordinates> WallsThatCanBePlaced { get; }
+        public List<Coordinates> AvailableWalls { get; }
         
         public event Action WallPlaced;
 
@@ -24,18 +23,34 @@ namespace Quoridor.Model.Walls
             Walls = new Wall[AmountOfRows, AmountOfColumns];
             
             BlockedCellPairs = new List<CellPair>();
-            WallsThatCanBePlaced = new List<Coordinates>();
+            AvailableWalls = new List<Coordinates>();
 
             InitializeWallField();
         }
         
-        // TODO : maybe rename?
-        public void PathfindingPlaceWall(Coordinates wallCoordinates)
+        public void PlaceWall(Player player, Coordinates wallCoordinates)
+        {
+            Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
+            
+            BlockedCellPairs.AddRange(wall.BlockedCellPairs);
+
+            AvailableWalls.Remove(wallCoordinates);
+            foreach (Coordinates overlappedWallCoordinates in wall.OverlappedWalls)
+            {
+                AvailableWalls.Remove(overlappedWallCoordinates);
+            }
+            
+            player.PlaceWall();
+            
+            WallPlaced?.Invoke();
+        }
+        
+        public void PlaceTemporaryWall(Coordinates wallCoordinates)
         {
             Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
             BlockedCellPairs.AddRange(wall.BlockedCellPairs);
         }
-        public void PathfindingDestroyWall(Coordinates wallCoordinates)
+        public void DestroyTemporaryWall(Coordinates wallCoordinates)
         {
             Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
             foreach (CellPair cellPair in wall.BlockedCellPairs)
@@ -44,24 +59,6 @@ namespace Quoridor.Model.Walls
             }
         }
         
-        // TODO : maybe move it to WallPlacer.cs?
-        public void PlaceWall(Player player, Coordinates wallCoordinates)
-        {
-            Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
-            
-            BlockedCellPairs.AddRange(wall.BlockedCellPairs);
-
-            WallsThatCanBePlaced.Remove(wallCoordinates);
-            foreach (Coordinates overlappedWallCoordinates in wall.OverlappedWalls)
-            {
-                WallsThatCanBePlaced.Remove(overlappedWallCoordinates);
-            }
-            
-            player.PlaceWall();
-            
-            WallPlaced?.Invoke();
-        }
-
         private void InitializeWallField()
         {
             for (int i = 0; i < Walls.GetLength(0); i++)
@@ -97,7 +94,7 @@ namespace Quoridor.Model.Walls
                             });
                     }
 
-                    WallsThatCanBePlaced.Add(new Coordinates(i, j));
+                    AvailableWalls.Add(new Coordinates(i, j));
                 }
             }
         }

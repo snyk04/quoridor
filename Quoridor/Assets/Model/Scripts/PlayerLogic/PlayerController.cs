@@ -3,7 +3,7 @@ using Quoridor.Model.Common;
 
 namespace Quoridor.Model.PlayerLogic
 {
-    public sealed class PlayersMoves
+    public sealed class PlayerController
     {
         private const int DefaultAmountOfWalls = 10;
 
@@ -17,9 +17,8 @@ namespace Quoridor.Model.PlayerLogic
 
         private Player _currentPlayer;
 
-        // TODO : maybe delete?
-        public PlayerType CurrentPlayerType => _currentPlayer.Type;
-        public PlayerType CurrentPlayerOpponentType
+        private PlayerType CurrentPlayerType => _currentPlayer.Type;
+        private PlayerType CurrentPlayerOpponentType
         {
             get
             {
@@ -31,8 +30,8 @@ namespace Quoridor.Model.PlayerLogic
                 };
             }
         }
-        
-        public PlayersMoves(ModelCommunication model)
+
+        public PlayerController(ModelCommunication model)
         {
             _model = model;
             
@@ -49,9 +48,19 @@ namespace Quoridor.Model.PlayerLogic
             _currentPlayer.MakeMove(MoveType.PlaceWall, wall);
         }
 
+        public PlayerType GetWinner(GameStopType gameStopType)
+        {
+            return gameStopType switch
+            {
+                GameStopType.Surrender => CurrentPlayerOpponentType,
+                GameStopType.Victory => CurrentPlayerType,
+                _ => throw new ArgumentOutOfRangeException(nameof(gameStopType), gameStopType, null)
+            };
+        }
+
         private void ChangeCurrentPlayer()
         {
-            _currentPlayer = _currentPlayer.Type switch
+            _currentPlayer = CurrentPlayerType switch
             {
                 PlayerType.First => SecondPlayer,
                 PlayerType.Second => FirstPlayer,
@@ -65,7 +74,7 @@ namespace Quoridor.Model.PlayerLogic
             _currentPlayer.SetPossibleMoves(cells, walls);
         }
 
-        // TODO : maybe some refactor?
+        // TODO : maybe refactor?
         private void InitializePlayers(GameMode gameMode)
         {
             FirstPlayer = gameMode switch

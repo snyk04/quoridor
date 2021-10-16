@@ -11,7 +11,7 @@ interface IModel
 class ModelCommunication
 {    
     GameCycle : GameCycle
-    PlayersMoves : PlayersMoves
+    PlayerController : PlayerController
     
     CellsManager : CellsManager
     WallsManager : WallsManager
@@ -36,16 +36,18 @@ class GameCycle
     StopGame() : void
 }
 
-class PlayersMoves
+class PlayerController
 {
     FirstPlayer : Player
     SecondPlayer : Player
    
-   CurrentPlayerType : PlayerType
-   CurrentPlayerOpponent Type : PlayerType
+    CurrentPlayerType : PlayerType
+    CurrentPlayerOpponent Type : PlayerType
 
     MoveCurrentPlayerToCell(c : Coordinates) : void
     PlaceCurrentPlayerWall(w : Coordinates) : void
+
+    GetWinner(g : GameStopType) : PlayerType
 }
 class Player
 {
@@ -93,14 +95,14 @@ class WallsManager
     Walls : Wall[,]
     
     BlockedCellPairs : List<CellPair>
-    WallsThatCanBePlaced : List<Coordinates>
+    AvailableWalls : List<Coordinates>
     
     WallPlaced : Action
     
-    PathfindingPlaceWall(w : Coordinates) : void
-    PathfindingDestroyWall(w : Coordinates) : void
-    
     PlaceWall(p : Player, w : Coordinates) : void
+    
+    PlaceTemporaryWall(w : Coordinates) : void
+    DestroyTemporaryWall(w : Coordinates) : void
 }
 class Wall
 {
@@ -131,8 +133,8 @@ IModel <|.. ModelCommunication
 
 ModelCommunication *--o GameCycle
 
-ModelCommunication *--o PlayersMoves
-PlayersMoves *-- Player
+ModelCommunication *--o PlayerController
+PlayerController *-- Player
 Player <|-- Bot
 Bot <|-- RandomBot
 

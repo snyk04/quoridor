@@ -13,7 +13,7 @@ namespace Quoridor.Model
         private readonly IView _view;
         
         public GameCycle GameCycle { get; }
-        public PlayersMoves PlayersMoves { get; }
+        public PlayerController PlayerController { get; }
         
         public CellsManager CellsManager { get; }
         public WallsManager WallsManager { get; }
@@ -27,7 +27,7 @@ namespace Quoridor.Model
             _view = view;
             
             GameCycle = new GameCycle(this);
-            PlayersMoves = new PlayersMoves(this);
+            PlayerController = new PlayerController(this);
 
             CellsManager = new CellsManager(this);
             WallsManager = new WallsManager();
@@ -43,23 +43,17 @@ namespace Quoridor.Model
         }
         public void StopGame(GameStopType gameStopType)
         {
-            PlayerType winner = gameStopType switch
-            {
-                GameStopType.Surrender => PlayersMoves.CurrentPlayerOpponentType,
-                GameStopType.Victory => PlayersMoves.CurrentPlayerType,
-                _ => throw new ArgumentOutOfRangeException(nameof(gameStopType), gameStopType, null)
-            };
-            
+            PlayerType winner = PlayerController.GetWinner(gameStopType);
             _view.EndGame(winner);
         }
 
         public void MoveCurrentPlayerToCell(Coordinates cell)
         {
-            PlayersMoves.MoveCurrentPlayerToCell(cell);
+            PlayerController.MoveCurrentPlayerToCell(cell);
         }
         public void PlaceCurrentPlayerWall(Coordinates wall)
         {
-            PlayersMoves.PlaceCurrentPlayerWall(wall);
+            PlayerController.PlaceCurrentPlayerWall(wall);
         }
 
         internal void MovePlayer(Player player, Coordinates coordinates)

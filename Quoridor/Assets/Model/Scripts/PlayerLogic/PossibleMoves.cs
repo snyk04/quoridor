@@ -14,7 +14,7 @@ namespace Quoridor.Model.PlayerLogic
         {
             _model = model;
 
-            _availableWalls = _model.WallsManager.WallsThatCanBePlaced;
+            _availableWalls = _model.WallsManager.AvailableWalls;
             _model.WallsManager.WallPlaced += RecalculateAvailableWalls;
         }
 
@@ -68,18 +68,18 @@ namespace Quoridor.Model.PlayerLogic
 
         private void RecalculateAvailableWalls()
         {
-            List<Coordinates> uncheckedWalls = new List<Coordinates>(_model.WallsManager.WallsThatCanBePlaced);
+            List<Coordinates> uncheckedWalls = new List<Coordinates>(_model.WallsManager.AvailableWalls);
             _availableWalls = new List<Coordinates>();
             
             foreach (Coordinates wall in uncheckedWalls)
             {
-                _model.WallsManager.PathfindingPlaceWall(wall);
-                if (PlayerCanWin(_model.PlayersMoves.FirstPlayer) && PlayerCanWin(_model.PlayersMoves.SecondPlayer))
+                _model.WallsManager.PlaceTemporaryWall(wall);
+                if (PlayerCanWin(_model.PlayerController.FirstPlayer) && PlayerCanWin(_model.PlayerController.SecondPlayer))
                 {
                     _availableWalls.Add(wall);
                 }
 
-                _model.WallsManager.PathfindingDestroyWall(wall);
+                _model.WallsManager.DestroyTemporaryWall(wall);
             }
         }
         

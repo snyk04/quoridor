@@ -19,7 +19,6 @@ namespace Quoridor.Model
         {
             GameStarted?.Invoke(gameMode);
         }
-        // TODO : why don't use GameStopType?
         public void StopGame()
         {
             _model.StopGame(GameStopType.Victory);
