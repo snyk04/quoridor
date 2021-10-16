@@ -1,15 +1,15 @@
 # Quoridor
 Awesome tactical board game.
 
-![](https://github.com/snyk04/quoridor/blob/master/Images/QuoridorImage.png)
+![Я в коридоре](https://github.com/snyk04/quoridor/blob/master/Images/QuoridorImage.png)
 
 ## How to start playing
 Follow the below instructions to play Quoridor:
 1. Click on "Code" button.
-2. Choose "Download ZIP" option.
+2. In the dropdown menu choose "Download ZIP".
 3. Unzip downloaded archive.
-4. Open "/Game" directory.
-5. Run Quoridor.exe.
+4. Open "Game" directory.
+5. Execute Quoridor.exe.
 
 ## Game rules
 ### Board
