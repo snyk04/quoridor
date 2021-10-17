@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace View.Scripts.UserInterface
 {
-    public class AsyncSceneLoader
+    public sealed class AsyncSceneLoader
     {
         private AsyncOperation _asyncLoad;
         

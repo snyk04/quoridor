@@ -3,7 +3,7 @@ using Quoridor.Model.Common;
 
 namespace Quoridor.Model.Walls
 {
-    public class Wall
+    public sealed class Wall
     {
         public CellPair[] BlockedCellPairs { get; }
         public Coordinates[] OverlappedWalls { get; }

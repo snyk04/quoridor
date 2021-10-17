@@ -4,7 +4,7 @@ using Quoridor.Model.PlayerLogic;
 
 namespace Quoridor.Model
 {
-    public class PlayerMover
+    public sealed class PlayerMover
     {
         private readonly ModelCommunication _model;
 

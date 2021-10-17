@@ -5,7 +5,7 @@ using UnityEngine;
 using View.Scripts.UserInterface;
 
 namespace Quoridor.View.UserInterface {
-    public class MainMenu : MonoBehaviour
+    public sealed class MainMenu : MonoBehaviour
     {
         private const int MainSceneId = 1;
         

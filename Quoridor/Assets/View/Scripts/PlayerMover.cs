@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Quoridor.View
 {
-    public class PlayerMover : MonoBehaviour
+    public sealed class PlayerMover : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private ViewCommunication _view;

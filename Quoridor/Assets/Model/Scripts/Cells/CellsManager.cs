@@ -2,7 +2,7 @@
 
 namespace Quoridor.Model.Cells
 {
-    public class CellsManager
+    public sealed class CellsManager
     {
         public const int AmountOfRows = 9;
         public const int AmountOfColumns = 9;

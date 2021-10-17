@@ -3,7 +3,7 @@ using Quoridor.Model.PlayerLogic;
 
 namespace Quoridor.Model
 {
-    public class GameCycle
+    public sealed class GameCycle
     {
         private readonly ModelCommunication _model;
         

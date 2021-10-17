@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Quoridor.View.UserInterface
 {
-    public class ButtonContainer : MonoBehaviour
+    public sealed class ButtonContainer : MonoBehaviour
     {
         [SerializeField] private Button[] _buttons;
 

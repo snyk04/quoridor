@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Quoridor.View.UserInterface
 {
-    public class AmountOfWallsUpdater : MonoBehaviour
+    public sealed class AmountOfWallsUpdater : MonoBehaviour
     {
         [SerializeField] private Text _firstPlayerAmountOfWallsCounter;
         [SerializeField] private Text _secondPlayerAmountOfWallsCounter;

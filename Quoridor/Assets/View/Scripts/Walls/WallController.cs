@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Quoridor.View.Walls
 {
-    public class WallController : MonoBehaviour
+    public sealed class WallController : MonoBehaviour
     {
         [SerializeField] private ViewCommunication _view;
         [SerializeField] private RandomSoundPlayer _wallSoundPlayer;

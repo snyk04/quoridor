@@ -8,7 +8,7 @@ namespace Quoridor.View
     [RequireComponent(typeof(Button))]
     [RequireComponent(typeof(EventTrigger))]
     [RequireComponent(typeof(Image))]
-    public class WallVisual : MonoBehaviour
+    public sealed class WallVisual : MonoBehaviour
     {
         private Button _button;
         private EventTrigger _eventTrigger;

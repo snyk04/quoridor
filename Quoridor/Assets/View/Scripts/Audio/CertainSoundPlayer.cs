@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Quoridor.View.Audio
 {
-    public class CertainSoundPlayer : SoundPlayer
+    public sealed class CertainSoundPlayer : SoundPlayer
     {
         [SerializeField] private AudioClip _sound;
 

@@ -2,7 +2,7 @@
 
 namespace Quoridor.View.Cells
 {
-    public class CellStorage : Storage<CellVisual>
+    public sealed class CellStorage : Storage<CellVisual>
     {
         protected override int AmountOfColumns => CellsManager.AmountOfColumns;
     }

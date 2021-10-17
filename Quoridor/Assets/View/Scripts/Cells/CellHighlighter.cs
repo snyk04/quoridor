@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Quoridor.View.Cells
 {
-    public class CellHighlighter : MonoBehaviour
+    public sealed class CellHighlighter : MonoBehaviour
     {
         [SerializeField] private ViewCommunication _view;
 

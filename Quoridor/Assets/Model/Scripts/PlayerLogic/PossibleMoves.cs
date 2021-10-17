@@ -3,7 +3,7 @@ using Quoridor.Model.Common;
 
 namespace Quoridor.Model.PlayerLogic
 {
-    public class PossibleMoves
+    public sealed class PossibleMoves
     {
         private readonly ModelCommunication _model;
         

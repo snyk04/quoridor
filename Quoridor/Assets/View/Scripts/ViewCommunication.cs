@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Quoridor.View
 {
-    public class ViewCommunication : MonoBehaviour, IView
+    public sealed class ViewCommunication : MonoBehaviour, IView
     {
         [Header("Components")] 
         [SerializeField] private AmountOfWallsUpdater _amountOfWallsUpdater;

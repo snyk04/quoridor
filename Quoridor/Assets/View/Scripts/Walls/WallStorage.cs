@@ -2,7 +2,7 @@
 
 namespace Quoridor.View.Walls
 {
-    public class WallStorage : Storage<WallVisual>
+    public sealed class WallStorage : Storage<WallVisual>
     {
         protected override int AmountOfColumns => WallsManager.AmountOfColumns;
     }

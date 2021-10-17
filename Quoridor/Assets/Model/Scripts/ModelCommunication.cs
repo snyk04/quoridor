@@ -7,7 +7,7 @@ using Quoridor.View;
 
 namespace Quoridor.Model
 {
-    public class ModelCommunication : IModel
+    public sealed class ModelCommunication : IModel
     {
         private readonly IView _view;
         

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Quoridor.View
 {
-    public class VictoryManager : MonoBehaviour
+    public sealed class VictoryManager : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private ViewCommunication _view;

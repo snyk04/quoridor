@@ -3,7 +3,7 @@ using Random = UnityEngine.Random;
 
 namespace Quoridor.View.Audio
 {
-    public class RandomSoundPlayer : SoundPlayer
+    public sealed class RandomSoundPlayer : SoundPlayer
     {
         [SerializeField] private AudioClip[] _sounds;
 

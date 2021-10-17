@@ -6,7 +6,7 @@ using Quoridor.Model.PlayerLogic;
 
 namespace Quoridor.Model.Walls
 {
-    public class WallsManager
+    public sealed class WallsManager
     { 
         public const int AmountOfRows = 16;
         public const int AmountOfColumns = 8;
