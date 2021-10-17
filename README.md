@@ -6,7 +6,7 @@ Awesome tactical board game for 2 players.
 ## How to start playing
 Follow the below instructions to play Quoridor:
 1. Open "Releases" folder.
-2. Go to latest release and download "Quoridor" archive.
+2. Go to the latest release and download "Quoridor" archive.
 3. Unzip downloaded archive.
 4. Execute Quoridor.exe.
 
