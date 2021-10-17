@@ -16,8 +16,6 @@ namespace Quoridor.Model.Walls
         public List<CellPair> BlockedCellPairs { get; }
         public List<Coordinates> AvailableWalls { get; }
         
-        public event Action WallPlaced;
-
         public WallsManager()
         {
             Walls = new Wall[AmountOfRows, AmountOfColumns];
@@ -41,8 +39,6 @@ namespace Quoridor.Model.Walls
             }
             
             player.PlaceWall();
-            
-            WallPlaced?.Invoke();
         }
         
         public void PlaceTemporaryWall(Coordinates wallCoordinates)

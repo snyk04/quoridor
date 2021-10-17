@@ -31,6 +31,8 @@ namespace Quoridor.View.Walls
         }
         public void EnableWalls(IEnumerable<Coordinates> wallCoordinates)
         {
+            DisableAllWalls();
+            
             foreach (Coordinates wallCoordinate in wallCoordinates)
             {
                 WallVisual wall = _view.WallStorage[wallCoordinate];
