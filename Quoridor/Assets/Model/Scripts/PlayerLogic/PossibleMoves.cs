@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Quoridor.Model.Common;
-using UnityEngine;
 
 namespace Quoridor.Model.PlayerLogic
 {
@@ -40,22 +39,42 @@ namespace Quoridor.Model.PlayerLogic
         }
         private void TryToAddCell(Coordinates moveFrom, Coordinates moveTo, List<Coordinates> availableCells)
         {
-            if (!_model.CellsManager.CellIsReal(moveTo) || _model.CellsManager.WallIsBetweenCells(moveFrom, moveTo))
+            if (!IsWayBetweenCells(moveFrom, moveTo))
             {
                 return;
             }
 
             if (_model.CellsManager.CellIsBusy(moveTo))
             {
-                if (!_currentTurnPlayerCoordinates.Equals(moveTo))
+                if (_currentTurnPlayerCoordinates.Equals(moveTo))
                 {
-                    availableCells.AddRange(GetAvailableCellsFromCell(moveTo));
+                    return;
                 }
+                
+                FindWayToJumpOver(moveFrom, moveTo, availableCells);
+                return;
             }
-            else
+         
+            availableCells.Add(moveTo);
+        }
+        private bool IsWayBetweenCells(Coordinates moveFrom, Coordinates moveTo)
+        {
+            return _model.CellsManager.CellIsReal(moveFrom)
+                   && _model.CellsManager.CellIsReal(moveTo) 
+                   && !_model.CellsManager.WallIsBetweenCells(moveFrom, moveTo);
+        }
+        private void FindWayToJumpOver(Coordinates moveFrom, Coordinates moveTo, List<Coordinates> availableCells)
+        {
+            Coordinates jumpDirection = moveTo - moveFrom;
+            Coordinates cellBehindEnemy = moveTo + jumpDirection;
+                    
+            if (IsWayBetweenCells(moveTo, cellBehindEnemy))
             {
-                availableCells.Add(moveTo);
+                availableCells.Add(cellBehindEnemy);
+                return;
             }
+            
+            availableCells.AddRange(GetAvailableCellsFromCell(moveTo));
         }
 
         public Coordinates[] AvailableWalls()
