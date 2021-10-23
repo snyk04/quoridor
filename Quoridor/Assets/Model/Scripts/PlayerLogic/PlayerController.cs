@@ -12,8 +12,10 @@ namespace Quoridor.Model.PlayerLogic
         
         private readonly ModelCommunication _model;
 
-        public Player FirstPlayer { get; set; }
-        public Player SecondPlayer { get; set; }
+        public Player FirstPlayer { get; private set; }
+        public Player SecondPlayer { get; private set; }
+
+        public bool PlayersHaveWalls => FirstPlayer.AmountOfWalls > 0 || SecondPlayer.AmountOfWalls > 0;
 
         private Player _currentPlayer;
 

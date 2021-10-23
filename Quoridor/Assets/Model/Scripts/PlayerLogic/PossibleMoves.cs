@@ -7,6 +7,7 @@ namespace Quoridor.Model.PlayerLogic
     {
         private readonly ModelCommunication _model;
         
+        private List<Coordinates> _availableWalls;
         private Coordinates _currentTurnPlayerCoordinates;
 
         public PossibleMoves(ModelCommunication model)
@@ -79,21 +80,30 @@ namespace Quoridor.Model.PlayerLogic
 
         public Coordinates[] AvailableWalls()
         {
+            if (_model.PlayerController.PlayersHaveWalls)
+            {
+                RecalculateAvailableWalls();
+            }
+
+            return _availableWalls.ToArray();
+        }
+        private void RecalculateAvailableWalls()
+        {
             List<Coordinates> uncheckedWalls = new List<Coordinates>(_model.WallsManager.AvailableWalls);
-            List<Coordinates> availableWalls = new List<Coordinates>();
+            _availableWalls = new List<Coordinates>();
             
             foreach (Coordinates wall in uncheckedWalls)
             {
                 _model.WallsManager.PlaceTemporaryWall(wall);
-                if (PlayerCanWin(_model.PlayerController.FirstPlayer) && PlayerCanWin(_model.PlayerController.SecondPlayer))
+
+                if (PlayerCanWin(_model.PlayerController.FirstPlayer)
+                    && PlayerCanWin(_model.PlayerController.SecondPlayer))
                 {
-                    availableWalls.Add(wall);
+                    _availableWalls.Add(wall);
                 }
 
                 _model.WallsManager.DestroyTemporaryWall(wall);
             }
-
-            return availableWalls.ToArray();
         }
 
         private bool PlayerCanWin(Player player)
