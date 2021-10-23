@@ -48,7 +48,7 @@ namespace Quoridor.Model.PlayerLogic
                     throw new ArgumentOutOfRangeException(nameof(moveType), moveType, null);
             }
 
-            OnMovePerformed();
+            MovePerformed?.Invoke();
         }
 
         public void MoveTo(Coordinates coordinates)
@@ -58,11 +58,6 @@ namespace Quoridor.Model.PlayerLogic
         public void PlaceWall()
         {
             AmountOfWalls -= 1;
-        }
-
-        protected void OnMovePerformed()
-        {
-            MovePerformed?.Invoke();
         }
     }
 }
