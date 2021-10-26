@@ -21,9 +21,5 @@ namespace Quoridor.Controller
         {
             throw new System.NotImplementedException();
         }
-        
-        public static void Main(string[] args)
-        {
-        }
     }
 }
