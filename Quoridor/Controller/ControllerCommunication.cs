@@ -1,25 +1,54 @@
-﻿using Quoridor.Model.Common;
+﻿using System;
 
 namespace Quoridor.Controller
 {
     public class ControllerCommunication : IController
     {
-        public void Restart()
+        public void StartGame()
         {
-            throw new System.NotImplementedException();
+            GameLoop();
         }
-        public void Quit()
+        private void GameLoop()
         {
-            throw new System.NotImplementedException();
+            while (true)
+            {
+                if (!TryToReadCommand(out Command command, out string arguments))
+                {
+                    Console.WriteLine("error!");
+                }
+            }
         }
+        private static bool TryToReadCommand(out Command command, out string arguments)
+        {
+            command = default;
+            arguments = default;
+            
+            Console.Write("-> ");
 
-        public void MoveToCell(Coordinates cellCoordinates)
-        {
-            throw new System.NotImplementedException();
-        }
-        public void PlaceWall(Coordinates wallCoordinates)
-        {
-            throw new System.NotImplementedException();
+            string playerInput = Console.ReadLine();
+            if (playerInput == null)
+            {
+                return false;
+            }
+            
+            string[] splittedPlayerInput = playerInput.Split(' ');
+            string commandString = splittedPlayerInput[0];
+            
+            if (!Enum.TryParse(commandString, true, out command))
+            {
+                Console.WriteLine($"{commandString}: unknown command");
+                return false;
+            }
+            
+            if (splittedPlayerInput.Length > 2)
+            {
+                Console.WriteLine($"{commandString}: too much arguments");
+                return false;
+            }
+            
+            arguments = splittedPlayerInput[1];    
+            
+            return true;
         }
     }
 }
