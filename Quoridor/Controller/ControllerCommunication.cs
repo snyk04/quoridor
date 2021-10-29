@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Quoridor.Model;
 using Quoridor.Model.Common;
@@ -31,39 +32,69 @@ namespace Quoridor.Controller
         {
             while (true)
             {
-                if (!TryToReadCommand(out Command command, out string arguments))
+                if (!TryToReadCommand(out Command command, out string[] arguments))
                 {
-                    Console.WriteLine("error!");
+                    continue;
                 }
                 
                 // TODO : refactor
                 switch (command)
                 {
                     case Command.Move or Command.Jump:
-                        Coordinates cellCoordinates = CellsConverter.MixedToNumber(arguments);
+                        if (!CheckArgumentsAmount(command, arguments, 1))
+                        {
+                            continue;
+                        }
+
+                        Coordinates cellCoordinates;
+                        try
+                        {
+                            cellCoordinates = CellsConverter.MixedToNumber(arguments[0]);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"{command.ToString().ToLower()}: wrong argument");
+                            continue;
+                        }
+                        
                         if (!AvailableMoves.Contains(cellCoordinates))
                         {
                             Console.WriteLine("you can't move here");
-                            break;
+                            continue;
                         }
                         _model.MoveCurrentPlayerToCell(cellCoordinates);
-                        break;
+                        continue;
                     case Command.Place:
-                        Coordinates wallCoordinates = WallsConverter.MixedToNumber(arguments);
+                        if (!CheckArgumentsAmount(command, arguments, 1))
+                        {
+                            continue;
+                        }
+                        
+                        Coordinates wallCoordinates;
+                        try
+                        {
+                            wallCoordinates = WallsConverter.MixedToNumber(arguments[0]);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"{command.ToString().ToLower()}: wrong argument");
+                            continue;
+                        }
+                        
                         if (!AvailableWalls.Contains(wallCoordinates))
                         {
                             Console.WriteLine("you can't place wall here");
-                            break;
+                            continue;
                         }
                         _model.PlaceCurrentPlayerWall(wallCoordinates);
-                        break;
+                        continue;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        continue;
                 }
             }
         }
         
-        private static bool TryToReadCommand(out Command command, out string arguments)
+        private static bool TryToReadCommand(out Command command, out string[] arguments)
         {
             command = default;
             arguments = default;
@@ -74,7 +105,7 @@ namespace Quoridor.Controller
                 return false;
             }
             
-            string[] splittedPlayerInput = playerInput.Split(' ');
+            List<string> splittedPlayerInput = new List<string>(playerInput.Split(' '));
             string commandString = splittedPlayerInput[0];
             
             if (!Enum.TryParse(commandString, true, out command))
@@ -82,16 +113,25 @@ namespace Quoridor.Controller
                 Console.WriteLine($"{commandString}: unknown command");
                 return false;
             }
-            
-            if (splittedPlayerInput.Length > 2)
-            {
-                Console.WriteLine($"{commandString}: too much arguments");
-                return false;
-            }
-            
-            arguments = splittedPlayerInput[1];    
+
+            splittedPlayerInput.Remove(commandString);
+            arguments = splittedPlayerInput.ToArray();
             
             return true;
+        }
+        private bool CheckArgumentsAmount(Command command, IReadOnlyCollection<string> arguments, int goalAmount)
+        {
+            if (arguments == null)
+            {
+                return false;
+            }
+            if (arguments.Count == goalAmount)
+            {
+                return true;
+            }
+            
+            Console.WriteLine($"{command.ToString().ToLower()}: wrong amount of arguments");
+            return false;
         }
     }
 }
