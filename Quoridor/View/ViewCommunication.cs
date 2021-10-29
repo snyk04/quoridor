@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Quoridor.Controller;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
 
@@ -7,13 +9,20 @@ namespace Quoridor.View
 {
     public class ViewCommunication : IView
     {
+        private readonly IController _controller;
+
+        public ViewCommunication(IController controller)
+        {
+            _controller = controller;
+        }
+        
         public void ShowAvailableMoves(IEnumerable<Coordinates> cells)
         {
-            // TODO : send to controller
+            _controller.AvailableMoves = cells.ToArray();
         }
         public void ShowAvailableWalls(IEnumerable<Coordinates> walls)
         {
-            // TODO : send to controller
+            _controller.AvailableWalls = walls.ToArray();
         }
 
         public void MovePlayerToCell(PlayerType playerType, Coordinates cell)
@@ -22,7 +31,7 @@ namespace Quoridor.View
         }
         public void PlaceWall(Player player, Coordinates wall)
         {
-            Console.WriteLine($"<- {player.Type.ToString().ToLower()} move {WallsConverter.NumberToMixed(wall)}");
+            Console.WriteLine($"<- {player.Type.ToString().ToLower()} placed wall {WallsConverter.NumberToMixed(wall)}");
         }
         
         public void EndGame(PlayerType winner)

@@ -8,7 +8,7 @@ namespace Quoridor
         {
             IController controller = new ControllerCommunication();
 
-            // controller.StartGame();
+            controller.StartGame();
         }
     }
 }

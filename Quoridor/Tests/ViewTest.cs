@@ -1,4 +1,5 @@
 ﻿using System;
+using Quoridor.Controller;
 using Quoridor.Model;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
@@ -10,7 +11,8 @@ namespace Quoridor.Tests
     {
         public static void Test()
         {
-            ViewCommunication viewCommunication = new ViewCommunication();
+            ControllerCommunication controllerCommunication = new ControllerCommunication();
+            ViewCommunication viewCommunication = new ViewCommunication(controllerCommunication);
             ModelCommunication modelCommunication = new ModelCommunication(viewCommunication);
 
             Player player = new Player(modelCommunication, PlayerType.First, new Coordinates(0, 0), 10, 0);
