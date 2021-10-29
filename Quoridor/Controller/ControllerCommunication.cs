@@ -43,7 +43,7 @@ namespace Quoridor.Controller
                         Coordinates cellCoordinates = CellsConverter.MixedToNumber(arguments);
                         if (!AvailableMoves.Contains(cellCoordinates))
                         {
-                            Console.WriteLine("<- you can't move here");
+                            Console.WriteLine("you can't move here");
                             break;
                         }
                         _model.MoveCurrentPlayerToCell(cellCoordinates);
@@ -52,7 +52,7 @@ namespace Quoridor.Controller
                         Coordinates wallCoordinates = WallsConverter.MixedToNumber(arguments);
                         if (!AvailableWalls.Contains(wallCoordinates))
                         {
-                            Console.WriteLine("<- you can't place wall here");
+                            Console.WriteLine("you can't place wall here");
                             break;
                         }
                         _model.PlaceCurrentPlayerWall(wallCoordinates);
@@ -68,9 +68,7 @@ namespace Quoridor.Controller
             command = default;
             arguments = default;
             
-            Console.Write("-> ");
-
-            string playerInput = Console.ReadLine();
+            string playerInput = CustomConsole.ReadLine();
             if (playerInput == null)
             {
                 return false;
