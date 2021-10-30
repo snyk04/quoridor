@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Quoridor.Controller
+namespace Quoridor.IO
 {
     public static class CustomConsole
     {
