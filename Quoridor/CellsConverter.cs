@@ -8,23 +8,12 @@ namespace Quoridor
     {
         public static Coordinates MixedToNumber(string mixedCoordinates)
         {
-            if (mixedCoordinates.Length < 2)
-            {
-                throw new ArgumentException();
-            }
+            CheckCompatibility(mixedCoordinates);
 
-            if (!Regex.IsMatch(mixedCoordinates, "[A-Z]+[0-9]+", RegexOptions.IgnoreCase))
-            {
-                throw new ArgumentException();
-            }
-
-            Regex regex = new Regex("([a-zA-Z]+)|([0-9]+)");
-            MatchCollection matches = regex.Matches(mixedCoordinates);
-            string lettersString = matches[0].Value;
-            string numbersString = matches[1].Value;
+            SplitCoordinates(mixedCoordinates, out string letters, out string numbers);
             
-            int row = int.Parse(numbersString) - 1;
-            int column = LettersToNumber(lettersString.ToUpper());
+            int row = int.Parse(numbers) - 1;
+            int column = LettersToNumber(letters.ToUpper());
             
             return new Coordinates(row, column);
         }
@@ -35,7 +24,27 @@ namespace Quoridor
 
             return letters + numbers;
         }
+        
+        private static void CheckCompatibility(string mixedCoordinates)
+        {
+            if (mixedCoordinates.Length < 2)
+            {
+                throw new ArgumentException();
+            }
 
+            if (!Regex.IsMatch(mixedCoordinates, @"(\w+)(\d+)", RegexOptions.IgnoreCase))
+            {
+                throw new ArgumentException();
+            }
+        }
+        private static void SplitCoordinates(string mixedCoordinates, out string letters, out string number)
+        {
+            Regex regex = new Regex(@"[\w+]|[\d+]");
+            MatchCollection matches = regex.Matches(mixedCoordinates);
+            letters = matches[0].Value;
+            number = matches[1].Value;
+        }
+        
         private static int LettersToNumber(string letters)
         {
             return letters switch

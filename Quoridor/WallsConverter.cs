@@ -8,27 +8,14 @@ namespace Quoridor
     {
         public static Coordinates MixedToNumber(string mixedCoordinates)
         {
-            if (mixedCoordinates.Length < 2)
-            {
-                throw new ArgumentException();
-            }
+            CheckCompatibility(mixedCoordinates);
+            
+            SplitCoordinates(mixedCoordinates, out string letters, out string number, out bool isHorizontal);
 
-            if (!Regex.IsMatch(mixedCoordinates, @"([a-zA-z]+)([0-9]+)(h?)", RegexOptions.IgnoreCase))
-            {
-                throw new ArgumentException();
-            }
+            int row = int.Parse(number) * 2 - 2;
+            int column = LettersToNumber(letters.ToUpper());
 
-            Regex regex = new Regex(@"([a-zA-Z]+)|([0-9]+)");
-            MatchCollection matches = regex.Matches(mixedCoordinates);
-            string lettersString = matches[0].Value;
-            string numbersString = matches[1].Value;
-
-            int number = int.Parse(numbersString);
-
-            int row = number * 2 - 2;
-            int column = LettersToNumber(lettersString.ToUpper());
-
-            if (matches.Count == 3)
+            if (isHorizontal)
             {
                 row += 1;
             }
@@ -46,6 +33,32 @@ namespace Quoridor
             }
             
             return letters + numbers;
+        }
+        
+        private static void CheckCompatibility(string mixedCoordinates)
+        {
+            if (mixedCoordinates.Length < 2)
+            {
+                throw new ArgumentException();
+            }
+
+            if (!Regex.IsMatch(mixedCoordinates, @"(\w+)(\d+)(h?)", RegexOptions.IgnoreCase))
+            {
+                throw new ArgumentException();
+            }
+        }
+        private static void SplitCoordinates(string mixedCoordinates, out string letters, out string number, out bool isHorizontal)
+        {
+            Regex regex = new Regex(@"[\w+]|[\d+]|[h?]");
+            MatchCollection matches = regex.Matches(mixedCoordinates);
+            letters = matches[0].Value;
+            number = matches[1].Value;
+            isHorizontal = false;
+
+            if (matches.Count == 3)
+            {
+                isHorizontal = true;
+            }
         }
 
         private static int LettersToNumber(string letters)
