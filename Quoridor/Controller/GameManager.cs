@@ -63,12 +63,12 @@ namespace Quoridor.Controller
 
         private void TryToMove(Command command, IReadOnlyList<string> arguments)
         {
-            if (!CheckArgumentsAmount(command, arguments, 1))
+            if (!CommandController.CheckArgumentsAmount(command, arguments, 1))
             {
                 return;
             }
 
-            if (!TryToConvert(CellsConverter.MixedToNumber, arguments, command, out Coordinates cellCoordinates))
+            if (!CommandController.TryToConvert(CellsConverter.MixedToNumber, arguments, command, out Coordinates cellCoordinates))
             {
                 return;
             }
@@ -83,12 +83,12 @@ namespace Quoridor.Controller
         }
         private void TryToPlace(Command command, IReadOnlyList<string> arguments)
         {
-            if (!CheckArgumentsAmount(command, arguments, 1))
+            if (!CommandController.CheckArgumentsAmount(command, arguments, 1))
             {
                 return;
             }
             
-            if (!TryToConvert(WallsConverter.MixedToNumber, arguments, command, out Coordinates wallCoordinates))
+            if (!CommandController.TryToConvert(WallsConverter.MixedToNumber, arguments, command, out Coordinates wallCoordinates))
             {
                 return;
             }
@@ -110,37 +110,6 @@ namespace Quoridor.Controller
 
             _isGameStarted = true;
             _model.StartNewGame(GameMode.PlayerVsComputer);
-        }
-        
-        private bool TryToConvert(Func<string, Coordinates> converter, IReadOnlyList<string> arguments, Command command, out Coordinates coordinates)
-        {
-            coordinates = default;
-            
-            try
-            {
-                coordinates = converter(arguments[0]);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"{command.ToString().ToLower()}: wrong argument");
-                return false;
-            }
-
-            return true;
-        }
-        private bool CheckArgumentsAmount(Command command, IReadOnlyCollection<string> arguments, int goalAmount)
-        {
-            if (arguments == null)
-            {
-                return false;
-            }
-            if (arguments.Count == goalAmount)
-            {
-                return true;
-            }
-            
-            Console.WriteLine($"{command.ToString().ToLower()}: wrong amount of arguments");
-            return false;
         }
     }
 }
