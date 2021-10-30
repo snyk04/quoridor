@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Quoridor.IO;
 using Quoridor.Model;
@@ -108,8 +109,21 @@ namespace Quoridor.Controller
                 Console.WriteLine("game is already started!");
             }
 
+            PlayerType whitePlayer = command switch
+            {
+                Command.White => PlayerType.Player1,
+                Command.Black => PlayerType.RandomBot,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            PlayerType blackPlayer = command switch
+            {
+                Command.White => PlayerType.RandomBot,
+                Command.Black => PlayerType.Player1,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
             _isGameStarted = true;
-            _model.StartNewGame(GameMode.PlayerVsComputer);
+            _model.StartNewGame(whitePlayer, blackPlayer);
         }
     }
 }

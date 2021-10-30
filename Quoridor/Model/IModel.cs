@@ -5,7 +5,7 @@ namespace Quoridor.Model
 {
     public interface IModel
     {
-        void StartNewGame(GameMode gameMode);
+        void StartNewGame(PlayerType whitePlayer, PlayerType blackPlayer);
         void StopGame(GameStopType gameStopType);
 
         void MoveCurrentPlayerToCell(Coordinates cell);

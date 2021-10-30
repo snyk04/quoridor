@@ -96,8 +96,8 @@ namespace Quoridor.Model.PlayerLogic
             {
                 _model.WallsManager.PlaceTemporaryWall(wall);
 
-                if (PlayerCanWin(_model.PlayerController.FirstPlayer)
-                    && PlayerCanWin(_model.PlayerController.SecondPlayer))
+                if (PlayerCanWin(_model.PlayerController.WhitePlayer)
+                    && PlayerCanWin(_model.PlayerController.BlackPlayer))
                 {
                     _availableWalls.Add(wall);
                 }

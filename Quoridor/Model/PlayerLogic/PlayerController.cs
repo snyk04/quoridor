@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Quoridor.Model.Common;
 
 namespace Quoridor.Model.PlayerLogic
@@ -7,27 +8,27 @@ namespace Quoridor.Model.PlayerLogic
     {
         private const int DefaultAmountOfWalls = 10;
 
-        private readonly Coordinates _firstPlayerStartPosition = new Coordinates(8, 4);
-        private readonly Coordinates _secondPlayerStartPosition = new Coordinates(0, 4);
+        private readonly Coordinates _whitePlayerStartPosition = new Coordinates(8, 4);
+        private readonly Coordinates _blackPlayerStartPosition = new Coordinates(0, 4);
         
         private readonly ModelCommunication _model;
 
-        public Player FirstPlayer { get; private set; }
-        public Player SecondPlayer { get; private set; }
+        public Player WhitePlayer { get; private set; }
+        public Player BlackPlayer { get; private set; }
 
-        public bool PlayersHaveWalls => FirstPlayer.AmountOfWalls > 0 || SecondPlayer.AmountOfWalls > 0;
+        public bool PlayersHaveWalls => WhitePlayer.AmountOfWalls > 0 || BlackPlayer.AmountOfWalls > 0;
 
         private Player _currentPlayer;
 
-        private PlayerType CurrentPlayerType => _currentPlayer.Type;
-        private PlayerType CurrentPlayerOpponentType
+        private PlayerColor CurrentPlayerColor => _currentPlayer.Color;
+        private PlayerColor CurrentPlayerOpponentColor
         {
             get
             {
-                return CurrentPlayerType switch
+                return CurrentPlayerColor switch
                 {
-                    PlayerType.First => PlayerType.Second,
-                    PlayerType.Second => PlayerType.First,
+                    PlayerColor.White => PlayerColor.Black,
+                    PlayerColor.Black => PlayerColor.White,
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
@@ -50,22 +51,22 @@ namespace Quoridor.Model.PlayerLogic
             _currentPlayer.MakeMove(MoveType.PlaceWall, wall);
         }
 
-        public PlayerType GetWinner(GameStopType gameStopType)
+        public PlayerColor GetWinner(GameStopType gameStopType)
         {
             return gameStopType switch
             {
-                GameStopType.Surrender => CurrentPlayerOpponentType,
-                GameStopType.Victory => CurrentPlayerType,
+                GameStopType.Surrender => CurrentPlayerOpponentColor,
+                GameStopType.Victory => CurrentPlayerColor,
                 _ => throw new ArgumentOutOfRangeException(nameof(gameStopType), gameStopType, null)
             };
         }
 
         private void ChangeCurrentPlayer()
         {
-            _currentPlayer = CurrentPlayerType switch
+            _currentPlayer = CurrentPlayerColor switch
             {
-                PlayerType.First => SecondPlayer,
-                PlayerType.Second => FirstPlayer,
+                PlayerColor.White => BlackPlayer,
+                PlayerColor.Black => WhitePlayer,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -77,50 +78,49 @@ namespace Quoridor.Model.PlayerLogic
         }
 
         // TODO : maybe refactor?
-        private void InitializePlayers(GameMode gameMode)
+        private void InitializePlayers(PlayerType whitePlayer, PlayerType blackPlayer)
         {
-            FirstPlayer = gameMode switch
-            {
-                GameMode.PlayerVsPlayer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
-                GameMode.PlayerVsComputer => new Player(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
-                GameMode.ComputerVsComputer => new RandomBot(_model, PlayerType.First, _firstPlayerStartPosition, DefaultAmountOfWalls, _secondPlayerStartPosition.row),
-                _ => throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null)
-            };
-            SecondPlayer = gameMode switch
-            {
-                GameMode.PlayerVsPlayer => new Player(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
-                GameMode.PlayerVsComputer => new RandomBot(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
-                GameMode.ComputerVsComputer => new RandomBot(_model, PlayerType.Second, _secondPlayerStartPosition, DefaultAmountOfWalls, _firstPlayerStartPosition.row),
-                _ => throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null)
-            };
+            WhitePlayer = CreatePlayer(whitePlayer, PlayerColor.White, _whitePlayerStartPosition, _blackPlayerStartPosition.row);
+            BlackPlayer = CreatePlayer(blackPlayer, PlayerColor.Black, _blackPlayerStartPosition, _whitePlayerStartPosition.row);
         }
         
         private void HandleMoveEndEvents()
         {
-            FirstPlayer.MovePerformed += ChangeCurrentPlayer;
-            FirstPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
-            SecondPlayer.MovePerformed += ChangeCurrentPlayer;
-            SecondPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
+            WhitePlayer.MovePerformed += ChangeCurrentPlayer;
+            WhitePlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
+            BlackPlayer.MovePerformed += ChangeCurrentPlayer;
+            BlackPlayer.MovePerformed += SetCurrentPlayerAvailableMoves;
         }
         private void NullifyMoveEndEvents()
         {
-            FirstPlayer.MovePerformed -= ChangeCurrentPlayer;
-            FirstPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
-            SecondPlayer.MovePerformed -= ChangeCurrentPlayer;
-            SecondPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
+            WhitePlayer.MovePerformed -= ChangeCurrentPlayer;
+            WhitePlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
+            BlackPlayer.MovePerformed -= ChangeCurrentPlayer;
+            BlackPlayer.MovePerformed -= SetCurrentPlayerAvailableMoves;
         }
 
-        private void StartGame(GameMode gameMode)
+        private void StartGame(PlayerType whitePlayer, PlayerType blackPlayer)
         {
-            InitializePlayers(gameMode);
+            InitializePlayers(whitePlayer, blackPlayer);
             HandleMoveEndEvents();
             
-            _currentPlayer = FirstPlayer;
+            _currentPlayer = WhitePlayer;
             SetCurrentPlayerAvailableMoves();
         }
         private void StopGame()
         {
             NullifyMoveEndEvents();
+        }
+        
+        private Player CreatePlayer(PlayerType playerType, PlayerColor playerColor, Coordinates startPosition, int victoryRow)
+        {
+            return playerType switch
+            {
+                PlayerType.Player1 => new Player(_model, playerColor, startPosition, DefaultAmountOfWalls, victoryRow),
+                PlayerType.Player2 => new Player(_model, playerColor, startPosition, DefaultAmountOfWalls, victoryRow),
+                PlayerType.RandomBot => new RandomBot(_model, playerColor, startPosition, DefaultAmountOfWalls, victoryRow),
+                _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
+            };
         }
     }
 }

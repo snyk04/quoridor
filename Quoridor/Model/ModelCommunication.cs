@@ -36,13 +36,13 @@ namespace Quoridor.Model
             PossibleMoves = new PossibleMoves(this);
         }
 
-        public void StartNewGame(GameMode gameMode)
+        public void StartNewGame(PlayerType whitePlayer, PlayerType blackPlayer)
         {
-            GameCycle.StartNewGame(gameMode);
+            GameCycle.StartNewGame(whitePlayer, blackPlayer);
         }
         public void StopGame(GameStopType gameStopType)
         {
-            PlayerType winner = PlayerController.GetWinner(gameStopType);
+            PlayerColor winner = PlayerController.GetWinner(gameStopType);
             _view.EndGame(winner);
         }
 
@@ -57,7 +57,7 @@ namespace Quoridor.Model
 
         internal void MovePlayer(Player player, Coordinates coordinates)
         {
-            _view.MovePlayerToCell(player.Type, coordinates);
+            _view.MovePlayerToCell(player.Color, coordinates);
             PlayerMover.Move(player, coordinates);
         }
         internal void PlaceWall(Player player, Coordinates coordinates)

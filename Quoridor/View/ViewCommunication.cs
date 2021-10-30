@@ -25,18 +25,18 @@ namespace Quoridor.View
             _controller.AvailableWalls = walls.ToArray();
         }
 
-        public void MovePlayerToCell(PlayerType playerType, Coordinates cell)
+        public void MovePlayerToCell(PlayerColor playerColor, Coordinates cell)
         {
-            CustomConsole.WriteLine($"{playerType.ToString().ToLower()}" +
+            CustomConsole.WriteLine($"{playerColor.ToString().ToLower()}" +
                                     $" move {CellsConverter.NumberToMixed(cell)}");
         }
         public void PlaceWall(Player player, Coordinates wall)
         {
-            CustomConsole.WriteLine($"{player.Type.ToString().ToLower()} " +
+            CustomConsole.WriteLine($"{player.Color.ToString().ToLower()} " +
                                     $"placed wall {WallsConverter.NumberToMixed(wall)}");
         }
         
-        public void EndGame(PlayerType winner)
+        public void EndGame(PlayerColor winner)
         {
             CustomConsole.WriteLine($"{winner.ToString().ToLower()} won");
             _controller.StopGame();

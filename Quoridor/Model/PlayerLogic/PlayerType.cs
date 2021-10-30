@@ -2,7 +2,8 @@
 {
     public enum PlayerType
     {
-        First,
-        Second
+        Player1,
+        Player2,
+        RandomBot
     }
 }

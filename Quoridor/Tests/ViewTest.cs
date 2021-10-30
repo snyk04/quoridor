@@ -15,11 +15,11 @@ namespace Quoridor.Tests
             ViewCommunication viewCommunication = new ViewCommunication(controllerCommunication);
             ModelCommunication modelCommunication = new ModelCommunication(viewCommunication);
 
-            Player player = new Player(modelCommunication, PlayerType.First, new Coordinates(0, 0), 10, 0);
+            Player player = new Player(modelCommunication, PlayerColor.White, new Coordinates(0, 0), 10, 0);
             
-            viewCommunication.MovePlayerToCell(PlayerType.Second, new Coordinates(7, 4));
+            viewCommunication.MovePlayerToCell(PlayerColor.Black, new Coordinates(7, 4));
             viewCommunication.PlaceWall(player, new Coordinates(7, 4));
-            viewCommunication.EndGame(PlayerType.First);
+            viewCommunication.EndGame(PlayerColor.White);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Quoridor.Model
     {
         private readonly ModelCommunication _model;
         
-        public event Action<GameMode> GameStarted;
+        public event Action<PlayerType, PlayerType> GameStarted;
         public event Action GameStopped;
 
         public GameCycle(ModelCommunication model)
@@ -15,9 +15,9 @@ namespace Quoridor.Model
             _model = model;
         }
 
-        public void StartNewGame(GameMode gameMode)
+        public void StartNewGame(PlayerType whitePlayer, PlayerType blackPlayer)
         {
-            GameStarted?.Invoke(gameMode);
+            GameStarted?.Invoke(whitePlayer, blackPlayer);
         }
         public void StopGame()
         {
