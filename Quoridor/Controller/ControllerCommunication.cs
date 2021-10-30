@@ -12,6 +12,8 @@ namespace Quoridor.Controller
     {
         private readonly IView _view;
         private readonly IModel _model;
+
+        private bool _isGameStarted;
         
         public Coordinates[] AvailableMoves { private get; set; }
         public Coordinates[] AvailableWalls { private get; set; }
@@ -20,12 +22,12 @@ namespace Quoridor.Controller
         {
             _view = new ViewCommunication(this);
             _model = new ModelCommunication(_view);
+
+            _isGameStarted = false;
         }
         
         public void StartGame()
         {
-            _model.StartNewGame(GameMode.PlayerVsComputer);
-            
             GameLoop();
         }
         private void GameLoop()
@@ -37,7 +39,6 @@ namespace Quoridor.Controller
                     continue;
                 }
                 
-                // TODO : refactor
                 switch (command)
                 {
                     case Command.Move or Command.Jump:
@@ -87,6 +88,24 @@ namespace Quoridor.Controller
                             continue;
                         }
                         _model.PlaceCurrentPlayerWall(wallCoordinates);
+                        continue;
+                    case Command.Black:
+                        if (_isGameStarted)
+                        {
+                            Console.WriteLine("game is already started!");
+                        }
+
+                        _isGameStarted = true;
+                        _model.StartNewGame(GameMode.PlayerVsComputer);
+                        continue;
+                    case Command.White:
+                        if (_isGameStarted)
+                        {
+                            Console.WriteLine("game is already started!");
+                        }
+
+                        _isGameStarted = true;
+                        _model.StartNewGame(GameMode.PlayerVsComputer);
                         continue;
                     default:
                         continue;

@@ -4,6 +4,8 @@
     {
         Move,
         Jump,
-        Place
+        Place,
+        Black,
+        White
     }
 }
