@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Quoridor.Model.Common;
 
-namespace Quoridor
+namespace Quoridor.IO
 {
     public static class WallsConverter
     {

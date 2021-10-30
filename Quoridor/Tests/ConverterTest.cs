@@ -1,4 +1,5 @@
 ﻿using System;
+using Quoridor.IO;
 using Quoridor.Model.Common;
 
 namespace Quoridor.Tests
