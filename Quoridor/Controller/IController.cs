@@ -4,9 +4,10 @@ namespace Quoridor.Controller
 {
     public interface IController
     {
-        Coordinates[] AvailableMoves { set; }
+        Coordinates[] AvailableCells { set; }
         Coordinates[] AvailableWalls { set; }
         
         void StartGame();
+        void StopGame();
     }
 }

@@ -17,7 +17,7 @@ namespace Quoridor.View
         
         public void ShowAvailableMoves(IEnumerable<Coordinates> cells)
         {
-            _controller.AvailableMoves = cells.ToArray();
+            _controller.AvailableCells = cells.ToArray();
         }
         public void ShowAvailableWalls(IEnumerable<Coordinates> walls)
         {
@@ -38,6 +38,7 @@ namespace Quoridor.View
         public void EndGame(PlayerType winner)
         {
             CustomConsole.WriteLine($"{winner.ToString().ToLower()} won");
+            _controller.StopGame();
         }
     }
 }
