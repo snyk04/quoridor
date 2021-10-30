@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quoridor
+namespace Quoridor.Controller
 {
     public static class CustomConsole
     {

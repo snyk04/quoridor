@@ -1,4 +1,4 @@
-﻿namespace Quoridor
+﻿namespace Quoridor.Controller
 {
     public enum Command
     {
