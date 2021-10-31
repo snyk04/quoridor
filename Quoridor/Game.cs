@@ -12,9 +12,7 @@ namespace Quoridor
 
             controller.StartGame();
             
-            // ConverterTest.TestCellsConverter(new Coordinates(0, 0), "A1");
-            
-            // ConverterTest.TestWallsConverter(new Coordinates(0, 0), "S1");
+            // ConverterTest.TestWallsConverter(new Coordinates(0, 0), "S1v");
             // ConverterTest.TestWallsConverter(new Coordinates(1, 0), "S1h");
         }
     }

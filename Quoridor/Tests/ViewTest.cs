@@ -1,5 +1,4 @@
-﻿using System;
-using Quoridor.Controller;
+﻿using Quoridor.Controller;
 using Quoridor.Model;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
@@ -15,9 +14,9 @@ namespace Quoridor.Tests
             ViewCommunication viewCommunication = new ViewCommunication(controllerCommunication);
             ModelCommunication modelCommunication = new ModelCommunication(viewCommunication);
 
-            Player player = new Player(modelCommunication, PlayerColor.White, new Coordinates(0, 0), 10, 0);
+            Player player = new Player(modelCommunication, PlayerColor.White, PlayerType.Player1, new Coordinates(0, 0), 10, 0);
             
-            viewCommunication.MovePlayerToCell(PlayerColor.Black, new Coordinates(7, 4));
+            viewCommunication.MovePlayerToCell(player, new Coordinates(7, 4));
             viewCommunication.PlaceWall(player, new Coordinates(7, 4));
             viewCommunication.EndGame(PlayerColor.White);
         }

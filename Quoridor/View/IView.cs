@@ -8,7 +8,7 @@ namespace Quoridor.View
     {
         void ShowAvailableMoves(IEnumerable<Coordinates> cells);
         void ShowAvailableWalls(IEnumerable<Coordinates> walls);
-        void MovePlayerToCell(PlayerColor playerColor, Coordinates cell);
+        void MovePlayerToCell(Player player, Coordinates cell);
         void PlaceWall(Player player, Coordinates wall);
 
         void EndGame(PlayerColor winner);

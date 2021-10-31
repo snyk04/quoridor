@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Quoridor.Controller;
 using Quoridor.IO;
@@ -25,20 +26,28 @@ namespace Quoridor.View
             _controller.AvailableWalls = walls.ToArray();
         }
 
-        public void MovePlayerToCell(PlayerColor playerColor, Coordinates cell)
+        public void MovePlayerToCell(Player player, Coordinates cell)
         {
-            CustomConsole.WriteLine($"{playerColor.ToString().ToLower()}" +
-                                    $" move {CellsConverter.NumberToMixed(cell)}");
+            if (player.Type != PlayerType.RandomBot)
+            {
+                return;
+            }
+            
+            Console.WriteLine($"move {CellsConverter.NumberToMixed(cell)}");
         }
         public void PlaceWall(Player player, Coordinates wall)
         {
-            CustomConsole.WriteLine($"{player.Color.ToString().ToLower()} " +
-                                    $"placed wall {WallsConverter.NumberToMixed(wall)}");
+            if (player.Type != PlayerType.RandomBot)
+            {
+                return;
+            }
+            
+            Console.WriteLine($"wall {WallsConverter.NumberToMixed(wall)}");
         }
         
         public void EndGame(PlayerColor winner)
         {
-            CustomConsole.WriteLine($"{winner.ToString().ToLower()} won");
+            Console.WriteLine($"{winner.ToString().ToLower()} won");
             _controller.StopGame();
         }
     }

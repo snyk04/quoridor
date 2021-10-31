@@ -57,7 +57,7 @@ namespace Quoridor.Model
 
         internal void MovePlayer(Player player, Coordinates coordinates)
         {
-            _view.MovePlayerToCell(player.Color, coordinates);
+            _view.MovePlayerToCell(player, coordinates);
             PlayerMover.Move(player, coordinates);
         }
         internal void PlaceWall(Player player, Coordinates coordinates)
