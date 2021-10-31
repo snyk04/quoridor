@@ -26,13 +26,14 @@ namespace Quoridor.IO
         {
             string letters = NumberToLetters(numberCoordinates.column);
             string numbers = ((numberCoordinates.row + 2) / 2).ToString();
-
-            if (numberCoordinates.row % 2 == 1)
+            string orientation = (numberCoordinates.row % 2) switch
             {
-                return letters + numbers + "h";
-            }
-            
-            return letters + numbers;
+                0 => "v",
+                1 => "h",
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            return letters + numbers + orientation;
         }
         
         private static void CheckCompatibility(string mixedCoordinates)
@@ -42,23 +43,25 @@ namespace Quoridor.IO
                 throw new ArgumentException();
             }
 
-            if (!Regex.IsMatch(mixedCoordinates, @"(\w+)(\d+)(h?)", RegexOptions.IgnoreCase))
+            if (!Regex.IsMatch(mixedCoordinates, @"(\w+)(\d+)(\w?)", RegexOptions.IgnoreCase))
             {
                 throw new ArgumentException();
             }
         }
         private static void SplitCoordinates(string mixedCoordinates, out string letters, out string number, out bool isHorizontal)
         {
-            Regex regex = new Regex(@"[\w+]|[\d+]|[h?]");
+            Regex regex = new Regex(@"[\w+]|[\d+]|[\w?]");
             MatchCollection matches = regex.Matches(mixedCoordinates);
             letters = matches[0].Value;
             number = matches[1].Value;
-            isHorizontal = false;
-
-            if (matches.Count == 3)
+            
+            string orientation = matches[2].Value;
+            isHorizontal = orientation switch
             {
-                isHorizontal = true;
-            }
+                "h" => true,
+                "v" => false,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         private static int LettersToNumber(string letters)
