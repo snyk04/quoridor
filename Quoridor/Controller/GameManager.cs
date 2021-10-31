@@ -40,7 +40,7 @@ namespace Quoridor.Controller
         {
             while (!_isGameStopped)
             {
-                if (!CustomConsole.TryToReadCommand(out Command command, out string[] arguments))
+                if (!CommandController.TryToReadCommand(out Command command, out string[] arguments))
                 {
                     continue;
                 }
@@ -50,7 +50,7 @@ namespace Quoridor.Controller
                     case Command.Move or Command.Jump:
                         TryToMove(command, arguments);
                         continue;
-                    case Command.Place:
+                    case Command.Wall:
                         TryToPlace(command, arguments);
                         continue;
                     case Command.Black or Command.White:
@@ -111,14 +111,14 @@ namespace Quoridor.Controller
 
             PlayerType whitePlayer = command switch
             {
-                Command.White => PlayerType.Player1,
-                Command.Black => PlayerType.RandomBot,
+                Command.White => PlayerType.RandomBot,
+                Command.Black => PlayerType.Player1,
                 _ => throw new ArgumentOutOfRangeException()
             };
             PlayerType blackPlayer = command switch
             {
-                Command.White => PlayerType.RandomBot,
-                Command.Black => PlayerType.Player1,
+                Command.White => PlayerType.Player1,
+                Command.Black => PlayerType.RandomBot,
                 _ => throw new ArgumentOutOfRangeException()
             };
 

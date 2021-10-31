@@ -4,7 +4,7 @@
     {
         Move,
         Jump,
-        Place,
+        Wall,
         Black,
         White
     }
