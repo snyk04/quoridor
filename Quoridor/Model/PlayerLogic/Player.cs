@@ -8,6 +8,8 @@ namespace Quoridor.Model.PlayerLogic
         private readonly ModelCommunication _model;
         
         public PlayerColor Color { get; }
+        public PlayerType Type { get; }
+        
         public int VictoryRow { get; }
         
         public int AmountOfWalls { get; private set; }
@@ -15,11 +17,13 @@ namespace Quoridor.Model.PlayerLogic
 
         public event Action MovePerformed;
         
-        public Player(ModelCommunication model, PlayerColor color, Coordinates startPosition, int startAmountOfWalls, int victoryRow)
+        public Player(ModelCommunication model, PlayerColor color, PlayerType type, Coordinates startPosition, int startAmountOfWalls, int victoryRow)
         {
             _model = model;
             
             Color = color;
+            Type = type;
+            
             VictoryRow = victoryRow;
             
             AmountOfWalls = startAmountOfWalls;

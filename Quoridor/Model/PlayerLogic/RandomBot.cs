@@ -5,8 +5,8 @@ namespace Quoridor.Model.PlayerLogic
 {
     public sealed class RandomBot : Bot
     {
-        public RandomBot(ModelCommunication model, PlayerColor playerColor, Coordinates startPosition, int startAmountOfWalls, int victoryRow)
-            : base(model, playerColor, startPosition, startAmountOfWalls, victoryRow)
+        public RandomBot(ModelCommunication model, PlayerColor playerColor, PlayerType playerType, Coordinates startPosition, int startAmountOfWalls, int victoryRow)
+            : base(model, playerColor, playerType, startPosition, startAmountOfWalls, victoryRow)
         {
         }
 

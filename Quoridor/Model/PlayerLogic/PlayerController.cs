@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Quoridor.Model.Common;
 
 namespace Quoridor.Model.PlayerLogic
@@ -116,9 +115,9 @@ namespace Quoridor.Model.PlayerLogic
         {
             return playerType switch
             {
-                PlayerType.Player1 => new Player(_model, playerColor, startPosition, DefaultAmountOfWalls, victoryRow),
-                PlayerType.Player2 => new Player(_model, playerColor, startPosition, DefaultAmountOfWalls, victoryRow),
-                PlayerType.RandomBot => new RandomBot(_model, playerColor, startPosition, DefaultAmountOfWalls, victoryRow),
+                PlayerType.Player1 => new Player(_model, playerColor, playerType, startPosition, DefaultAmountOfWalls, victoryRow),
+                PlayerType.Player2 => new Player(_model, playerColor, playerType, startPosition, DefaultAmountOfWalls, victoryRow),
+                PlayerType.RandomBot => new RandomBot(_model, playerColor, playerType, startPosition, DefaultAmountOfWalls, victoryRow),
                 _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
             };
         }
