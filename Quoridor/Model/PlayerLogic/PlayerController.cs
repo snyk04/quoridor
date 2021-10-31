@@ -45,6 +45,10 @@ namespace Quoridor.Model.PlayerLogic
         {
             _currentPlayer.MakeMove(MoveType.MoveToCell, cell);
         }
+        public void JumpCurrentPlayerToCell(Coordinates cell)
+        {
+            _currentPlayer.MakeMove(MoveType.JumpToCell, cell);
+        }
         public void PlaceCurrentPlayerWall(Coordinates wall)
         {
             _currentPlayer.MakeMove(MoveType.PlaceWall, wall);
@@ -71,12 +75,12 @@ namespace Quoridor.Model.PlayerLogic
         }
         private void SetCurrentPlayerAvailableMoves()
         {
-            Coordinates[] cells = _model.PossibleMoves.AvailableCells(_currentPlayer.Position);
+            Coordinates[] moves = _model.PossibleMoves.AvailableMoves(_currentPlayer.Position);
+            Coordinates[] jumps = _model.PossibleMoves.AvailableJumps(_currentPlayer.Position);
             Coordinates[] walls = _model.PossibleMoves.AvailableWalls();
-            _currentPlayer.SetPossibleMoves(cells, walls);
+            _currentPlayer.SetPossibleMoves(moves, jumps, walls);
         }
 
-        // TODO : maybe refactor?
         private void InitializePlayers(PlayerType whitePlayer, PlayerType blackPlayer)
         {
             WhitePlayer = CreatePlayer(whitePlayer, PlayerColor.White, _whitePlayerStartPosition, _blackPlayerStartPosition.row);

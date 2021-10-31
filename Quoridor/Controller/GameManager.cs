@@ -15,6 +15,7 @@ namespace Quoridor.Controller
         
         public Coordinates[] AvailableCells { get; set; }
         public Coordinates[] AvailableWalls { get; set; }
+        public Coordinates[] AvailableJumps { get; set; }
         
         private bool _isGameStarted;
         private bool _isGameStopped;
@@ -47,8 +48,11 @@ namespace Quoridor.Controller
                 
                 switch (command)
                 {
-                    case Command.Move or Command.Jump:
+                    case Command.Move:
                         TryToMove(command, arguments);
+                        continue;
+                    case Command.Jump:
+                        TryToJump(command, arguments);
                         continue;
                     case Command.Wall:
                         TryToPlace(command, arguments);
@@ -81,6 +85,26 @@ namespace Quoridor.Controller
             }
             
             _model.MoveCurrentPlayerToCell(cellCoordinates);
+        }
+        private void TryToJump(Command command, IReadOnlyList<string> arguments)
+        {
+            if (!CommandController.CheckArgumentsAmount(command, arguments, 1))
+            {
+                return;
+            }
+
+            if (!CommandController.TryToConvert(CellsConverter.MixedToNumber, arguments, command, out Coordinates cellCoordinates))
+            {
+                return;
+            }
+                        
+            if (!AvailableJumps.Contains(cellCoordinates))
+            {
+                Console.WriteLine("you can't jump here");
+                return;
+            }
+            
+            _model.JumpCurrentPlayerToCell(cellCoordinates);
         }
         private void TryToPlace(Command command, IReadOnlyList<string> arguments)
         {

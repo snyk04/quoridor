@@ -27,6 +27,11 @@ namespace Quoridor.Model
             
             CheckPlayerVictory(player);
         }
+        public void Jump(Player player, Coordinates cellCoordinates)
+        {
+            Move(player, cellCoordinates);
+        }
+        
         private void CheckPlayerVictory(Player player)
         {
             if (player.Position.row == player.VictoryRow)

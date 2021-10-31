@@ -17,6 +17,11 @@ namespace Quoridor.Controller
             set => _gameManager.AvailableWalls = value;
         }
 
+        public Coordinates[] AvailableJumps
+        {
+            set => _gameManager.AvailableJumps = value;
+        }
+
         public ControllerCommunication()
         {
             IView view = new ViewCommunication(this);

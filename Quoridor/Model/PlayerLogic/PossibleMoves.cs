@@ -14,31 +14,31 @@ namespace Quoridor.Model.PlayerLogic
         {
             _model = model;
         }
-
-        public Coordinates[] AvailableCells(Coordinates playerCoordinates)
+        
+        public Coordinates[] AvailableMoves(Coordinates playerCoordinates)
         {
             _currentTurnPlayerCoordinates = playerCoordinates;
-            return GetAvailableCellsFromCell(playerCoordinates);
+            return GetAvailableMovesFromCell(playerCoordinates);
         }
-        private Coordinates[] GetAvailableCellsFromCell(Coordinates cell)
+        private Coordinates[] GetAvailableMovesFromCell(Coordinates cell)
         {
             Coordinates[] uncheckedCells =
             {
-                new Coordinates(cell.row + 1, cell.column),
-                new Coordinates(cell.row - 1, cell.column),
-                new Coordinates(cell.row, cell.column + 1),
-                new Coordinates(cell.row, cell.column - 1)
+                new(cell.row + 1, cell.column),
+                new(cell.row - 1, cell.column),
+                new(cell.row, cell.column + 1),
+                new(cell.row, cell.column - 1)
             };
             
             var availableCells = new List<Coordinates>();
             foreach (Coordinates uncheckedCell in uncheckedCells)
             {
-                TryToAddCell(cell, uncheckedCell, availableCells);
+                TryToAddMove(cell, uncheckedCell, availableCells);
             }
 
             return availableCells.ToArray();
         }
-        private void TryToAddCell(Coordinates moveFrom, Coordinates moveTo, List<Coordinates> availableCells)
+        private void TryToAddMove(Coordinates moveFrom, Coordinates moveTo, ICollection<Coordinates> availableCells)
         {
             if (!IsWayBetweenCells(moveFrom, moveTo))
             {
@@ -47,12 +47,6 @@ namespace Quoridor.Model.PlayerLogic
 
             if (_model.CellsManager.CellIsBusy(moveTo))
             {
-                if (_currentTurnPlayerCoordinates.Equals(moveTo))
-                {
-                    return;
-                }
-                
-                FindWayToJumpOver(moveFrom, moveTo, availableCells);
                 return;
             }
          
@@ -63,6 +57,49 @@ namespace Quoridor.Model.PlayerLogic
             return _model.CellsManager.CellIsReal(moveFrom)
                    && _model.CellsManager.CellIsReal(moveTo) 
                    && !_model.CellsManager.WallIsBetweenCells(moveFrom, moveTo);
+        }
+
+        public Coordinates[] AvailableJumps(Coordinates playerCoordinates)
+        {
+            _currentTurnPlayerCoordinates = playerCoordinates;
+            return GetAvailableJumpsFromCell(playerCoordinates);
+        }
+        private Coordinates[] GetAvailableJumpsFromCell(Coordinates cell)
+        {
+            Coordinates[] uncheckedCells =
+            {
+                new(cell.row + 1, cell.column),
+                new(cell.row - 1, cell.column),
+                new(cell.row, cell.column + 1),
+                new(cell.row, cell.column - 1)
+            };
+            
+            var availableJumps = new List<Coordinates>();
+            foreach (Coordinates uncheckedCell in uncheckedCells)
+            {
+                TryToAddJump(cell, uncheckedCell, availableJumps);
+            }
+
+            return availableJumps.ToArray();
+        }
+        private void TryToAddJump(Coordinates moveFrom, Coordinates moveTo, List<Coordinates> availableCells)
+        {
+            if (!IsWayBetweenCells(moveFrom, moveTo))
+            {
+                return;
+            }
+
+            if (!_model.CellsManager.CellIsBusy(moveTo))
+            {
+                return;
+            }
+            
+            if (_currentTurnPlayerCoordinates.Equals(moveTo))
+            {
+                return;
+            }
+                
+            FindWayToJumpOver(moveFrom, moveTo, availableCells);
         }
         private void FindWayToJumpOver(Coordinates moveFrom, Coordinates moveTo, List<Coordinates> availableCells)
         {
@@ -75,7 +112,7 @@ namespace Quoridor.Model.PlayerLogic
                 return;
             }
             
-            availableCells.AddRange(GetAvailableCellsFromCell(moveTo));
+            availableCells.AddRange(GetAvailableMovesFromCell(moveTo));
         }
 
         public Coordinates[] AvailableWalls()
@@ -116,7 +153,7 @@ namespace Quoridor.Model.PlayerLogic
         private bool TryToFindWay(Coordinates cell, int victoryRow, ICollection<Coordinates> visitedCells)
         {
             visitedCells.Add(cell);
-            foreach (Coordinates cellToCheck in GetAvailableCellsFromCell(cell))
+            foreach (Coordinates cellToCheck in GetAvailableMovesFromCell(cell))
             {
                 if (visitedCells.Contains(cellToCheck))
                 {

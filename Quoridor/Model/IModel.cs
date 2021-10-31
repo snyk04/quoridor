@@ -9,6 +9,7 @@ namespace Quoridor.Model
         void StopGame(GameStopType gameStopType);
 
         void MoveCurrentPlayerToCell(Coordinates cell);
+        void JumpCurrentPlayerToCell(Coordinates cell);
         void PlaceCurrentPlayerWall(Coordinates wall);
     }
 }

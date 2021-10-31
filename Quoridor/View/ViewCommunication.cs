@@ -21,11 +21,15 @@ namespace Quoridor.View
         {
             _controller.AvailableCells = cells.ToArray();
         }
+        public void ShowAvailableJumps(IEnumerable<Coordinates> jumps)
+        {
+            _controller.AvailableJumps = jumps.ToArray();
+        }
         public void ShowAvailableWalls(IEnumerable<Coordinates> walls)
         {
             _controller.AvailableWalls = walls.ToArray();
         }
-
+        
         public void MovePlayerToCell(Player player, Coordinates cell)
         {
             if (player.Type != PlayerType.RandomBot)
@@ -34,6 +38,15 @@ namespace Quoridor.View
             }
             
             Console.WriteLine($"move {CellsConverter.NumberToMixed(cell)}");
+        }
+        public void JumpPlayerToCell(Player player, Coordinates cell)
+        {
+            if (player.Type != PlayerType.RandomBot)
+            {
+                return;
+            }
+            
+            Console.WriteLine($"jump {CellsConverter.NumberToMixed(cell)}");
         }
         public void PlaceWall(Player player, Coordinates wall)
         {

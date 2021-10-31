@@ -6,6 +6,7 @@ namespace Quoridor.Controller
     {
         Coordinates[] AvailableCells { set; }
         Coordinates[] AvailableWalls { set; }
+        Coordinates[] AvailableJumps { set; }
         
         void StartGame();
         void StopGame();

@@ -3,6 +3,7 @@
     public enum MoveType
     {
         MoveToCell,
+        JumpToCell,
         PlaceWall
     }
 }

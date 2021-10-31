@@ -14,6 +14,8 @@ namespace Quoridor
             
             // ConverterTest.TestWallsConverter(new Coordinates(0, 0), "S1v");
             // ConverterTest.TestWallsConverter(new Coordinates(1, 0), "S1h");
+            
+            // ViewTest.Test();
         }
     }
 }

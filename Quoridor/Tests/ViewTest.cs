@@ -17,6 +17,7 @@ namespace Quoridor.Tests
             Player player = new Player(modelCommunication, PlayerColor.White, PlayerType.Player1, new Coordinates(0, 0), 10, 0);
             
             viewCommunication.MovePlayerToCell(player, new Coordinates(7, 4));
+            viewCommunication.JumpPlayerToCell(player, new Coordinates(4, 3));
             viewCommunication.PlaceWall(player, new Coordinates(7, 4));
             viewCommunication.EndGame(PlayerColor.White);
         }

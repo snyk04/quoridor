@@ -10,13 +10,13 @@ namespace Quoridor.Model.PlayerLogic
         {
         }
 
-        public override void SetPossibleMoves(Coordinates[] cells, Coordinates[] walls)
+        public override void SetPossibleMoves(Coordinates[] cells, Coordinates[] jumps, Coordinates[] walls)
         {
-            CalculateMove(cells, walls, out MoveType moveType, out Coordinates coordinates);
+            CalculateMove(cells, jumps, walls, out MoveType moveType, out Coordinates coordinates);
             MakeMove(moveType, coordinates);
         }
 
-        private void CalculateMove(IList<Coordinates> cells, IList<Coordinates> walls,
+        private void CalculateMove(IList<Coordinates> cells, IList<Coordinates> jumps, IList<Coordinates> walls,
             out MoveType moveType, out Coordinates coordinates)
         {
             Random random = new Random();
@@ -24,12 +24,19 @@ namespace Quoridor.Model.PlayerLogic
             {
                 moveType = MoveType.PlaceWall;
                 coordinates = walls[random.Next(walls.Count)];
+                return;
             }
-            else
+
+            // TODO : not sure if random.Value is different with every time
+            if (jumps.Count > 0 && random.Value <= 0.5)
             {
-                moveType = MoveType.MoveToCell;
-                coordinates = cells[random.Next(cells.Count)];
+                moveType = MoveType.JumpToCell;
+                coordinates = jumps[random.Next(jumps.Count)];
+                return;
             }
+            
+            moveType = MoveType.MoveToCell; 
+            coordinates = cells[random.Next(cells.Count)];
         }
     }
 }
