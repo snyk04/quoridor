@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Quoridor.Model.Cells;
 using Quoridor.Model.Common;
+using Quoridor.Model.Pathfinding;
 using Quoridor.Model.PlayerLogic;
 using Quoridor.Model.Walls;
 using Quoridor.View;
@@ -10,6 +11,8 @@ namespace Quoridor.Model
     public sealed class ModelCommunication : IModel
     {
         private readonly IView _view;
+        
+        public FieldPathFinder FieldPathFinder { get; }
         
         public GameCycle GameCycle { get; }
         public PlayerController PlayerController { get; }
@@ -24,6 +27,8 @@ namespace Quoridor.Model
         public ModelCommunication(IView view)
         {
             _view = view;
+
+            FieldPathFinder = new FieldPathFinder(this);
             
             GameCycle = new GameCycle(this);
             PlayerController = new PlayerController(this);

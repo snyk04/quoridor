@@ -1,4 +1,4 @@
-﻿using Quoridor.Tests;
+﻿using Quoridor.Controller;
 
 namespace Quoridor
 {
@@ -6,9 +6,8 @@ namespace Quoridor
     {
         public static void Main(string[] args)
         {
-            // IController controller = new ControllerCommunication();
-            // controller.StartGame();
-            PathFindingTest.TestPathFinder(4, 4);
+            IController controller = new ControllerCommunication();
+            controller.StartGame();
         }
     }
 }

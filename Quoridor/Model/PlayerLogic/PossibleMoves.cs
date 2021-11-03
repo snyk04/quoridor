@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Quoridor.Model.Cells;
 using Quoridor.Model.Common;
+using Quoridor.Tests;
 
 namespace Quoridor.Model.PlayerLogic
 {
@@ -129,6 +133,7 @@ namespace Quoridor.Model.PlayerLogic
             List<Coordinates> uncheckedWalls = new List<Coordinates>(_model.WallsManager.AvailableWalls);
             _availableWalls = new List<Coordinates>();
             
+            
             foreach (Coordinates wall in uncheckedWalls)
             {
                 _model.WallsManager.PlaceTemporaryWall(wall);
@@ -145,11 +150,25 @@ namespace Quoridor.Model.PlayerLogic
 
         private bool PlayerCanWin(Player player)
         {
-            List<Coordinates> visitedCells = new List<Coordinates>();
-            _currentTurnPlayerCoordinates = player.Position;
+            for (int i = 0; i < CellsManager.AmountOfColumns; i++)
+            {
+                var possibleVictoryCell = new Coordinates(player.VictoryRow, i);
+                if (_model.FieldPathFinder.FindPath(player.Position, possibleVictoryCell) != null)
+                {
+                    return true;
+                }
+            }
 
-            return TryToFindWay(player.Position, player.VictoryRow, visitedCells);
+            return false;
         }
+        
+        // private bool PlayerCanWin(Player player)
+        // {
+        //     List<Coordinates> visitedCells = new List<Coordinates>();
+        //     _currentTurnPlayerCoordinates = player.Position;
+        //
+        //     return TryToFindWay(player.Position, player.VictoryRow, visitedCells);
+        // }
         private bool TryToFindWay(Coordinates cell, int victoryRow, ICollection<Coordinates> visitedCells)
         {
             visitedCells.Add(cell);

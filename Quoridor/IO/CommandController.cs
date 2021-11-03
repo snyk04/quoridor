@@ -22,7 +22,6 @@ namespace Quoridor.IO
             
             if (!Enum.TryParse(commandString, true, out command))
             {
-                Console.WriteLine("ERROR!");
                 Console.WriteLine($"{commandString}: unknown command");
                 return false;
             }
@@ -40,7 +39,7 @@ namespace Quoridor.IO
             {
                 coordinates = converter(arguments[0]);
             }
-            catch (Exception e)
+            catch
             {
                 Console.WriteLine($"{command.ToString().ToLower()}: wrong argument");
                 return false;
