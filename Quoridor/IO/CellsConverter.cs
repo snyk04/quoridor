@@ -19,8 +19,8 @@ namespace Quoridor.IO
         }
         public static string NumberToMixed(Coordinates numberCoordinates)
         {
-            string letters = NumberToLetters(numberCoordinates.column);
-            string numbers = (numberCoordinates.row + 1).ToString();
+            string letters = NumberToLetters(numberCoordinates.Column);
+            string numbers = (numberCoordinates.Row + 1).ToString();
 
             return letters + numbers;
         }

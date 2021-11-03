@@ -61,8 +61,8 @@ namespace Quoridor.Model.Pathfinding
         
         private static int CalculateApproximateDistance(Coordinates start, Coordinates goal)
         {
-            int rowDistance = Math.Abs(start.row - goal.row);
-            int columnDistance = Math.Abs(start.column - goal.column);
+            int rowDistance = Math.Abs(start.Row - goal.Row);
+            int columnDistance = Math.Abs(start.Column - goal.Column);
             
             return rowDistance + columnDistance;
         }
@@ -72,10 +72,10 @@ namespace Quoridor.Model.Pathfinding
 
             Coordinates[] nodeNeighbours =
             {
-                new(node.Position.row + 1, node.Position.column),
-                new(node.Position.row - 1, node.Position.column),
-                new(node.Position.row, node.Position.column + 1),
-                new(node.Position.row, node.Position.column - 1)
+                new(node.Position.Row + 1, node.Position.Column),
+                new(node.Position.Row - 1, node.Position.Column),
+                new(node.Position.Row, node.Position.Column + 1),
+                new(node.Position.Row, node.Position.Column - 1)
             };
             
             foreach (Coordinates neighbour in nodeNeighbours)
@@ -110,10 +110,10 @@ namespace Quoridor.Model.Pathfinding
 
         private static bool IsNodeReal(Coordinates node, int amountOfRows, int amountOfColumns)
         {
-            return node.row < amountOfRows
-                   & node.row >= 0
-                   & node.column < amountOfColumns
-                   & node.column >= 0; 
+            return node.Row < amountOfRows
+                   & node.Row >= 0
+                   & node.Column < amountOfColumns
+                   & node.Column >= 0; 
         }
         private static bool IsWayBetweenNodes(Coordinates node1, Coordinates node2, int[,] field, int amountOfColumns)
         {

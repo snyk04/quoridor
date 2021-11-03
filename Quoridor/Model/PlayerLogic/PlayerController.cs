@@ -83,8 +83,8 @@ namespace Quoridor.Model.PlayerLogic
 
         private void InitializePlayers(PlayerType whitePlayer, PlayerType blackPlayer)
         {
-            WhitePlayer = CreatePlayer(whitePlayer, PlayerColor.White, _whitePlayerStartPosition, _blackPlayerStartPosition.row);
-            BlackPlayer = CreatePlayer(blackPlayer, PlayerColor.Black, _blackPlayerStartPosition, _whitePlayerStartPosition.row);
+            WhitePlayer = CreatePlayer(whitePlayer, PlayerColor.White, _whitePlayerStartPosition, _blackPlayerStartPosition.Row);
+            BlackPlayer = CreatePlayer(blackPlayer, PlayerColor.Black, _blackPlayerStartPosition, _whitePlayerStartPosition.Row);
         }
         
         private void HandleMoveEndEvents()

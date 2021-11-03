@@ -2,27 +2,27 @@
 {
     public readonly struct Coordinates
     {
-        public readonly int row;
-        public readonly int column;
+        public readonly int Row;
+        public readonly int Column;
 
         public Coordinates(int row, int column)
         {
-            this.row = row;
-            this.column = column;
+            this.Row = row;
+            this.Column = column;
         }
 
         public static Coordinates operator +(Coordinates a, Coordinates b)
         {
-            return new Coordinates(a.row + b.row, a.column + b.column);
+            return new Coordinates(a.Row + b.Row, a.Column + b.Column);
         }
         public static Coordinates operator -(Coordinates a, Coordinates b)
         {
-            return new Coordinates(a.row - b.row, a.column - b.column);
+            return new Coordinates(a.Row - b.Row, a.Column - b.Column);
         }
 
         public override string ToString()
         {
-            return row + " " + column;
+            return Row + " " + Column;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Quoridor.Model.Walls
         
         public void PlaceWall(Player player, Coordinates wallCoordinates)
         {
-            Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
+            Wall wall = Walls[wallCoordinates.Row, wallCoordinates.Column];
             
             BlockedCellPairs.AddRange(wall.BlockedCellPairs);
 
@@ -43,12 +43,12 @@ namespace Quoridor.Model.Walls
         
         public void PlaceTemporaryWall(Coordinates wallCoordinates)
         {
-            Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
+            Wall wall = Walls[wallCoordinates.Row, wallCoordinates.Column];
             BlockedCellPairs.AddRange(wall.BlockedCellPairs);
         }
         public void DestroyTemporaryWall(Coordinates wallCoordinates)
         {
-            Wall wall = Walls[wallCoordinates.row, wallCoordinates.column];
+            Wall wall = Walls[wallCoordinates.Row, wallCoordinates.Column];
             foreach (CellPair cellPair in wall.BlockedCellPairs)
             {
                 BlockedCellPairs.Remove(cellPair);

@@ -24,10 +24,10 @@ namespace Quoridor.Model.PlayerLogic
         {
             Coordinates[] uncheckedCells =
             {
-                new(cell.row + 1, cell.column),
-                new(cell.row - 1, cell.column),
-                new(cell.row, cell.column + 1),
-                new(cell.row, cell.column - 1)
+                new(cell.Row + 1, cell.Column),
+                new(cell.Row - 1, cell.Column),
+                new(cell.Row, cell.Column + 1),
+                new(cell.Row, cell.Column - 1)
             };
             
             var availableCells = new List<Coordinates>();
@@ -68,10 +68,10 @@ namespace Quoridor.Model.PlayerLogic
         {
             Coordinates[] uncheckedCells =
             {
-                new(cell.row + 1, cell.column),
-                new(cell.row - 1, cell.column),
-                new(cell.row, cell.column + 1),
-                new(cell.row, cell.column - 1)
+                new(cell.Row + 1, cell.Column),
+                new(cell.Row - 1, cell.Column),
+                new(cell.Row, cell.Column + 1),
+                new(cell.Row, cell.Column - 1)
             };
             
             var availableJumps = new List<Coordinates>();
@@ -159,7 +159,7 @@ namespace Quoridor.Model.PlayerLogic
                 {
                     continue;
                 }
-                if (cellToCheck.row == victoryRow || TryToFindWay(cellToCheck, victoryRow, visitedCells))
+                if (cellToCheck.Row == victoryRow || TryToFindWay(cellToCheck, victoryRow, visitedCells))
                 {
                     return true;
                 }

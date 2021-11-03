@@ -20,18 +20,18 @@ namespace Quoridor.Model.Cells
             InitializeCellField();
         }
 
-        public Cell this[Coordinates cellCoordinates] => Cells[cellCoordinates.row, cellCoordinates.column];
+        public Cell this[Coordinates cellCoordinates] => Cells[cellCoordinates.Row, cellCoordinates.Column];
 
         public bool CellIsBusy(Coordinates cell)
         {
-            return Cells[cell.row, cell.column].IsBusy;
+            return Cells[cell.Row, cell.Column].IsBusy;
         }
         public bool CellIsReal(Coordinates cell)
         {
-            return cell.row < AmountOfRows
-                   & cell.row >= 0
-                   & cell.column < AmountOfColumns
-                   & cell.column >= 0; }
+            return cell.Row < AmountOfRows
+                   & cell.Row >= 0
+                   & cell.Column < AmountOfColumns
+                   & cell.Column >= 0; }
         public bool WallIsBetweenCells(Coordinates firstCell, Coordinates secondCell)
         {
             CellPair cellPair = new CellPair(firstCell, secondCell);

@@ -24,9 +24,9 @@ namespace Quoridor.IO
         }
         public static string NumberToMixed(Coordinates numberCoordinates)
         {
-            string letters = NumberToLetters(numberCoordinates.column);
-            string numbers = ((numberCoordinates.row + 2) / 2).ToString();
-            string orientation = (numberCoordinates.row % 2) switch
+            string letters = NumberToLetters(numberCoordinates.Column);
+            string numbers = ((numberCoordinates.Row + 2) / 2).ToString();
+            string orientation = (numberCoordinates.Row % 2) switch
             {
                 0 => "v",
                 1 => "h",

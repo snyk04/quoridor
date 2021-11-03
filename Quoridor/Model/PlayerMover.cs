@@ -34,7 +34,7 @@ namespace Quoridor.Model
         
         private void CheckPlayerVictory(Player player)
         {
-            if (player.Position.row == player.VictoryRow)
+            if (player.Position.Row == player.VictoryRow)
             {
                 _model.GameCycle.StopGame();
             }

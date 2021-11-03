@@ -6,7 +6,7 @@ namespace Quoridor.Model.Common
     {
         public static int ToIndex(Coordinates coordinates, int amountOfColumns)
         {
-            return coordinates.row * amountOfColumns + coordinates.column;
+            return coordinates.Row * amountOfColumns + coordinates.Column;
         }
         public static Coordinates ToCoordinates(int index, int amountOfRows, int amountOfColumns)
         {
