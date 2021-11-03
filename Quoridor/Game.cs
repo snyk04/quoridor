@@ -1,5 +1,4 @@
-﻿using Quoridor.Controller;
-using Quoridor.Model.Common;
+﻿using System;
 using Quoridor.Tests;
 
 namespace Quoridor
@@ -8,14 +7,11 @@ namespace Quoridor
     {
         public static void Main(string[] args)
         {
-            IController controller = new ControllerCommunication();
+            // IController controller = new ControllerCommunication();
+            // controller.StartGame();
+            PathFindingTest.TestPathFinder(4);
 
-            controller.StartGame();
-            
-            // ConverterTest.TestWallsConverter(new Coordinates(0, 0), "S1v");
-            // ConverterTest.TestWallsConverter(new Coordinates(1, 0), "S1h");
-            
-            // ViewTest.Test();
+            // ConverterTester.Test(new Coordinates(3, 3), 15, 4, 4);
         }
     }
 }

@@ -20,5 +20,12 @@ namespace Quoridor.Tests
             Console.WriteLine($"{numberCoordinates.ToString()} => {mixedCoordinates}| " +
                               $"result = {WallsConverter.NumberToMixed(numberCoordinates).Equals(mixedCoordinates)}");
         }
+        public static void TestFieldConverter(Coordinates numberCoordinates, int index, int amountOfRows, int amountOfColumns)
+        {
+            Console.WriteLine($"{numberCoordinates} => {index} | " +
+                              $"result = {index.Equals(FieldConverter.ToIndex(numberCoordinates, amountOfColumns))}");
+            Console.WriteLine($"{index} => {numberCoordinates} | " +
+                              $"result = {numberCoordinates.Equals(FieldConverter.ToCoordinates(index, amountOfRows, amountOfColumns))}");
+        }
     }
 }

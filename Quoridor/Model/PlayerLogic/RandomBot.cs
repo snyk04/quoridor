@@ -27,7 +27,6 @@ namespace Quoridor.Model.PlayerLogic
                 return;
             }
 
-            // TODO : not sure if random.Value is different with every time
             if (jumps.Count > 0 && random.Value <= 0.5)
             {
                 moveType = MoveType.JumpToCell;

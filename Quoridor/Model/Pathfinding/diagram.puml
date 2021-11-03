@@ -1,0 +1,15 @@
+﻿@startuml
+
+class PathFinder
+{
+    FindPath(m : int[,], start : Coordinates, goal : Coordinates) : List<Coordinates>
+}
+
+class FieldPathFinder
+{
+    FindPath(start : Coordinates, goal : Coordinates) : List<Coordinates>
+}
+
+PathFinder -- FieldPathFinder
+
+@enduml 
