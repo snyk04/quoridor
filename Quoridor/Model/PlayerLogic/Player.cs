@@ -5,7 +5,7 @@ namespace Quoridor.Model.PlayerLogic
 {
     public class Player
     {
-        private readonly ModelCommunication _model;
+        protected readonly ModelCommunication _model;
         
         public PlayerColor Color { get; }
         public PlayerType Type { get; }

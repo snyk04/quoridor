@@ -4,6 +4,7 @@
     {
         Player1,
         Player2,
-        RandomBot
+        RandomBot,
+        SmartBot
     }
 }

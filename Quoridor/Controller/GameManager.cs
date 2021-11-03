@@ -135,14 +135,14 @@ namespace Quoridor.Controller
 
             PlayerType whitePlayer = command switch
             {
-                Command.White => PlayerType.RandomBot,
+                Command.White => PlayerType.SmartBot,
                 Command.Black => PlayerType.Player1,
                 _ => throw new ArgumentOutOfRangeException()
             };
             PlayerType blackPlayer = command switch
             {
                 Command.White => PlayerType.Player1,
-                Command.Black => PlayerType.RandomBot,
+                Command.Black => PlayerType.SmartBot,
                 _ => throw new ArgumentOutOfRangeException()
             };
 

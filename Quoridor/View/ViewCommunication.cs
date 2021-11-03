@@ -32,7 +32,7 @@ namespace Quoridor.View
         
         public void MovePlayerToCell(Player player, Coordinates cell)
         {
-            if (player.Type != PlayerType.RandomBot)
+            if (player.Type != PlayerType.SmartBot)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Quoridor.View
         }
         public void JumpPlayerToCell(Player player, Coordinates cell)
         {
-            if (player.Type != PlayerType.RandomBot)
+            if (player.Type is not (PlayerType.SmartBot or PlayerType.RandomBot))
             {
                 return;
             }
@@ -50,7 +50,7 @@ namespace Quoridor.View
         }
         public void PlaceWall(Player player, Coordinates wall)
         {
-            if (player.Type != PlayerType.RandomBot)
+            if (player.Type is not (PlayerType.SmartBot or PlayerType.RandomBot))
             {
                 return;
             }
@@ -60,6 +60,7 @@ namespace Quoridor.View
         
         public void EndGame(PlayerColor winner)
         {
+            // TODO : delete
             Console.WriteLine($"{winner.ToString().ToLower()} won");
             _controller.StopGame();
         }

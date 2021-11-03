@@ -122,6 +122,7 @@ namespace Quoridor.Model.PlayerLogic
                 PlayerType.Player1 => new Player(_model, playerColor, playerType, startPosition, DefaultAmountOfWalls, victoryRow),
                 PlayerType.Player2 => new Player(_model, playerColor, playerType, startPosition, DefaultAmountOfWalls, victoryRow),
                 PlayerType.RandomBot => new RandomBot(_model, playerColor, playerType, startPosition, DefaultAmountOfWalls, victoryRow),
+                PlayerType.SmartBot => new SmartBot(_model, playerColor, playerType, startPosition, DefaultAmountOfWalls, victoryRow),
                 _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
             };
         }
