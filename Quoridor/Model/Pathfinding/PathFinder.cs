@@ -11,7 +11,7 @@ namespace Quoridor.Model.Pathfinding
         private const int NeighboursDistance = 1;
 
         public static List<Coordinates> FindPath(Coordinates start, Coordinates goal, int[,] field, int amountOfRows, int amountOfColumns)
-        {
+        { 
             var closedSet = new Collection<Node>();
             var openSet = new Collection<Node>();
 
@@ -36,7 +36,7 @@ namespace Quoridor.Model.Pathfinding
                 openSet.Remove(currentNode);
                 closedSet.Add(currentNode);
 
-                foreach (Node neighbourNode in GetNodeNeighbours(currentNode, field, amountOfRows, amountOfColumns))
+                foreach (Node neighbourNode in GetNodeNeighbours(currentNode, goal, field, amountOfRows, amountOfColumns))
                 {
                     if (closedSet.Count(node => node.Position.Equals(neighbourNode.Position)) > 0)
                     {
@@ -66,61 +66,32 @@ namespace Quoridor.Model.Pathfinding
             
             return rowDistance + columnDistance;
         }
-        private static Collection<Node> GetNodeNeighbours(Node node, int[,] field, int amountOfRows, int amountOfColumns)
+        private static Collection<Node> GetNodeNeighbours(Node node, Coordinates goal, int[,] field, int amountOfRows, int amountOfColumns)
         {
             var result = new Collection<Node>();
 
-            Coordinates[] nodeNeighbours =
+            int nodeIndex = FieldConverter.ToIndex(node.Position, amountOfColumns);
+            for (int i = 0; i < field.GetLength(1); i++)
             {
-                new(node.Position.Row + 1, node.Position.Column),
-                new(node.Position.Row - 1, node.Position.Column),
-                new(node.Position.Row, node.Position.Column + 1),
-                new(node.Position.Row, node.Position.Column - 1)
-            };
-            
-            foreach (Coordinates neighbour in nodeNeighbours)
-            {
-                TryToAddNeighbourToNode(neighbour, node, field, result, amountOfRows, amountOfColumns);
+                if (field[nodeIndex, i] != 1)
+                {
+                    continue;
+                }
+                
+                Coordinates neighbourCoordinates = FieldConverter.ToCoordinates(i, amountOfRows, amountOfColumns);
+                var neighbourNode = new Node
+                {
+                    Position = neighbourCoordinates,
+                    CameFrom = node,
+                    PathLengthFromStart = node.PathLengthFromStart + NeighboursDistance,
+                    HeuristicEstimatePathLength = CalculateApproximateDistance(neighbourCoordinates, goal)
+                };
+                result.Add(neighbourNode);
             }
-
+            
             return result;
         }
 
-        private static void TryToAddNeighbourToNode(Coordinates neighbour, Node node, int[,] field, ICollection<Node> result, int amountOfRows, int amountOfColumns)
-        {
-            if (!IsNodeReal(neighbour, amountOfRows, amountOfColumns))
-            {
-                return;
-            }
-
-            if (!IsWayBetweenNodes(neighbour, node.Position, field, amountOfColumns))
-            {
-                return;
-            }
-
-            var neighbourNode = new Node
-            {
-                Position = neighbour,
-                CameFrom = node,
-                PathLengthFromStart = node.PathLengthFromStart + NeighboursDistance,
-                HeuristicEstimatePathLength = CalculateApproximateDistance(neighbour, neighbour)
-            };
-            result.Add(neighbourNode);
-        }
-
-        private static bool IsNodeReal(Coordinates node, int amountOfRows, int amountOfColumns)
-        {
-            return node.Row < amountOfRows
-                   & node.Row >= 0
-                   & node.Column < amountOfColumns
-                   & node.Column >= 0; 
-        }
-        private static bool IsWayBetweenNodes(Coordinates node1, Coordinates node2, int[,] field, int amountOfColumns)
-        {
-            return field[FieldConverter.ToIndex(node1, amountOfColumns), FieldConverter.ToIndex(node2, amountOfColumns)] != 0 
-                   || field[FieldConverter.ToIndex(node2, amountOfColumns), FieldConverter.ToIndex(node1, amountOfColumns)] != 0;
-        }
-        
         private static List<Coordinates> GetPathForNode(Node node)
         {
             var result = new List<Coordinates>();
