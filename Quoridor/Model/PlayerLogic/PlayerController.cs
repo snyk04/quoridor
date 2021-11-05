@@ -31,6 +31,19 @@ namespace Quoridor.Model.PlayerLogic
                 };
             }
         }
+        public int CurrentPlayerOpponentVictoryRow
+        {
+            get
+            {
+                return CurrentPlayerColor switch
+                {
+                    PlayerColor.White => BlackPlayer.VictoryRow,
+                    PlayerColor.Black => WhitePlayer.VictoryRow,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+        }
+
 
         private PlayerColor CurrentPlayerColor => _currentPlayer.Color;
         private PlayerColor CurrentPlayerOpponentColor

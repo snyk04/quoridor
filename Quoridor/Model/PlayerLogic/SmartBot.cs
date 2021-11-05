@@ -17,26 +17,59 @@ namespace Quoridor.Model.PlayerLogic
             MakeMove(moveType, coordinates);
         }
 
-        private void CalculateMove(IList<Coordinates> cells, IEnumerable<Coordinates> jumps, IList<Coordinates> walls,
+        private void CalculateMove(IList<Coordinates> cells, IEnumerable<Coordinates> jumps, IReadOnlyList<Coordinates> walls,
             out MoveType moveType, out Coordinates coordinates)
         {
-            moveType = MoveType.MoveToCell;
-            coordinates = cells[new Random().Next(cells.Count)];
-            
-            List<Coordinates> way = _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, _model.PlayerController.CurrentPlayerOpponentPosition);
-            if (way == null)
-            {
-                return;
-            }
-                
-            coordinates = way[1];
+            Coordinates enemyPosition = _model.PlayerController.CurrentPlayerOpponentPosition;
+            int enemyVictoryRow = _model.PlayerController.CurrentPlayerOpponentVictoryRow;
 
-            moveType = (Position - coordinates).VectorLength() switch
+            List<Coordinates> playerShortestWay =
+                _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, enemyPosition);
+            List<Coordinates> enemyShortestWay =
+                _model.FieldPathFinder.FindShortestPathToRow(enemyPosition, enemyVictoryRow, _model.PossibleMoves.AvailableJumps(enemyPosition), Position);
+
+            // Console.WriteLine(playerShortestWay.Count + " " + enemyShortestWay.Count);
+            if (playerShortestWay.Count > enemyShortestWay.Count && AmountOfWalls >= 1)
             {
-                1 => MoveType.MoveToCell,
-                > 1 => MoveType.JumpToCell,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                int maxDelta = enemyShortestWay.Count;
+                coordinates = walls[new Random().Next(walls.Count)];
+                foreach (Coordinates wall in walls)
+                {
+                    _model.WallsManager.PlaceTemporaryWall(wall);
+                    
+                    enemyShortestWay =
+                        _model.FieldPathFinder.FindShortestPathToRow(enemyPosition, enemyVictoryRow, new List<Coordinates>(), Position);
+
+                    int delta = enemyShortestWay.Count;
+                    if (delta > maxDelta)
+                    {
+                        // Console.WriteLine(delta);
+                        maxDelta = delta;
+                        coordinates = wall;
+                    }
+                    
+                    _model.WallsManager.DestroyTemporaryWall(wall);
+                }
+                
+                moveType = MoveType.PlaceWall;
+            }
+            else
+            {
+                List<Coordinates> way = _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, enemyPosition);
+                if (way == null)
+                {
+                    throw new Exception();
+                }
+                
+                coordinates = way[1];
+
+                moveType = (Position - coordinates).VectorLength() switch
+                {
+                    1 => MoveType.MoveToCell,
+                    > 1 => MoveType.JumpToCell,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
         }
     }
 }
