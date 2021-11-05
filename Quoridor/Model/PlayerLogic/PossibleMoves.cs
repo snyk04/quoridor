@@ -153,6 +153,7 @@ namespace Quoridor.Model.PlayerLogic
             for (int i = 0; i < CellsManager.AmountOfColumns; i++)
             {
                 var possibleVictoryCell = new Coordinates(player.VictoryRow, i);
+
                 if (_model.FieldPathFinder.FindPath(player.Position, possibleVictoryCell) != null)
                 {
                     return true;
@@ -169,22 +170,22 @@ namespace Quoridor.Model.PlayerLogic
         //
         //     return TryToFindWay(player.Position, player.VictoryRow, visitedCells);
         // }
-        private bool TryToFindWay(Coordinates cell, int victoryRow, ICollection<Coordinates> visitedCells)
-        {
-            visitedCells.Add(cell);
-            foreach (Coordinates cellToCheck in GetAvailableMovesFromCell(cell))
-            {
-                if (visitedCells.Contains(cellToCheck))
-                {
-                    continue;
-                }
-                if (cellToCheck.Row == victoryRow || TryToFindWay(cellToCheck, victoryRow, visitedCells))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        // private bool TryToFindWay(Coordinates cell, int victoryRow, ICollection<Coordinates> visitedCells)
+        // {
+        //     visitedCells.Add(cell);
+        //     foreach (Coordinates cellToCheck in GetAvailableMovesFromCell(cell))
+        //     {
+        //         if (visitedCells.Contains(cellToCheck))
+        //         {
+        //             continue;
+        //         }
+        //         if (cellToCheck.Row == victoryRow || TryToFindWay(cellToCheck, victoryRow, visitedCells))
+        //         {
+        //             return true;
+        //         }
+        //     }
+        //
+        //     return false;
+        // }
     }
 }
