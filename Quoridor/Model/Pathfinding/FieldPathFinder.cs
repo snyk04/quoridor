@@ -13,11 +13,11 @@ namespace Quoridor.Model.Pathfinding
             _model = model;
         }
 
-        public List<Coordinates> FindPath(Coordinates start, Coordinates goal)
+        public List<Coordinates> FindShortestPathToRow(Coordinates start, int row)
         {
             int[,] adjacencyMatrix = CalculateAdjacencyMatrix();
             
-            return PathFinder.FindPath(start, goal, adjacencyMatrix, CellsManager.AmountOfRows, CellsManager.AmountOfColumns);
+            return PathFinder.FindShortestPathToRow(start, row, adjacencyMatrix, CellsManager.AmountOfRows, CellsManager.AmountOfColumns);
         }
 
         private int[,] CalculateAdjacencyMatrix()
@@ -40,6 +40,7 @@ namespace Quoridor.Model.Pathfinding
 
             return adjacencyMatrix;
         }
+        
         private static void AddNeighbours(int row, int columns, int[,] matrix, int amountOfColumns)
         {
             var cell = new Coordinates(row, columns);
@@ -64,7 +65,7 @@ namespace Quoridor.Model.Pathfinding
                 AddWay(cell, neighbourCell, matrix, amountOfColumns);
             }
         }
-        
+
         private static void AddWay(Coordinates cell1, Coordinates cell2, int[,] matrix, int amountOfColumns)
         {
             ConfigureConnection(cell1, cell2, 1, matrix, amountOfColumns);

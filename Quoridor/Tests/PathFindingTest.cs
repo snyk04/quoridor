@@ -21,8 +21,8 @@ namespace Quoridor.Tests
             }
 
             Coordinates start = new Coordinates(0, 0);
-            Coordinates goal = new Coordinates(3, 3);
-            List<Coordinates> way = PathFinder.FindPath(start, goal, matrix, amountOfRows, amountOfColumns);
+            int goalRow = 3;
+            List<Coordinates> way = PathFinder.FindShortestPathToRow(start, goalRow, matrix, amountOfRows, amountOfColumns);
             if (way == null)
             {
                 Console.WriteLine("no way!");

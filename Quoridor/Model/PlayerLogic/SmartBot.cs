@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using Quoridor.Model.Cells;
+﻿using System;
+using System.Collections.Generic;
 using Quoridor.Model.Common;
+using Random = Quoridor.Model.Common.Random;
 
 namespace Quoridor.Model.PlayerLogic
 {
@@ -22,18 +23,20 @@ namespace Quoridor.Model.PlayerLogic
             moveType = MoveType.MoveToCell;
             coordinates = cells[new Random().Next(cells.Count)];
             
-            for (int i = 0; i < CellsManager.AmountOfColumns; i++)
+            List<Coordinates> way = _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow);
+            if (way == null)
             {
-                List<Coordinates> way = _model.FieldPathFinder.FindPath(Position, new Coordinates(VictoryRow, i));
-                if (way == null)
-                {
-                    continue;
-                }
-                
-                moveType = MoveType.MoveToCell;
-                coordinates = way[1];
                 return;
             }
+                
+            coordinates = way[1];
+
+            moveType = (Position - coordinates).VectorLength() switch
+            {
+                1 => MoveType.MoveToCell,
+                > 1 => MoveType.JumpToCell,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 }

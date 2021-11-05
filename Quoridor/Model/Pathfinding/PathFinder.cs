@@ -10,7 +10,7 @@ namespace Quoridor.Model.Pathfinding
     {
         private const int NeighboursDistance = 1;
 
-        public static List<Coordinates> FindPath(Coordinates start, Coordinates goal, int[,] field, int amountOfRows, int amountOfColumns)
+        public static List<Coordinates> FindShortestPathToRow(Coordinates start, int row, int[,] field, int amountOfRows, int amountOfColumns)
         { 
             var closedSet = new Collection<Node>();
             var openSet = new Collection<Node>();
@@ -20,7 +20,7 @@ namespace Quoridor.Model.Pathfinding
                 Position = start,
                 CameFrom = null,
                 PathLengthFromStart = 0,
-                HeuristicEstimatePathLength = CalculateApproximateDistance(start, goal)
+                HeuristicEstimatePathLength = CalculateApproximateDistance(start, row)
             };
             openSet.Add(startNode);
             
@@ -28,7 +28,7 @@ namespace Quoridor.Model.Pathfinding
             {
                 Node currentNode = openSet.OrderBy(node => node.EstimateFullPathLength).First();
 
-                if (currentNode.Position.Equals(goal))
+                if (currentNode.Position.Row == row)
                 {
                     return GetPathForNode(currentNode);
                 }
@@ -36,7 +36,7 @@ namespace Quoridor.Model.Pathfinding
                 openSet.Remove(currentNode);
                 closedSet.Add(currentNode);
 
-                foreach (Node neighbourNode in GetNodeNeighbours(currentNode, goal, field, amountOfRows, amountOfColumns))
+                foreach (Node neighbourNode in GetNodeNeighbours(currentNode, row, field, amountOfRows, amountOfColumns))
                 {
                     if (closedSet.Count(node => node.Position.Equals(neighbourNode.Position)) > 0)
                     {
@@ -59,14 +59,11 @@ namespace Quoridor.Model.Pathfinding
             return null;
         }
         
-        private static int CalculateApproximateDistance(Coordinates start, Coordinates goal)
-        {
-            int rowDistance = Math.Abs(start.Row - goal.Row);
-            int columnDistance = Math.Abs(start.Column - goal.Column);
-            
-            return rowDistance + columnDistance;
+        private static int CalculateApproximateDistance(Coordinates start, int row)
+        { 
+            return Math.Abs(start.Row - row);
         }
-        private static Collection<Node> GetNodeNeighbours(Node node, Coordinates goal, int[,] field, int amountOfRows, int amountOfColumns)
+        private static Collection<Node> GetNodeNeighbours(Node node, int row, int[,] field, int amountOfRows, int amountOfColumns)
         {
             var result = new Collection<Node>();
 
@@ -84,7 +81,7 @@ namespace Quoridor.Model.Pathfinding
                     Position = neighbourCoordinates,
                     CameFrom = node,
                     PathLengthFromStart = node.PathLengthFromStart + NeighboursDistance,
-                    HeuristicEstimatePathLength = CalculateApproximateDistance(neighbourCoordinates, goal)
+                    HeuristicEstimatePathLength = CalculateApproximateDistance(neighbourCoordinates, row)
                 };
                 result.Add(neighbourNode);
             }

@@ -1,4 +1,6 @@
-﻿namespace Quoridor.Model.Common
+﻿using System;
+
+namespace Quoridor.Model.Common
 {
     public readonly struct Coordinates
     {
@@ -7,8 +9,8 @@
 
         public Coordinates(int row, int column)
         {
-            this.Row = row;
-            this.Column = column;
+            Row = row;
+            Column = column;
         }
 
         public static Coordinates operator +(Coordinates a, Coordinates b)
@@ -23,6 +25,11 @@
         public override string ToString()
         {
             return Row + " " + Column;
+        }
+
+        public float VectorLength()
+        {
+            return (float) Math.Sqrt(Row * Row + Column * Column);
         }
     }
 }

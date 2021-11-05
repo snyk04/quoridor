@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using Quoridor.Model.Cells;
 using Quoridor.Model.Common;
-using Quoridor.Tests;
 
 namespace Quoridor.Model.PlayerLogic
 {
@@ -152,9 +149,7 @@ namespace Quoridor.Model.PlayerLogic
         {
             for (int i = 0; i < CellsManager.AmountOfColumns; i++)
             {
-                var possibleVictoryCell = new Coordinates(player.VictoryRow, i);
-
-                if (_model.FieldPathFinder.FindPath(player.Position, possibleVictoryCell) != null)
+                if (_model.FieldPathFinder.FindShortestPathToRow(player.Position, player.VictoryRow) != null)
                 {
                     return true;
                 }
