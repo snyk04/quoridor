@@ -18,6 +18,19 @@ namespace Quoridor.Model.PlayerLogic
         public bool PlayersHaveWalls => WhitePlayer.AmountOfWalls > 0 || BlackPlayer.AmountOfWalls > 0;
 
         private Player _currentPlayer;
+        
+        public Coordinates CurrentPlayerOpponentPosition
+        {
+            get
+            {
+                return CurrentPlayerColor switch
+                {
+                    PlayerColor.White => BlackPlayer.Position,
+                    PlayerColor.Black => WhitePlayer.Position,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+        }
 
         private PlayerColor CurrentPlayerColor => _currentPlayer.Color;
         private PlayerColor CurrentPlayerOpponentColor

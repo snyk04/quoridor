@@ -17,13 +17,13 @@ namespace Quoridor.Model.PlayerLogic
             MakeMove(moveType, coordinates);
         }
 
-        private void CalculateMove(IList<Coordinates> cells, IList<Coordinates> jumps, IList<Coordinates> walls,
+        private void CalculateMove(IList<Coordinates> cells, IEnumerable<Coordinates> jumps, IList<Coordinates> walls,
             out MoveType moveType, out Coordinates coordinates)
         {
             moveType = MoveType.MoveToCell;
             coordinates = cells[new Random().Next(cells.Count)];
             
-            List<Coordinates> way = _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow);
+            List<Coordinates> way = _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, _model.PlayerController.CurrentPlayerOpponentPosition);
             if (way == null)
             {
                 return;

@@ -135,8 +135,8 @@ namespace Quoridor.Model.PlayerLogic
             {
                 _model.WallsManager.PlaceTemporaryWall(wall);
 
-                if (PlayerCanWin(_model.PlayerController.WhitePlayer)
-                    && PlayerCanWin(_model.PlayerController.BlackPlayer))
+                if (PlayerCanWin(_model.PlayerController.WhitePlayer, _model.PlayerController.BlackPlayer)
+                    && PlayerCanWin(_model.PlayerController.BlackPlayer, _model.PlayerController.WhitePlayer))
                 {
                     _availableWalls.Add(wall);
                 }
@@ -145,11 +145,11 @@ namespace Quoridor.Model.PlayerLogic
             }
         }
 
-        private bool PlayerCanWin(Player player)
+        private bool PlayerCanWin(Player player, Player opponent)
         {
             for (int i = 0; i < CellsManager.AmountOfColumns; i++)
             {
-                if (_model.FieldPathFinder.FindShortestPathToRow(player.Position, player.VictoryRow) != null)
+                if (_model.FieldPathFinder.FindShortestPathToRow(player.Position, player.VictoryRow, AvailableJumps(player.Position), opponent.Position) != null)
                 {
                     return true;
                 }
