@@ -9,6 +9,9 @@ namespace Quoridor.Model.PlayerLogic
 {
     public class SmartBot : Bot
     {
+        private const int RequiredShortestWayDifference = 5;
+        private const int RequiredShortestWayLengthToStartWallPlacing = 6;
+    
         public SmartBot(ModelCommunication model, PlayerColor playerColor, PlayerType playerType, Coordinates startPosition, int startAmountOfWalls, int victoryRow) : base(model, playerColor, playerType, startPosition, startAmountOfWalls, victoryRow)
         {
         }
@@ -26,11 +29,13 @@ namespace Quoridor.Model.PlayerLogic
             int enemyVictoryRow = _model.PlayerController.CurrentPlayerOpponentVictoryRow;
 
             List<Coordinates> playerShortestWay =
-                _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, enemyPosition);
+                _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, null);
             List<Coordinates> enemyShortestWay =
-                _model.FieldPathFinder.FindShortestPathToRow(enemyPosition, enemyVictoryRow, _model.PossibleMoves.AvailableJumps(enemyPosition), Position);
+                _model.FieldPathFinder.FindShortestPathToRow(enemyPosition, enemyVictoryRow, _model.PossibleMoves.AvailableJumps(enemyPosition), null);
 
-            if (playerShortestWay.Count + 3 > enemyShortestWay.Count && AmountOfWalls >= 1 && enemyShortestWay.Count <= 7)
+            if (playerShortestWay.Count + RequiredShortestWayDifference > enemyShortestWay.Count 
+                && AmountOfWalls >= 1 
+                && enemyShortestWay.Count <= RequiredShortestWayLengthToStartWallPlacing)
             {
                 moveType = MoveType.PlaceWall;
                 coordinates = walls[new Random().Next(walls.Count)];
@@ -52,20 +57,21 @@ namespace Quoridor.Model.PlayerLogic
             }
             else
             {
+                moveType = MoveType.MoveToCell;
+                
                 List<Coordinates> way = _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, enemyPosition);
                 if (way == null)
                 {
-                    throw new Exception();
+                    way = _model.FieldPathFinder.FindShortestPathToRow(Position, VictoryRow, jumps, null);
                 }
                 
                 coordinates = way[1];
-                
-                moveType = (Position - coordinates).VectorLength() switch
+
+                float moveLength = (Position - coordinates).VectorLength();
+                if (moveLength > 1)
                 {
-                    1 => MoveType.MoveToCell,
-                    2 => MoveType.JumpToCell,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+                    moveType = MoveType.JumpToCell;
+                }
             }
         }
     }
