@@ -60,9 +60,7 @@ namespace Quoridor.View
         
         public void EndGame(PlayerColor winner)
         {
-            // TODO : delete
-            Console.WriteLine($"{winner.ToString().ToLower()} won");
-            _controller.StopGame();
+
         }
     }
 }
