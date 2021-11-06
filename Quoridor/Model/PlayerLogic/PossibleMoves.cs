@@ -149,7 +149,7 @@ namespace Quoridor.Model.PlayerLogic
         {
             for (int i = 0; i < CellsManager.AmountOfColumns; i++)
             {
-                if (_model.FieldPathFinder.FindShortestPathToRow(player.Position, player.VictoryRow, AvailableJumps(player.Position), opponent.Position) != null)
+                if (_model.FieldPathFinder.FindShortestPathToRow(player.Position, player.VictoryRow, AvailableJumps(player.Position), null) != null)
                 {
                     return true;
                 }

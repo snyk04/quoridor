@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Quoridor.Model.Cells;
 using Quoridor.Model.Common;
 using Random = Quoridor.Model.Common.Random;
 
@@ -28,30 +30,25 @@ namespace Quoridor.Model.PlayerLogic
             List<Coordinates> enemyShortestWay =
                 _model.FieldPathFinder.FindShortestPathToRow(enemyPosition, enemyVictoryRow, _model.PossibleMoves.AvailableJumps(enemyPosition), Position);
 
-            // Console.WriteLine(playerShortestWay.Count + " " + enemyShortestWay.Count);
-            if (playerShortestWay.Count > enemyShortestWay.Count && AmountOfWalls >= 1)
+            if (playerShortestWay.Count + 3 > enemyShortestWay.Count && AmountOfWalls >= 1 && enemyShortestWay.Count <= 7)
             {
-                int maxDelta = enemyShortestWay.Count;
-                coordinates = walls[new Random().Next(walls.Count)];
-                foreach (Coordinates wall in walls)
-                {
-                    _model.WallsManager.PlaceTemporaryWall(wall);
-                    
-                    enemyShortestWay =
-                        _model.FieldPathFinder.FindShortestPathToRow(enemyPosition, enemyVictoryRow, new List<Coordinates>(), Position);
-
-                    int delta = enemyShortestWay.Count;
-                    if (delta > maxDelta)
-                    {
-                        // Console.WriteLine(delta);
-                        maxDelta = delta;
-                        coordinates = wall;
-                    }
-                    
-                    _model.WallsManager.DestroyTemporaryWall(wall);
-                }
-                
                 moveType = MoveType.PlaceWall;
+                coordinates = walls[new Random().Next(walls.Count)];
+
+                for (int i = 0; i < enemyShortestWay.Count; i++)
+                {
+                    foreach (Coordinates wall in walls)
+                    {
+                        foreach (CellPair cellPair in _model.WallsManager[wall].BlockedCellPairs)
+                        {
+                            if (cellPair.Contains(enemyShortestWay[i]) && cellPair.Contains(enemyShortestWay[i + 1]))
+                            {
+                                coordinates = wall;
+                                return;
+                            }
+                        }
+                    }
+                }
             }
             else
             {

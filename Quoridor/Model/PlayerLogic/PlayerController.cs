@@ -44,7 +44,6 @@ namespace Quoridor.Model.PlayerLogic
             }
         }
 
-
         private PlayerColor CurrentPlayerColor => _currentPlayer.Color;
         private PlayerColor CurrentPlayerOpponentColor
         {

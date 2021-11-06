@@ -5,13 +5,13 @@ namespace Quoridor.Model.Cells
 {
     public readonly struct CellPair
     {
-        public readonly Coordinates firstCell;
-        public readonly Coordinates secondCell;
+        public readonly Coordinates FirstCell;
+        public readonly Coordinates SecondCell;
 
         public CellPair(Coordinates firstCell, Coordinates secondCell)
         {
-            this.firstCell = firstCell;
-            this.secondCell = secondCell;
+            this.FirstCell = firstCell;
+            this.SecondCell = secondCell;
         }
         
         public Coordinates this[int index]
@@ -20,8 +20,8 @@ namespace Quoridor.Model.Cells
             {
                 return index switch
                 {
-                    0 => firstCell,
-                    1 => secondCell,
+                    0 => FirstCell,
+                    1 => SecondCell,
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
@@ -29,8 +29,12 @@ namespace Quoridor.Model.Cells
 
         public bool Equals(CellPair cellPair)
         {
-            return firstCell.Equals(cellPair.firstCell) && secondCell.Equals(cellPair.secondCell)
-                || firstCell.Equals(cellPair.secondCell) && secondCell.Equals(cellPair.firstCell);
+            return FirstCell.Equals(cellPair.FirstCell) && SecondCell.Equals(cellPair.SecondCell)
+                || FirstCell.Equals(cellPair.SecondCell) && SecondCell.Equals(cellPair.FirstCell);
+        }
+        public bool Contains(Coordinates coordinates)
+        {
+            return FirstCell.Equals(coordinates) || SecondCell.Equals(coordinates);
         }
     }
 }

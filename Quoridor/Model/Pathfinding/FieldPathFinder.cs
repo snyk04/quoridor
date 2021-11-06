@@ -13,14 +13,14 @@ namespace Quoridor.Model.Pathfinding
             _model = model;
         }
 
-        public List<Coordinates> FindShortestPathToRow(Coordinates start, int row, IEnumerable<Coordinates> jumps, Coordinates enemyCell)
+        public List<Coordinates> FindShortestPathToRow(Coordinates start, int row, IEnumerable<Coordinates> jumps, Coordinates? enemyCell)
         {
             int[,] adjacencyMatrix = CalculateAdjacencyMatrix(start, jumps, enemyCell);
             
             return PathFinder.FindShortestPathToRow(start, row, adjacencyMatrix, CellsManager.AmountOfRows, CellsManager.AmountOfColumns);
         }
 
-        private int[,] CalculateAdjacencyMatrix(Coordinates start, IEnumerable<Coordinates> jumps, Coordinates enemyCell)
+        private int[,] CalculateAdjacencyMatrix(Coordinates start, IEnumerable<Coordinates> jumps, Coordinates? enemyCell)
         {
             int matrixSize = CellsManager.AmountOfRows * CellsManager.AmountOfColumns;
             int[,] adjacencyMatrix = new int[matrixSize, matrixSize];
@@ -42,9 +42,12 @@ namespace Quoridor.Model.Pathfinding
             {
                 AddWay(start, jump, adjacencyMatrix);
             }
-            
-            MakeCellUnavailable(enemyCell.Row, enemyCell.Column, adjacencyMatrix);
 
+            if (enemyCell is Coordinates cell)
+            {
+                MakeCellUnavailable(cell.Row, cell.Column, adjacencyMatrix);
+            }
+            
             return adjacencyMatrix;
         }
         

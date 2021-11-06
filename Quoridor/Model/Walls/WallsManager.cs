@@ -26,6 +26,8 @@ namespace Quoridor.Model.Walls
             InitializeWallField();
         }
         
+        public Wall this[Coordinates wallCoordinates] => Walls[wallCoordinates.Row, wallCoordinates.Column];
+
         public void PlaceWall(Player player, Coordinates wallCoordinates)
         {
             Wall wall = Walls[wallCoordinates.Row, wallCoordinates.Column];
