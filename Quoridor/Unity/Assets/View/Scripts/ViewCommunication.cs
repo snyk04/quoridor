@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
 using Quoridor.View.Audio;
@@ -26,6 +28,8 @@ namespace Quoridor.View
         public CellStorage CellStorage => _cellStorage;
         public WallStorage WallStorage => _wallStorage;
 
+        private List<Coordinates> _cellsToHighlight;
+
         private void Start()
         {
             _backgroundMusicPlayer.Play();
@@ -33,11 +37,13 @@ namespace Quoridor.View
 
         public void ShowAvailableMoves(IEnumerable<Coordinates> cells)
         {
-            _cellHighlighter.HighlightCells(cells);
+            _cellsToHighlight = new List<Coordinates>();
+            _cellsToHighlight.AddRange(cells);
         }
         public void ShowAvailableJumps(IEnumerable<Coordinates> jumps)
         {
-            ShowAvailableMoves(jumps);
+            _cellsToHighlight.AddRange(jumps);
+            _cellHighlighter.HighlightCells(_cellsToHighlight);
         }
         public void ShowAvailableWalls(IEnumerable<Coordinates> walls)
         {
