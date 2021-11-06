@@ -4,6 +4,7 @@ using Quoridor.Model.PlayerLogic;
 using Quoridor.View.Audio;
 using Quoridor.View.Cells;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Quoridor.View
 {
@@ -14,21 +15,21 @@ namespace Quoridor.View
         [SerializeField] private RandomSoundPlayer _playerSoundPlayer;
         
         [Header("Objects")]
-        [SerializeField] private Transform _firstPlayer;
-        [SerializeField] private Transform _secondPlayer;
+        [SerializeField] private Transform _whitePlayer;
+        [SerializeField] private Transform _blackPlayer;
 
-        private Transform GetPlayer(PlayerType playerType)
+        private Transform GetPlayer(PlayerColor playerColor)
         {
-            return playerType switch
+            return playerColor switch
             {
-                PlayerType.First => _firstPlayer,
-                PlayerType.Second => _secondPlayer,
-                _ => throw new ArgumentOutOfRangeException(nameof(playerType), playerType, null)
+                PlayerColor.White => _whitePlayer,
+                PlayerColor.Black => _blackPlayer,
+                _ => throw new ArgumentOutOfRangeException(nameof(playerColor), playerColor, null)
             };
         }
-        public void MovePlayerToCell(PlayerType playerType, Coordinates cellCoordinates)
+        public void MovePlayerToCell(PlayerColor playerColor, Coordinates cellCoordinates)
         {
-            Transform player = GetPlayer(playerType);
+            Transform player = GetPlayer(playerColor);
 
             CellVisual cell = _view.CellStorage[cellCoordinates];
             Vector3 newPosition = cell.Position;

@@ -13,7 +13,7 @@ namespace Quoridor.View
 
         private int ToIndex(Coordinates elementCoordinates)
         {
-            return elementCoordinates.row * AmountOfColumns + elementCoordinates.column;
+            return elementCoordinates.Row * AmountOfColumns + elementCoordinates.Column;
         }
         public T this[Coordinates elementCoordinates]
         {

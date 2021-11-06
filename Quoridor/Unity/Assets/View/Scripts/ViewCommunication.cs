@@ -40,9 +40,9 @@ namespace Quoridor.View
             _wallController.EnableWalls(walls);
         }
 
-        public void MovePlayerToCell(PlayerType playerType, Coordinates cell)
+        public void MovePlayerToCell(PlayerColor playerColor, Coordinates cell)
         {
-            _playerMover.MovePlayerToCell(playerType, cell);
+            _playerMover.MovePlayerToCell(playerColor, cell);
         }
         public void PlaceWall(Player player, Coordinates wall)
         {
