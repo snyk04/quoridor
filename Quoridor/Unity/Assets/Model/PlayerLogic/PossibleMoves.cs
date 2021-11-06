@@ -69,10 +69,10 @@ namespace Quoridor.Model.PlayerLogic
         {
             Coordinates[] uncheckedCells =
             {
-                new(cell.Row + 1, cell.Column),
-                new(cell.Row - 1, cell.Column),
-                new(cell.Row, cell.Column + 1),
-                new(cell.Row, cell.Column - 1)
+                new Coordinates(cell.Row + 1, cell.Column),
+                new Coordinates(cell.Row - 1, cell.Column),
+                new Coordinates(cell.Row, cell.Column + 1),
+                new Coordinates(cell.Row, cell.Column - 1)
             };
             
             var availableJumps = new List<Coordinates>();

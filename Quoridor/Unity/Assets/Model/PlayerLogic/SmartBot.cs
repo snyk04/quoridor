@@ -59,11 +59,11 @@ namespace Quoridor.Model.PlayerLogic
                 }
                 
                 coordinates = way[1];
-
+                
                 moveType = (Position - coordinates).VectorLength() switch
                 {
                     1 => MoveType.MoveToCell,
-                    > 1 => MoveType.JumpToCell,
+                    2 => MoveType.JumpToCell,
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }

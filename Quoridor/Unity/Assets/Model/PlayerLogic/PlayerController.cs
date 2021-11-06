@@ -68,6 +68,12 @@ namespace Quoridor.Model.PlayerLogic
 
         public void MoveCurrentPlayerToCell(Coordinates cell)
         {
+            // TODO : think about it
+            if ((_currentPlayer.Position - cell).VectorLength() > 1)
+            {
+                JumpCurrentPlayerToCell(cell);
+                return;
+            }
             _currentPlayer.MakeMove(MoveType.MoveToCell, cell);
         }
         public void JumpCurrentPlayerToCell(Coordinates cell)

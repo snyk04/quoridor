@@ -1501,7 +1501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 126928109}
   m_Layer: 5
-  m_Name: SecondAmountOfWalls
+  m_Name: BlackAmountOfWalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3708,7 +3708,7 @@ GameObject:
   m_Component:
   - component: {fileID: 231949573}
   m_Layer: 5
-  m_Name: FirstAmountOfWalls
+  m_Name: WhiteAmountOfWalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10241,8 +10241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e15af37c48f3c34418ce7bf52195a7df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _firstPlayerAmountOfWallsCounter: {fileID: 672940860}
-  _secondPlayerAmountOfWallsCounter: {fileID: 854289716}
+  _whitePlayerAmountOfWallsCounter: {fileID: 672940860}
+  _blackPlayerAmountOfWallsCounter: {fileID: 854289716}
 --- !u!224 &567961032 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9197557995596088727, guid: 548e17d374e5279469bc8542e15b98b9, type: 3}
@@ -19921,8 +19921,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view: {fileID: 1663296233}
   _playerSoundPlayer: {fileID: 2050567899}
-  _firstPlayer: {fileID: 2089794221}
-  _secondPlayer: {fileID: 366830755206447433}
+  _whitePlayer: {fileID: 2089794221}
+  _blackPlayer: {fileID: 366830755206447433}
 --- !u!224 &1234742765 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9197557995596088727, guid: 548e17d374e5279469bc8542e15b98b9, type: 3}

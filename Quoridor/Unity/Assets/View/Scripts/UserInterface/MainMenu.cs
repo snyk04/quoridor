@@ -38,6 +38,7 @@ namespace Quoridor.View.UserInterface {
         {
             Application.Quit();
         }
+        // TODO : make two dropdowns with possibility to choose player type
         public void ChooseGameMode(int gameMode)
         {
             GameModeTransmitter.GameMode = (GameMode) gameMode;

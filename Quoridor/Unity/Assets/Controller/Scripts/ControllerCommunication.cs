@@ -25,7 +25,8 @@ namespace Quoridor.Controller
         }
         private void Start()
         {
-            _model.StartNewGame(GameModeTransmitter.GameMode);
+            // TODO : make two dropdowns with possibility to choose player type
+            _model.StartNewGame(PlayerType.Player1, PlayerType.SmartBot);
         }
 
         public void Restart()

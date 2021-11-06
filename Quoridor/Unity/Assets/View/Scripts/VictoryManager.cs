@@ -23,7 +23,7 @@ namespace Quoridor.View
         [SerializeField] private Vector3 _finishPosition;
         [SerializeField] private float _speed;
         
-        public void ShowVictory(PlayerType winner)
+        public void ShowVictory(PlayerColor winner)
         {
             _view.CellHighlighter.UnhighlightAllCells();
             

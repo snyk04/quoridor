@@ -17,8 +17,8 @@ namespace Quoridor.View.Cells
         }
         public void HighlightCells(IEnumerable<Coordinates> cellCoordinatesArray)
         {
-            UnhighlightAllCells();
-            
+            // UnhighlightAllCells();
+
             foreach (Coordinates cellCoordinates in cellCoordinatesArray)
             {
                 CellVisual cell = _view.CellStorage[cellCoordinates];

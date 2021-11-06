@@ -35,14 +35,22 @@ namespace Quoridor.View
         {
             _cellHighlighter.HighlightCells(cells);
         }
+        public void ShowAvailableJumps(IEnumerable<Coordinates> jumps)
+        {
+            ShowAvailableMoves(jumps);
+        }
         public void ShowAvailableWalls(IEnumerable<Coordinates> walls)
         {
             _wallController.EnableWalls(walls);
         }
 
-        public void MovePlayerToCell(PlayerColor playerColor, Coordinates cell)
+        public void MovePlayerToCell(Player player, Coordinates cell)
         {
-            _playerMover.MovePlayerToCell(playerColor, cell);
+            _playerMover.MovePlayerToCell(player.Color, cell);
+        }
+        public void JumpPlayerToCell(Player player, Coordinates cell)
+        {
+            MovePlayerToCell(player, cell);
         }
         public void PlaceWall(Player player, Coordinates wall)
         {
@@ -50,7 +58,7 @@ namespace Quoridor.View
             _amountOfWallsUpdater.UpdateCounter(player);
         }
 
-        public void EndGame(PlayerType winner)
+        public void EndGame(PlayerColor winner)
         {
             _victoryManager.ShowVictory(winner);
         }

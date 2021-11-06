@@ -7,10 +7,13 @@ namespace Quoridor.View
     public interface IView
     {
         void ShowAvailableMoves(IEnumerable<Coordinates> cells);
+        void ShowAvailableJumps(IEnumerable<Coordinates> jumps);
         void ShowAvailableWalls(IEnumerable<Coordinates> walls);
-        void MovePlayerToCell(PlayerColor playerColor, Coordinates cell);
+        
+        void MovePlayerToCell(Player player, Coordinates cell);
+        void JumpPlayerToCell(Player player, Coordinates cell);
         void PlaceWall(Player player, Coordinates wall);
 
-        void EndGame(PlayerType winner);
+        void EndGame(PlayerColor winner);
     }
 }
