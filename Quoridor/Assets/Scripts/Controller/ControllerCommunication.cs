@@ -25,8 +25,16 @@ namespace Quoridor.Controller
         }
         private void Start()
         {
-            // TODO : make two dropdowns with possibility to choose player type
-            _model.StartNewGame(PlayerType.Player1, PlayerType.SmartBot);
+            GameMode gameMode = GameModeTransmitter.GameMode;
+            (PlayerType whitePlayerType, PlayerType blackPlayerType) = gameMode switch
+            {
+                GameMode.PlayerVsPlayer => (PlayerType.Player1, PlayerType.Player2),
+                GameMode.PlayerVsComputer => (PlayerType.Player1, PlayerType.SmartBot),
+                GameMode.ComputerVsComputer => (PlayerType.SmartBot, PlayerType.SmartBot),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            _model.StartNewGame(whitePlayerType, blackPlayerType);
         }
 
         public void Restart()
