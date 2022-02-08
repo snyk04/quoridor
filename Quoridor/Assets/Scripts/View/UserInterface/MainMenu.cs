@@ -1,4 +1,5 @@
-﻿using Quoridor.Controller;
+﻿using DG.Tweening;
+using Quoridor.Controller;
 using Quoridor.Model.PlayerLogic;
 using Quoridor.View.Audio;
 using UnityEngine;
@@ -20,9 +21,8 @@ namespace Quoridor.View.UserInterface {
         [Header("Objects")] 
         [SerializeField] private Transform _toBeContinuedImage;
         [SerializeField] private GameObject _greenFiler;
-        [SerializeField] private Vector3 _startPosition;
         [SerializeField] private Vector3 _finishPosition;
-        [SerializeField] private float _time;
+        [SerializeField] private float _moveDuration;
         
         private void Start()
         {
@@ -38,12 +38,11 @@ namespace Quoridor.View.UserInterface {
         {
             Application.Quit();
         }
-        // TODO : make two dropdowns with possibility to choose player type
         public void ChooseGameMode(int gameMode)
         {
             GameModeTransmitter.GameMode = (GameMode) gameMode;
 
-            StartCoroutine(ObjectMover.Move(_toBeContinuedImage, _startPosition, _finishPosition, _time));
+            _toBeContinuedImage.DOLocalMove(_finishPosition, _moveDuration);
             LoadSceneAsync();
             
             _menuMusicPlayer.Stop();

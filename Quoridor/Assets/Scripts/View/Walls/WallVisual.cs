@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -25,6 +26,7 @@ namespace Quoridor.View
         {
             Disable();
             ChangeAlpha(1);
+            // transform.DOPunchScale(0.5f * Vector3.one, 0.5f);
         }
         public void HandleDestroy()
         {

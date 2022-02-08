@@ -19923,6 +19923,7 @@ MonoBehaviour:
   _playerSoundPlayer: {fileID: 2050567899}
   _whitePlayer: {fileID: 2089794221}
   _blackPlayer: {fileID: 366830755206447433}
+  _moveDuration: 0.25
 --- !u!224 &1234742765 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9197557995596088727, guid: 548e17d374e5279469bc8542e15b98b9, type: 3}
@@ -28153,9 +28154,8 @@ MonoBehaviour:
   _background: {fileID: 270908083}
   _container: {fileID: 2037487662}
   _winnerText: {fileID: 218056291}
-  _startPosition: {x: 0, y: -850, z: 0}
   _finishPosition: {x: 0, y: 0, z: 0}
-  _speed: 0.25
+  _moveDuration: 0.25
 --- !u!1001 &1709124057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34023,7 +34023,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2037487663
 MonoBehaviour:
   m_ObjectHideFlags: 0

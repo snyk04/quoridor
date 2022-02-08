@@ -322,9 +322,8 @@ MonoBehaviour:
   _roundaboutPlayer: {fileID: 1193420570}
   _toBeContinuedImage: {fileID: 1578958437}
   _greenFiler: {fileID: 1397394461}
-  _startPosition: {x: 1200, y: -420, z: 0}
   _finishPosition: {x: -650, y: -420, z: 0}
-  _time: 0.15
+  _moveDuration: 0.25
 --- !u!1 &330246208
 GameObject:
   m_ObjectHideFlags: 0

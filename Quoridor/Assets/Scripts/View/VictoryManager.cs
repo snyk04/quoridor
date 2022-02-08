@@ -1,4 +1,5 @@
-﻿using Quoridor.Model.PlayerLogic;
+﻿using DG.Tweening;
+using Quoridor.Model.PlayerLogic;
 using Quoridor.View.Audio;
 using Quoridor.View.Cells;
 using UnityEngine;
@@ -19,9 +20,8 @@ namespace Quoridor.View
         [SerializeField] private Text _winnerText;
 
         [Header("Settings")]
-        [SerializeField] private Vector3 _startPosition;
         [SerializeField] private Vector3 _finishPosition;
-        [SerializeField] private float _speed;
+        [SerializeField] private float _moveDuration;
         
         public void ShowVictory(PlayerColor winner)
         {
@@ -43,7 +43,7 @@ namespace Quoridor.View
             _background.SetActive(true);
             _container.SetActive(true);
 
-            StartCoroutine(ObjectMover.Move(_container.transform, _startPosition, _finishPosition, _speed));
+            _container.transform.DOLocalMove(_finishPosition, _moveDuration);
         }
     }
 }

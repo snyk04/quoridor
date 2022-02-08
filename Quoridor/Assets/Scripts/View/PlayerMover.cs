@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using Quoridor.Model.Common;
 using Quoridor.Model.PlayerLogic;
 using Quoridor.View.Audio;
@@ -18,6 +19,9 @@ namespace Quoridor.View
         [SerializeField] private Transform _whitePlayer;
         [SerializeField] private Transform _blackPlayer;
 
+        [Header("Settings")] 
+        [SerializeField] private float _moveDuration;
+
         private Transform GetPlayer(PlayerColor playerColor)
         {
             return playerColor switch
@@ -33,7 +37,7 @@ namespace Quoridor.View
 
             CellVisual cell = _view.CellStorage[cellCoordinates];
             Vector3 newPosition = cell.Position;
-            player.position = newPosition;
+            player.DOMove(newPosition, _moveDuration);
             
             _playerSoundPlayer.PlayNext();
         }
