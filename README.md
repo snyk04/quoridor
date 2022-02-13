@@ -1,18 +1,16 @@
 # Quoridor
-Awesome tactical board game for 2 players.
+Awesome tactical tabletop game for 2 players.
 
 ![Я в коридоре](https://github.com/snyk04/quoridor/blob/master/Images/QuoridorImage.png)
 
 ## How to start playing
-There are few options how to play Quoridor.   
+You can open it in browser via this [link](https://snyk04.github.io/quoridor/).   
 
-You can download it on your PC and run it as a regular game:
+Or you can download it on your PC and play offline:
 1. Open "Releases" folder.   
-2. Go to the latest release and download "Quoridor" archive.   
+2. Go to the latest non-console release and download "Quoridor" archive.   
 3. Unzip downloaded archive.   
 4. Execute Quoridor.exe.   
-
-Or you can open it in browser via this [link](https://snyk04.github.io/quoridor/).
 
 ## Game rules
 ### Board
