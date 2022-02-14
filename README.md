@@ -8,7 +8,7 @@ You can open it in browser via this [link](https://snyk04.github.io/quoridor/).
 
 Or you can download it on your PC and play offline:
 1. Open "Releases" folder.   
-2. Go to the latest non-console release and download "Quoridor" archive.   
+2. Go to the latest non-console release and download "Quoridor.zip" archive.   
 3. Unzip downloaded archive.   
 4. Execute Quoridor.exe.   
 
